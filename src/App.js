@@ -1,24 +1,26 @@
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { Route, Routes } from "react-router-dom";
+import UserRegister from './views/UserRegister';
+import UserService from './services/user';
+import { Container } from 'react-bootstrap';
 
 function App() {
+	// Events retrieval and refresh
+	const userService = new UserService() ;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+		<Container className="my-container">
+			<main>
+				<Routes>
+					<Route path="/register" element={
+						<UserRegister userService={userService} />
+					} />
+				</Routes>
+			</main>
+			</Container>
+		</>
   );
 }
 
