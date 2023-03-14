@@ -1,35 +1,13 @@
-import axios from "axios";
+import NetService from "./netService";
 
-const CONTENT_JSON_HEADER = {
-	headers: {
-		'content-type': 'application/json'
-	}
-} ;
+const EP_REGISTER = 'register' ;
 
-const API_SERVER = 'http://localhost' ;
-const API_PORT = 3005 ;
-const API_ROOT = '' ;
-
-const API_URL = API_SERVER + ':' + API_PORT + API_ROOT ;
-
-const API_REGISTER = API_URL + '/register' ;
-
-export default class userService {
+export default class UserService extends NetService {
 	constructor(errHandler = null) {
-		this.errHandler = errHandler ;
-	}
-
-	errHandlerInternal(err) {
-		if (this.errHandler) this.errHandler(err.message) ;
-		else console.error(err) ;
-		throw(err) ; // (rethrow)
-	}
-
-	errClearInternal() {
-		this.errHandler(null) ;
+		super(errHandler) ;
 	}
 
 	register(data) {
-		return axios.post(API_REGISTER, data, CONTENT_JSON_HEADER).then(() => this.errClearInternal()).catch((err) => this.errHandlerInternal(err)) ;
+		return this.post(EP_REGISTER, data) ;
 	}
 }
