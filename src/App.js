@@ -1,6 +1,7 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import { Route, Routes } from "react-router-dom";
+import NavigationBar from "./components/navbar.component";
 import UserRegister from './views/UserRegister';
 import UserService from './services/user';
 import { Container } from 'react-bootstrap';
@@ -36,6 +37,7 @@ function App() {
 		<>
 			<Container className="my-container">
 				<main>
+          <NavigationBar />
 					<Routes>
 						<Route path="/register" element={
 							<UserRegister userService={userService} />
@@ -50,10 +52,7 @@ function App() {
 									/>}
 							</>
 						} />
-
-
 					</Routes>
-
 				</main>
 			</Container>
 		</>
