@@ -5,8 +5,11 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom";
 import * as utils from "../utils/utils";
+import UserService from "../services/user";
+import './userRegister.css' ;
 
-export default function UserRegister({userService}) {
+export default function UserRegister() {
+	const userService = new UserService();
 	const navigate = useNavigate();
 
 	// Minimum password length
@@ -17,8 +20,6 @@ export default function UserRegister({userService}) {
 		email: "",
 		password: "",
 		password_confirm: "",
-		imageUrl: "",
-		bio: ""
 	}) ;
 
 	// === STATUS HANDLING ===
@@ -63,6 +64,9 @@ export default function UserRegister({userService}) {
 
 		if (fieldName === 'email') {
 			if (newValue === '') setErrorStatus('email', 'Email address required') ;
+			else if (!/[^\s]*@[a-z0-9.-]+/i.test(newValue)) { // (very permissive so we hopefully don't reject valid ones)
+				setErrorStatus('email', 'Invalid email address') ;
+			}
 			else removeErrorStatus('email') ;
 		}
 		else if (['password', 'password_confirm'].includes(fieldName)) {
@@ -94,7 +98,7 @@ export default function UserRegister({userService}) {
 			<Form onSubmit={(event) => submitHandler(event)}>
 				<Form.Group controlId="email">
 					<Form.Label>Email</Form.Label>
-					<Form.Control className='omg'
+					<Form.Control
 						name="email"
 						onChange={(event)=>handleChange(event)}
 						disabled={successMsg}
@@ -102,7 +106,7 @@ export default function UserRegister({userService}) {
 				</Form.Group>
 				<Form.Group controlId="password">
 					<Form.Label>Password (min {pwdMinLength} characters)</Form.Label>
-					<Form.Control className='omg'
+					<Form.Control
 						name="password"
 						type="password"
 						onChange={(event)=>handleChange(event)}  
@@ -111,28 +115,11 @@ export default function UserRegister({userService}) {
 				</Form.Group>
 				<Form.Group controlId="password_confirm">
 					<Form.Label>Confirm Password</Form.Label>
-					<Form.Control className='omg'
+					<Form.Control
 						name="password_confirm"
 						type="password"
 						onChange={(event)=>handleChange(event)}
 						disabled={successMsg}  
-					/>
-				</Form.Group>
-				<Form.Group controlId="imageUrl">
-					<Form.Label>Profile Image URL</Form.Label>
-					<Form.Control className='omg'
-						name="imageUrl"
-						onChange={(event)=>handleChange(event)}
-						disabled={successMsg}  
-					/>
-				</Form.Group>
-				<Form.Group controlId="bio">
-					<Form.Label>Bio</Form.Label>
-					<Form.Control className='omg'
-						name="bio"
-						as="textarea"
-						onChange={(event)=>handleChange(event)}
-						disabled={successMsg}   
 					/>
 				</Form.Group>
 				

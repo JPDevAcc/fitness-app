@@ -3,16 +3,12 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/navbar.component";
 import UserRegister from './views/UserRegister';
-import UserService from './services/user';
 import { Container } from 'react-bootstrap';
 import Login from './views/Login';
 import APIClientServer from './API/APIClientServer';
 import { useState } from 'react';
 
 function App() {
-	// Events retrieval and refresh
-	const userService = new UserService();
-
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
 	const client = new APIClientServer(() => token, logout, setError);
 
@@ -40,7 +36,7 @@ function App() {
           <NavigationBar />
 					<Routes>
 						<Route path="/register" element={
-							<UserRegister userService={userService} />
+							<UserRegister />
 						} />
 						<Route path="/" element={
 							<>
