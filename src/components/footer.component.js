@@ -1,17 +1,17 @@
 import React from 'react';
 import '../footer.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faInstagram, faYoutube, faTwitter } from '@fortawesome/free-brands-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faFacebook, faInstagram, faYoutube, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 function Footer() {
   return (
     <footer className="footer">
       <div className="row">
       <ul>
-        <a href="#"><FontAwesomeIcon icon={faFacebook} /></a>
+        {/* <a href="#"><FontAwesomeIcon icon={faFacebook} /></a>
         <a href="#"><FontAwesomeIcon icon={faInstagram} /></a>
         <a href="#"><FontAwesomeIcon icon={faYoutube} /></a>
-        <a href="#"><FontAwesomeIcon icon={faTwitter} /></a>
+        <a href="#"><FontAwesomeIcon icon={faTwitter} /></a> */}
         </ul>
       </div>
 
