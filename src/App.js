@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import Dashboard from "./Dashboard";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/navbar.component";
@@ -33,7 +34,9 @@ function App() {
 		<>
 			<Container className="my-container">
 				<main>
-          <NavigationBar />
+					<NavigationBar
+						logout={logout}
+					/>
 					<Routes>
 						<Route path="/register" element={
 							<UserRegister />
@@ -41,7 +44,9 @@ function App() {
 						<Route path="/" element={
 							<>
 								{(token) ?
-									<h1>You are already logged in</h1> :
+									<Dashboard
+										client={client}
+									/> :
 									<Login
 										client={client}
 										login={login}

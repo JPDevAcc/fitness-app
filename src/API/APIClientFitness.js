@@ -9,6 +9,7 @@ export default class APIClientFitness {
             this.tokenProvider = tokenProvider;
             this.logoutHandler = logoutHandler;
             this.errHandler = errHandler;
+            axios.defaults.withCredentials = true; // Send cookies
         }
     }
 

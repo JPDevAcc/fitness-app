@@ -7,6 +7,7 @@ export default class APIClientServer {
         this.tokenProvider = tokenProvider;
         this.logoutHandler = logoutHandler;
         this.errHandler = errHandler;
+        axios.defaults.withCredentials = true; // Send cookies
     }
 
     errorhandlerInternal(err) {
@@ -38,5 +39,11 @@ export default class APIClientServer {
         return axios.post(`${url}/auth`, { email, password })
             .then(this.errHandler(null)).catch((err) => this.errorHandlerInternal(err));
     }
+
+    getPics() {
+        return this.authenticatedCall('get', `${url}/unsplash`)
+
+    }
+
 }
 
