@@ -2,17 +2,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Dashboard from "./Dashboard";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
+import UserRegister from "./views/UserRegister";
+import { Container } from "react-bootstrap";
 import NavigationBar from "./components/navbar.component";
-import UserRegister from './views/UserRegister';
-import { Container } from 'react-bootstrap';
-import Login from './views/Login';
-import APIClientServer from './API/APIClientServer';
-import { useState } from 'react';
+import Footer from "./components/footer.component";
 
 function App() {
-	const [token, setToken] = useState(window.localStorage.getItem('token'));
-	const client = new APIClientServer(() => token, logout, setError);
-
 	function login(token) {
 		window.localStorage.setItem('token', token);
 		setToken(token);
@@ -32,11 +27,9 @@ function App() {
 
 	return (
 		<>
+    <NavigationBar logout={logout} />
 			<Container className="my-container">
 				<main>
-					<NavigationBar
-						logout={logout}
-					/>
 					<Routes>
 						<Route path="/register" element={
 							<UserRegister />
@@ -56,6 +49,7 @@ function App() {
 					</Routes>
 				</main>
 			</Container>
+      <Footer />
 		</>
 	);
 }
