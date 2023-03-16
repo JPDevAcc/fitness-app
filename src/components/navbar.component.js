@@ -3,8 +3,9 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Link } from "react-router-dom";
 
-function NavigationBar() {
+function NavigationBar(props) {
     return (
         <Navbar expand="lg" className="navbar-dark bg-dark">
             <Container fluid>
@@ -16,11 +17,11 @@ function NavigationBar() {
                         style={{ maxHeight: '100px' }}
                         navbarScroll
                     >
-                        <Nav.Link href="/">Home </Nav.Link>
-                        <Nav.Link href="/">Login</Nav.Link>
-                        <Nav.Link href="/">Sing Up</Nav.Link>
-
-                        
+                        <Link className="nav-link" to="/">Home</Link>
+                        <Link className="nav-link" to="/">Login</Link>
+                        <Link className="nav-link" to="/">Logout</Link>
+                        <Link className="nav-link" to="/register">Register</Link>
+                        <Button onClick={props.logout}>Logout</Button>
                     </Nav>
                     <Form className="d-flex" >
                         <Form.Control
