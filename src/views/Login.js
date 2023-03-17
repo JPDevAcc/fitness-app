@@ -2,9 +2,10 @@ import React from 'react'
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { useState } from 'react';
+import UserService from '../services/user';
 
 function Login(props) {
-
+    const userService = new UserService(props.viewCommon.net);
     const [disabled, changeDisabled] = useState(false);
 
     const submitHandler = async (event) => {
@@ -12,9 +13,10 @@ function Login(props) {
         changeDisabled(true);
 
         console.log(event.target.username.value, event.target.password.value)
-        props.client.login(event.target.username.value, event.target.password.value)
+        userService.login(event.target.username.value, event.target.password.value)
             .then((response) => {
                 changeDisabled(false);
+                console.log(response)
                 props.login(response.data.token);
                 console.log("Success!")
             })
