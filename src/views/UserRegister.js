@@ -1,15 +1,13 @@
-// Adapted from "Social Cards" Project
-
 import {useState} from 'react';
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { useNavigate } from "react-router-dom";
 import * as utils from "../utils/utils";
 import UserService from "../services/user";
-import './userRegister.css' ;
+import './css/userRegister.css' ;
 
-export default function UserRegister() {
-	const userService = new UserService();
+export default function UserRegister(viewCommon) {
+	const userService = new UserService(viewCommon.net);
 	const navigate = useNavigate();
 
 	// Minimum password length

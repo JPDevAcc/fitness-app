@@ -8,7 +8,6 @@ const API_URL = process.env.REACT_APP_API_URL ;
 
 export default class NetService {
 	constructor({errHandler = null, tokenProvider = null, logoutHandler = null} = {}) {
-		console.log(arguments) ;
 		this.errHandler = errHandler ;
 		this.tokenProvider = tokenProvider ;
 		this.logoutHandler = logoutHandler ;
@@ -38,9 +37,11 @@ export default class NetService {
 		let headers = {}
 		if (this.tokenProvider) headers.token = this.tokenProvider() ;
 		headers = {...headers, ...extraHeaders} ;
-		console.log(headers) ;
 
-		return axios({method, url, data, headers}).then(() => this.errClearInternal()).catch((err) => this.errHandlerInternal(err)) ;
+		return axios({method, url, data, headers}).then((response) => {
+			this.errClearInternal() ;
+			return response ;
+		}).catch((err) => this.errHandlerInternal(err)) ;
 	}
 
 	// Empty-body functions

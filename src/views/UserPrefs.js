@@ -1,0 +1,118 @@
+import React, { useState } from 'react';
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import { useNavigate } from "react-router-dom";
+import * as utils from "../utils/utils";
+import UserPrefsService from "../services/userPrefs";
+import './css/userPrefs.css' ;
+import Select from '../components/select';
+import { weightUnitOpts, heightUnitOpts, distanceUnitOpts, temperatureUnitOpts } from '../utils/units';
+import { UserContext } from "../contexts/User"
+
+export const defaults = {
+	weightUnits: "kg",
+	heightUnits: "m",
+	distanceUnits: "miles",
+	temperatureUnits: "Celsius",
+} ;
+
+export default function UserSitePrefs({data, nextPage = '/', viewCommon}) {
+	const userPrefsService = new UserPrefsService(viewCommon.net);
+	const navigate = useNavigate();
+
+	// Form fields
+	const [ userState, dispatch ] = React.useContext(UserContext) ;
+	const formValues = userState.prefs ;
+
+	// === STATUS HANDLING ===
+	// Error-status for fields
+	const [errorStatusList, changeErrorStatusList] = useState({}) ;
+
+	// Success status
+	const [successMsg, changeSuccessMsg] = useState(null) ;
+
+	// Set and remove error-status for the specified category
+	function setErrorStatus(category, msg) {
+		utils.setErrorStatus(changeErrorStatusList, category, msg) ;
+	}
+	function removeErrorStatus(category) {
+		utils.removeErrorStatus(changeErrorStatusList, category) ;
+	}
+	// Retrieve active (non-blank) error
+	function getError() {
+		return utils.getError(errorStatusList) ;
+	}
+	// Get current HTML error message
+	function getErrorMessageHtml() {
+		return utils.getMessageHtml(getError()) ;
+	}
+	// Get current HTML success message
+	function getSuccessMessageHtml() {
+		return utils.getMessageHtml(successMsg, 'success') ;
+	}
+	// Returns boolean denoting whether there is currently an error
+	function isError() {
+		return utils.isError(errorStatusList) ;
+	}
+
+	// Handle form field user-input
+  const handleChange = (event) => {
+		const newFormValues = {...formValues} ;
+		const fieldName = event.target.name ;
+		const newValue = event.target.value;
+		newFormValues[fieldName] = newValue;
+		dispatch({type: 'setPrefs', data: newFormValues});
+
+		userPrefsService.updateFieldValue(fieldName, newValue) ;
+  }
+
+	// Handle form submission
+  const handleNextPageClick = (event) => {
+    event.preventDefault() ;
+		userPrefsService.updateFieldValue('onboardingStageComplete', true) ;
+		navigate(nextPage) ;
+  }
+
+	// Template
+  return (
+		<div className="user-profile">
+			<h1>Site Preferences</h1>
+			{getErrorMessageHtml()}
+			{getSuccessMessageHtml()}
+
+			<Form>
+				<Row className="mb-4">
+					<Col sm>
+						<Select id='weightUnits' labelText='Weight units' opts={weightUnitOpts}
+							value={formValues.weightUnits} onChange={(event)=>handleChange(event)}
+							disabled={successMsg} />
+					</Col>
+					<Col sm>
+						<Select id='heightUnits' labelText='Height units' opts={heightUnitOpts}
+							value={formValues.heightUnits} onChange={(event)=>handleChange(event)}
+							disabled={successMsg} />
+					</Col>
+				</Row>
+				<Row className="mb-4">
+					<Col sm>
+						<Select id='distanceUnits' labelText='Distance units' opts={distanceUnitOpts}
+							value={formValues.distanceUnits} onChange={(event)=>handleChange(event)}
+							disabled={successMsg} />
+					</Col>
+					<Col sm>
+						<Select id='temperatureUnits' labelText='Temperature units' opts={temperatureUnitOpts}
+							value={formValues.temperatureUnits} onChange={(event)=>handleChange(event)}
+							disabled={successMsg} />
+					</Col>
+				</Row>
+				
+			{nextPage &&
+				<div className="text-center my-4">
+					<Button onClick={handleNextPageClick} variant="primary" type="submit" disabled={isError() || successMsg}>Next</Button>
+				</div>}
+			</Form>
+		</div>
+  );
+}
