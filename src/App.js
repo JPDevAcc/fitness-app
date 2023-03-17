@@ -7,13 +7,17 @@ import Login from './views/Login';
 import { Container } from "react-bootstrap";
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
-import APIClientServer from './API/APIClientServer';
 import { useState } from 'react';
+import UserService from "./services/user";
 
 function App() {
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
-	const client = new APIClientServer(() => token, logout, setError);
 
+	const viewCommon = {
+		net: { tokenProvider: () => token, logoutHandler: () => { }, errHandler: setError }
+	};
+
+	const userService = new UserService(viewCommon.net);
 	const navigate = useNavigate();
 
 	function login(token) {
@@ -22,9 +26,11 @@ function App() {
 	}
 
 	function logout() {
+		userService.logout();
 		window.localStorage.removeItem('token');
 		setToken(null);
-		navigate('/') ;
+		navigate('/');
+
 	}
 
 	const [msgData, setMsgData] = useState({ msg: null, type: null });
@@ -36,21 +42,20 @@ function App() {
 
 	return (
 		<>
-    <NavigationBar logout={logout} />
+			<NavigationBar logout={logout} />
 			<Container className="my-container">
 				<main>
 					<Routes>
 						<Route path="/register" element={
-							<UserRegister />
+							<UserRegister viewCommon={viewCommon} />
 						} />
 						<Route path="/" element={
 							<>
 								{(token) ?
-									<Dashboard
-										client={client}
+									<Dashboard viewCommon={viewCommon}
 									/> :
 									<Login
-										client={client}
+										viewCommon={viewCommon}
 										login={login}
 									/>}
 							</>
@@ -58,7 +63,7 @@ function App() {
 					</Routes>
 				</main>
 			</Container>
-      <Footer />
+			<Footer />
 		</>
 	);
 }
