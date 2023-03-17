@@ -13,6 +13,7 @@ import UserPrefsService from "./services/userPrefs";
 import UserSitePrefs from "./views/UserPrefs";
 import UserProfileService from "./services/userProfile";
 import UserProfile from './views/UserProfile';
+import UserService from "./services/user";
 import { UserContext } from "./contexts/User"
 
 function App() {
