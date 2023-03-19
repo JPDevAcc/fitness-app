@@ -34,6 +34,16 @@ export function isError(errorStatusList) {
 	return (getError(errorStatusList) !== null) ;
 }
 
+// Retrieve active (non-blank) error
+export function getSpecificError(errorStatusList, category) {
+	return errorStatusList[category] ?? null ;
+}
+
+// Returns boolean denoting whether there is currently an error
+export function isSpecificError(errorStatusList, category) {
+	return (getSpecificError(errorStatusList, category) !== null) ;
+}
+
 // Get next id number from the specified object
 export function nextIdFromData(data) {
 	return Object.keys(data).reduce((max, id) => Math.max(max, id), -1) + 1 ;

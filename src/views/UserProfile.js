@@ -1,6 +1,3 @@
-// TODO: Privacy toggles
-// TODO: Update profile image with server response for URL
-
 import React, { useState } from 'react';
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
@@ -9,23 +6,31 @@ import Row from 'react-bootstrap/Row';
 import { useNavigate } from "react-router-dom";
 import * as utils from "../utils/utils";
 import UserProfileService from "../services/userProfile";
-import ImageUpload from '../components/imageUpload';
 import './css/userProfile.css' ;
 import Select from '../components/select';
-import InputWithSelect from '../components/inputWithSelect';
 import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight } from '../utils/units';
-import { UserContext } from "../contexts/User"
+import { UserContext } from "../contexts/User";
+import UnitsComponent from '../components/unitsComponent';
+import ProfileImageUpload from '../components/profileImageUpload';
+import PrivacyButtons from '../components/privacyButtons';
 
 export const defaults = {
-	imageUrl: "",
+	image: "",
+	imagePrivacy: "pri",
 	bio: "",
+	bioPrivacy: "pri",
 	age: "",
-	weight: "",
-	weightUnits: "kg",
-	height: "",
-	heightUnits: "m",
+	agePrivacy: "pri",
+	weight: "", // kg
+	weightPrivacy: "pri",
+	weightDisplayUnits: "kg",
+	height: "", // m
+	heightPrivacy: "pri",
+	heightDisplayUnits: "m",
 	dietPractice: "",
+	dietPracticePrivacy: 'pri',
 	dietType: "",
+	dietTypePrivacy: 'pri',
 } ;
 
 export default function UserProfile({nextPage = '/', viewCommon}) {
@@ -35,6 +40,7 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 	// Form fields
 	const [ userState, dispatch ] = React.useContext(UserContext) ;
 	const formValues = userState.profile ;
+	const prefs = userState.prefs ;
 
 	// === STATUS HANDLING ===
 	// Error-status for fields
@@ -66,29 +72,32 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 	function isError() {
 		return utils.isError(errorStatusList) ;
 	}
+	// Returns boolean denoting whether there is currently an error
+	function isSpecificError(category) {
+		return utils.isSpecificError(errorStatusList, category) ;
+	}
 
 	// Handle form field user-input
-  const handleChange = (event) => {
+  const handleChange = (changeData) => {
+		let fieldName, newValue ;
+		
+		if (Array.isArray(changeData)) {
+			[fieldName, newValue] = changeData ;
+		} else {
+			fieldName = changeData.target.name ;
+			newValue = changeData.target.value;
+		}
+
 		const newFormValues = {...formValues} ;
-		let fieldName = event.target.name ;
-		let newValue = event.target.value;
 		newFormValues[fieldName] = newValue;
 		dispatch({type: 'setProfile', data: newFormValues});
-
-		if (fieldName === 'weight' || fieldName === 'weightUnits') {
-			newValue = convertWeight(("" + newFormValues['weight']).split(' '), newFormValues['weightUnits'], 'kg')[0] ;
-			fieldName = 'weight' ;
-		}
-		else if (fieldName === 'height' || fieldName === 'heightUnits') {
-			newValue = convertHeight(("" + newFormValues['height']).split(' '), newFormValues['heightUnits'], 'm')[0] ;
-			fieldName = 'height' ;
-		}
 
 		console.log(fieldName, newValue) ;
 		userProfileService.updateFieldValue(fieldName, newValue) ;
   }
 
-	// Handle form submission
+
+	// Handle next-page action
   const handleNextPageClick = (event) => {
     event.preventDefault() ;
 		userProfileService.updateFieldValue('onboardingStageComplete', true) ;
@@ -100,10 +109,20 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 			var reader = new FileReader();
 			reader.readAsDataURL(file);
 			reader.onload = function(e) {
-				userProfileService.uploadImage(e.target.result) ;
+				userProfileService.updateFieldValue('image', e.target.result).then(() => {
+				const newFormValues = {...formValues} ;
+				newFormValues.image = e.target.result;
+				dispatch({type: 'setProfile', data: newFormValues});
+				}) ;
 			};
 		}
 	} ;
+
+	const handleImageRemove = () => {
+		const newFormValues = {...formValues} ;
+		newFormValues.image = "" ;
+		dispatch({type: 'setProfile', data: newFormValues});
+	}
 
 	const ageOpts = [
 		{value: '', displayName: '- Select -'},
@@ -135,66 +154,71 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
   return (
 		<div className="user-profile">
 			<h1>User Profile</h1>
-			{getErrorMessageHtml()}
-			{getSuccessMessageHtml()}
 
-			<Form>
-				<div className="image-upload-container-outer mb-4">
-					<div className="text-center fw-bold mb-1">Profile Image</div>
-					<div className="profile-image">
-						<img src={formValues.imageUrl} alt="Profile" />
-					</div>
-					<div className="image-upload-container-inner d-flex justify-content-center">
-						<ImageUpload handleFileUpload={handleFileUpload} />
+			<Form className="d-flex flex-column gap-3">
+				<div className="image-upload-container-outer">
+					<ProfileImageUpload image={formValues.image} handleImageUpload={handleFileUpload} handleImageRemove={handleImageRemove} />
+					<div className="d-flex justify-content-center">
+						<PrivacyButtons id="imagePrivacy" value={formValues.imagePrivacy} onChange={(val) => handleChange(['imagePrivacy', val])} />
 					</div>
 				</div>
 
-				<Form.Group className="mb-4" controlId="bio">
-					<Form.Label>Bio</Form.Label>
-					<Form.Control
-						name="bio"
-						as="textarea"
-						value={formValues.bio}
-						onChange={(event)=>handleChange(event)}
-						disabled={successMsg}   
-					/>
-				</Form.Group>
-
-				<Row className="mb-4">
+				<Row className="gap-3">
 					<Col md>
-						<Select id='age' labelText='Age' opts={ageOpts}
-							value={formValues.age}
+						<Form.Label htmlFor="bio">Bio</Form.Label>
+						<PrivacyButtons id="bioPrivacy" value={formValues.bioPrivacy} onChange={(val) => handleChange(['bioPrivacy', val])} />
+						<Form.Control
+							name="bio"
+							as="textarea"
+							value={formValues.bio}
 							onChange={(event)=>handleChange(event)}
-							disabled={successMsg} />
-					</Col>
-
-					<Col md>
-						<InputWithSelect labelText="Weight" 
-							inputId="weight" inputValue={formValues.weight} inputOnChange={handleChange} 
-							selectId="weightUnits" selectValue={formValues.weightUnits} selectOnChange={handleChange}
-							disabled={successMsg} opts={weightUnitOpts} />
-					</Col>
-
-					<Col md>
-						<InputWithSelect labelText="Height" 
-							inputId="height" inputValue={formValues.height} inputOnChange={handleChange} 
-							selectId="heightUnits" selectValue={formValues.heightUnits} selectOnChange={handleChange}
-							disabled={successMsg} opts={heightUnitOpts} />
+						/>
 					</Col>
 				</Row>
 
-				<Row className="mb-4">
+				<Row className="gap-3">
+					<Col md>
+						<Form.Label htmlFor="age">Age</Form.Label>
+						<PrivacyButtons id="agePrivacy" value={formValues.agePrivacy} onChange={(val) => handleChange(['agePrivacy', val])} />
+						<Select id='age' opts={ageOpts}
+							value={formValues.age}
+							onChange={(event)=>handleChange(event)}
+							/>
+					</Col>
+
+					<Col md>
+						<Form.Label htmlFor="Weight_i1">Weight</Form.Label>
+						<PrivacyButtons id="weightPrivacy" value={formValues.weightPrivacy} onChange={(val) => handleChange(['weightPrivacy', val])} />
+						<UnitsComponent unitType="Weight" unitOpts={weightUnitOpts} metricValue={formValues.weight} setErrorStatus={setErrorStatus}
+							currentUnit={prefs.weightUnits} onValueChange = {(metricVal) => handleChange(['weight', metricVal])}
+							className={isSpecificError('Weight') ? 'is-invalid' : ''} conversionFunc = {convertWeight} />
+					</Col>
+
+					<Col md>
+						<Form.Label htmlFor="Height_i1">Height</Form.Label>
+						<PrivacyButtons id="heightPrivacy" value={formValues.heightPrivacy} onChange={(val) => handleChange(['heightPrivacy', val])} />
+						<UnitsComponent unitType="Height" unitOpts={heightUnitOpts} metricValue={formValues.height} setErrorStatus={setErrorStatus}
+							currentUnit={prefs.heightUnits} onValueChange = {(metricVal) => handleChange(['height', metricVal])}
+							className={isSpecificError('Height') ? 'is-invalid' : ''} conversionFunc = {convertHeight} />
+					</Col>
+				</Row>
+
+				<Row className="gap-3">
 					<Col sm>
-						<Select id='dietPractice' labelText='Dietary Practice' opts={dietPracticeOpts}
+						<Form.Label htmlFor="dietPractice">Dietary Practice</Form.Label>
+						<PrivacyButtons id="dietPracticePrivacy" value={formValues.dietPracticePrivacy} onChange={(val) => handleChange(['dietPracticePrivacy', val])} />
+						<Select id='dietPractice' opts={dietPracticeOpts}
 							value={formValues.dietPractice}
 							onChange={(event)=>handleChange(event)}
-							disabled={successMsg} />
+							/>
 					</Col>
 					<Col sm>
-						<Select id='dietType' labelText='Diet Type' opts={dietTypeOpts}
+						<Form.Label htmlFor="dietType">Diet Type</Form.Label>
+						<PrivacyButtons id="dietTypePrivacy" value={formValues.dietTypePrivacy} onChange={(val) => handleChange(['dietTypePrivacy', val])} />
+						<Select id='dietType' opts={dietTypeOpts}
 							value={formValues.dietType}
 							onChange={(event)=>handleChange(event)}
-							disabled={successMsg} />
+							/>
 					</Col>
 				</Row>
 				
