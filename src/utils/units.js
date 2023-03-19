@@ -1,3 +1,5 @@
+	// *** IMPORTANT: METRIC UNIT MUST BE FIRST IN LIST ***
+	
 	const weightUnitOpts = [
 		{value: 'kg'},
 		{value: 'lbs'},
@@ -10,8 +12,8 @@
 	] ;
 
 	const distanceUnitOpts = [
-		{value: 'miles'},
 		{value: 'km'},
+		{value: 'miles'},
 	] ;
 
 	const temperatureUnitOpts = [
@@ -28,7 +30,7 @@
 		if (valInUnits === valOutUnits) return [roundValue(valsIn[0], 1), valsIn[1] ? roundValue(valsIn[1], 1) : null] ;
 
 		// Convert to metric
-		let valMetric = null ;
+		let valMetric = valsIn[0] ;
 		if (valInUnits === 'lbs') valMetric = valsIn[0] * 0.4535924 ;
 		if (valInUnits === 'st. lbs') valMetric = valsIn[0] * (0.4535924 * 14) + valsIn[1] * 0.4535924 ;
 
@@ -37,7 +39,7 @@
 		let valOut2 = null ;
 		
 		if (valOutUnits === 'kg') valOut1 = roundValue(valMetric, 1) ;
-		if (valOutUnits === 'lbs') valOut2 = valMetric / 0.4535924 ;
+		if (valOutUnits === 'lbs') valOut1 = Math.floor(valMetric / 0.4535924) ;
 		if (valOutUnits === 'st. lbs') {
 			const lbs = Math.round(valMetric / 0.4535924) ;
 			valOut1 = Math.floor(lbs / 14) ;
@@ -51,7 +53,7 @@
 		if (valInUnits === valOutUnits) return [roundValue(valsIn[0], 1), valsIn[1] ? roundValue(valsIn[1], 1) : null] ;
 
 		// Convert to metric
-		let valMetric = null ;
+		let valMetric = valsIn[0] ;
 		if (valInUnits === 'ft. in.') valMetric = valsIn[0] * (0.0254 * 12) + valsIn[1] * 0.0254 ;
 
 		// Convert to output units

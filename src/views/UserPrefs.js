@@ -77,32 +77,34 @@ export default function UserSitePrefs({data, nextPage = '/', viewCommon}) {
 
 	// Template
   return (
-		<div className="user-profile">
+		<div className="user-prefs">
 			<h1>Site Preferences</h1>
-			{getErrorMessageHtml()}
-			{getSuccessMessageHtml()}
 
-			<Form>
-				<Row className="mb-4">
+			<Form className="d-flex flex-column gap-3">
+				<Row className="gap-3">
 					<Col sm>
-						<Select id='weightUnits' labelText='Weight units' opts={weightUnitOpts}
+						<Form.Label htmlFor="weightUnits">Weight Units</Form.Label>
+						<Select id='weightUnits' opts={weightUnitOpts}
 							value={formValues.weightUnits} onChange={(event)=>handleChange(event)}
 							disabled={successMsg} />
 					</Col>
 					<Col sm>
-						<Select id='heightUnits' labelText='Height units' opts={heightUnitOpts}
+						<Form.Label htmlFor="heightUnits">Height Units</Form.Label>
+						<Select id='heightUnits'opts={heightUnitOpts}
 							value={formValues.heightUnits} onChange={(event)=>handleChange(event)}
 							disabled={successMsg} />
 					</Col>
 				</Row>
-				<Row className="mb-4">
+				<Row className="gap-3">
 					<Col sm>
-						<Select id='distanceUnits' labelText='Distance units' opts={distanceUnitOpts}
+						<Form.Label htmlFor="distanceUnits">Distance Units</Form.Label>
+						<Select id='distanceUnits'opts={distanceUnitOpts}
 							value={formValues.distanceUnits} onChange={(event)=>handleChange(event)}
 							disabled={successMsg} />
 					</Col>
 					<Col sm>
-						<Select id='temperatureUnits' labelText='Temperature units' opts={temperatureUnitOpts}
+						<Form.Label htmlFor="temperatureUnits">Temperature Units</Form.Label>
+						<Select id='temperatureUnits' opts={temperatureUnitOpts}
 							value={formValues.temperatureUnits} onChange={(event)=>handleChange(event)}
 							disabled={successMsg} />
 					</Col>

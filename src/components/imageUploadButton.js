@@ -1,6 +1,7 @@
 // https://medium.com/codex/use-a-button-to-upload-files-on-your-react-app-with-bootstrap-ef963cbe8280
 
 import { useRef } from "react";
+import { Button } from 'react-bootstrap';
 
 export default function ImageUpload({handleFileUpload}) {
   const inputRef = useRef(null);
@@ -21,9 +22,9 @@ export default function ImageUpload({handleFileUpload}) {
         className="d-none"
         type="file"
       />
-      <button onClick={handleUpload} className='btn btn-outline-primary'>
+      <Button onClick={handleUpload} variant='primary'>
         Upload
-      </button>
+      </Button>
     </div>
   );
 }

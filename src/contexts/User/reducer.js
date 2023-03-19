@@ -12,13 +12,13 @@ function combineWithDefaults(defaults, obj) {
 }
 
 export const reducer = (state, action) => {
-	console.log("Action:", action) ;
+	//console.log("Action:", action) ;
   switch (action.type) {
     case "setPrefs":
-			console.log("COMBINED: ", combineWithDefaults(prefsDefaults, action.data)) ;
+			//console.log("COMBINED: ", combineWithDefaults(prefsDefaults, action.data)) ;
       return {...state, prefs: combineWithDefaults(prefsDefaults, action.data)} ;
     case "setProfile":
-			console.log("COMBINED: ", combineWithDefaults(profileDefaults, action.data)) ;
+			//console.log("COMBINED: ", combineWithDefaults(profileDefaults, action.data)) ;
       return {...state, profile: combineWithDefaults(profileDefaults, action.data)} ;
     default:
       return state ;
