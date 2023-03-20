@@ -37,6 +37,7 @@ export default class NetService {
 		let headers = {}
 		if (this.tokenProvider) headers.token = this.tokenProvider() ;
 		headers = {...headers, ...extraHeaders} ;
+		if (data === null) delete headers['content-type'] ; // (avoid stringifying null - interpret as no data instead)
 
 		return axios({method, url, data, headers}).then((response) => {
 			this.errClearInternal() ;
