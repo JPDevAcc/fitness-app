@@ -28,6 +28,7 @@ import UserAccountSettings from "./views/UserAccountSettings";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User" // Stores user-prefs and profile data
+import Message from "./components/message";
 
 // ==============================================================================
 
@@ -38,7 +39,7 @@ export default function App() {
 	const [initComplete, changeInitComplete] = useState(false) ;
 
 	const commonData = {
-		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setError }
+		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setErrorFromNetResponse }
 	} ;
 
 	const userService = new UserService(commonData.net);
@@ -80,16 +81,23 @@ export default function App() {
 		navigate('/') ;
 	}
 
-	const [msgData, setMsgData] = useState({ msg: null, type: null });
-
 	// Error handling
+	const [msgData, setMsgData] = useState({ msg: null, type: null });
 	function setError(msg) {
 		setMsgData({ type: "err", msg });
+	}
+	function setErrorFromNetResponse(statusCode, statusPhrase, errorMessage) {
+		if (statusCode !== null) {
+			const msg = statusCode + ': ' + statusPhrase + (errorMessage ? (" (" + errorMessage + ")") : "") ;
+			setError(msg) ;
+		}
+		else setError(null) ;
 	}
 
 	// Template
 	return (
 		<>
+			<Message msgData={msgData} setMsgData={setMsgData} />
 			<NavigationBar logout={logout} />
 			<Container className="my-container">
 				<main>

@@ -24,8 +24,8 @@ export default class NetService {
 			}
   	}
 
-		if (this.errHandler) this.errHandler(err.message) ;
-		else console.error(err) ;
+		if (this.errHandler) this.errHandler(err.response.status, err.response.statusText, err.response.data.message) ;
+		else console.error(err.response.status + " : " + err.response.statusText) ;
 		throw(err) ; // (rethrow)
 	}
 
