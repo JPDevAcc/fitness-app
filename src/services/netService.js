@@ -62,13 +62,4 @@ export default class NetService {
 	patch(epUrl, data = null) {
 		return this.request('patch', API_URL + epUrl, data, CONTENT_JSON) ;
 	}
-
-	// FormData functions
-	postFormData(epUrl, data) {
-		if (!(data instanceof FormData)) {
-			console.error('Not a FormData object') ;
-			return null ;
-		}
-		return axios.post(API_URL + epUrl, data) ;
-	}
 }

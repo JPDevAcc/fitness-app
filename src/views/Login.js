@@ -2,7 +2,7 @@ import React from 'react'
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { useState } from 'react';
-import UserService from '../services/user';
+import UserService from '../services/userService';
 
 function Login(props) {
     const userService = new UserService(props.viewCommon.net);

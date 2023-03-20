@@ -10,8 +10,4 @@ export default class UserProfileService extends NetService {
 	updateFieldValue(fieldName, value) {
 		return this.patch(EP_PROFILE + '/' + fieldName, {value}) ;
 	}
-/*
-	uploadImage(file) {
-		return this.post(EP_PROFILE + '/upload', {fileData: file}) ;
-	}*/
 }
