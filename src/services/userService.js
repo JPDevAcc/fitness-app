@@ -14,6 +14,6 @@ export default class UserService extends NetService {
 	}
 
 	logout() {
-		return this.post(EP_LOGOUT, {})
+		return this.post(EP_LOGOUT)
 	}
 }
