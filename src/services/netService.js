@@ -16,8 +16,8 @@ export default class NetService {
 	}
 
 	errHandlerInternal(err) {
-		// If we got an unauthorized / forbidden status response then treat it as a log-out
-		if (err.response.status === 401 || err.response.status === 403) {
+		// If we got an unauthorized / forbidden status response then treat it as a log-out (if code also correct)
+		if ((err.response.status === 401 || err.response.status === 403) && err.response.data.code === 'NOT_AUTHORIZED') {
 			if (this.logoutHandler) {
     		this.logoutHandler();
 				return ;
