@@ -1,18 +1,33 @@
+// CSS
+import './css/UserProfile.css' ;
+
+// React and other packages
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
+// React-bootstrap components
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useNavigate } from "react-router-dom";
-import * as utils from "../utils/utils";
-import UserProfileService from "../services/userProfile";
-import './css/userProfile.css' ;
-import Select from '../components/select';
-import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight } from '../utils/units';
-import { UserContext } from "../contexts/User";
-import UnitsComponent from '../components/unitsComponent';
+
+// Network services
+import UserProfileService from "../services/userProfileService";
+
+// Our components
 import ProfileImageUpload from '../components/profileImageUpload';
+import Select from '../components/select';
+import UnitsComponent from '../components/unitsComponent';
 import PrivacyButtons from '../components/privacyButtons';
+
+// Utils
+import * as utils from "../utils/utils";
+import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight } from '../utils/units';
+
+// Contexts (global data)
+import { UserContext } from "../contexts/User"
+
+// ==============================================================================
 
 export const defaults = {
 	image: "",

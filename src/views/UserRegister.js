@@ -1,10 +1,21 @@
-import {useState} from 'react';
+// CSS
+import './css/UserRegister.css' ;
+
+// React and other packages
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
+// Network services
+import UserService from "../services/userService";
+
+// React-bootstrap components
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
-import { useNavigate } from "react-router-dom";
+
+// Utils
 import * as utils from "../utils/utils";
-import UserService from "../services/user";
-import './css/userRegister.css' ;
+
+// ==============================================================================
 
 export default function UserRegister(viewCommon) {
 	const userService = new UserService(viewCommon.net);

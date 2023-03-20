@@ -1,37 +1,47 @@
-import React from "react";
+// Main CSS
 import "bootstrap/dist/css/bootstrap.min.css";
-import Dashboard from "./Dashboard";
 import "./App.css";
+
+// React and other packages
+import React, { useState, useEffect } from "react";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
-import UserRegister from "./views/UserRegister";
-import Login from './views/Login';
+
+// React-bootstrap components
 import { Container } from "react-bootstrap";
+
+// Core network services (try not to add to this list unless necessary!)
+import UserService from "./services/userService";
+import UserPrefsService from "./services/userPrefsService";
+import UserProfileService from "./services/userProfileService";
+
+// Our components
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
-import { useState, useEffect } from 'react';
-import UserPrefsService from "./services/userPrefs";
-import UserSitePrefs from "./views/UserPrefs";
-import UserProfileService from "./services/userProfile";
-import UserProfile from './views/UserProfile';
-import UserService from "./services/user";
-import { UserContext } from "./contexts/User"
 
-function App() {
+// Our views (pages)
+import UserRegister from "./views/UserRegister";
+import Login from './views/Login';
+import UserSitePrefs from "./views/UserPrefs";
+import UserProfile from './views/UserProfile';
+import Dashboard from "./views/Dashboard";
+
+// Contexts (global data)
+import { UserContext } from "./contexts/User" // Stores user-prefs and profile data
+
+// ==============================================================================
+
+export default function App() {
 	const [ state, dispatch ] = React.useContext(UserContext) ;
 
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
 	const [initComplete, changeInitComplete] = useState(false) ;
 
-	const viewCommon = {
-		net: { tokenProvider: () => token, logoutHandler: () => { }, errHandler: setError }
-	};
-
-	const userService = new UserService(viewCommon.net);
-	const navigate = useNavigate();
-
 	const commonData = {
 		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setError }
 	} ;
+
+	const userService = new UserService(commonData.net);
+	const navigate = useNavigate();
 
 	function login(token) {
 		window.localStorage.setItem('token', token);
@@ -59,7 +69,7 @@ function App() {
 		if (token) getUserData() ; // Development note: This gets called twice in strict mode (which is expected behavior)
 	}, [token]) ;
 
-	// =========================
+	// ==============================================================================
 
 	function logout() {
 		userService.logout();
@@ -76,6 +86,7 @@ function App() {
 		setMsgData({ type: "err", msg });
 	}
 
+	// Template
 	return (
 		<>
 			<NavigationBar logout={logout} />
@@ -83,7 +94,7 @@ function App() {
 				<main>
 					<Routes>
 						<Route path="/register" element={
-							<UserRegister viewCommon={viewCommon} />
+							<UserRegister viewCommon={commonData} />
 						} />
 					{(initComplete) &&
 						<Route path="/prefs" element={
@@ -101,10 +112,10 @@ function App() {
 							<>
 								{(initComplete) ?
 									<Dashboard
-										viewCommon={viewCommon}
+										viewCommon={commonData}
 									/> :
 									(!token) && <Login
-										viewCommon={viewCommon}
+										viewCommon={commonData}
 										login={login}
 									/>}
 							</>
@@ -118,5 +129,3 @@ function App() {
 		</>
 	);
 }
-
-export default App;
