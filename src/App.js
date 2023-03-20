@@ -24,6 +24,7 @@ import Login from './views/Login';
 import UserSitePrefs from "./views/UserPrefs";
 import UserProfile from './views/UserProfile';
 import Dashboard from "./views/Dashboard";
+import UserAccountSettings from "./views/UserAccountSettings";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User" // Stores user-prefs and profile data
@@ -96,16 +97,23 @@ export default function App() {
 						<Route path="/register" element={
 							<UserRegister viewCommon={commonData} />
 						} />
+
 					{(initComplete) &&
 						<Route path="/prefs" element={
 							<UserSitePrefs viewCommon={commonData}
 								nextPage={!state.prefs.onboardingStageComplete && "/profile"} />
 						} />}
 
-						{(initComplete) &&
+					{(initComplete) &&
 						<Route path="/profile" element={
 							<UserProfile viewCommon={commonData}
 								nextPage={!state.profile.onboardingStageComplete && "/"} />
+						} />}
+
+						{(token) &&
+						<Route path="/account" element={
+							<UserAccountSettings viewCommon={commonData} 
+								logout={logout} />
 						} />}
 						
 						<Route path="/" element={

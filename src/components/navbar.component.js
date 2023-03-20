@@ -21,6 +21,7 @@ function NavigationBar(props) {
 												<Link className="nav-link" to="/register">Register</Link>
                         <Link className="nav-link" to="/prefs">Site Prefs</Link>
 												<Link className="nav-link" to="/profile">Profile</Link>
+												<Link className="nav-link" to="/account">Account Settings</Link>
                         <Button onClick={props.logout}>Logout</Button>
                     </Nav>
                     <Form className="d-flex" >
