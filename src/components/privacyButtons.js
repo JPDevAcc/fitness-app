@@ -1,3 +1,4 @@
+import "./css/privacyButtons.css";
 import ButtonsRadio from "./buttonsRadio";
 
 const opts = [

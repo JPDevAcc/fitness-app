@@ -1,3 +1,4 @@
+import "./css/profileImageUpload.css";
 import { Button } from 'react-bootstrap';
 import ImageUpload from '../components/imageUploadButton';
 

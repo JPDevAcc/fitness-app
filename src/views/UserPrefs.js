@@ -33,7 +33,7 @@ export const defaults = {
 	temperatureUnits: "Celsius",
 } ;
 
-export default function UserSitePrefs({data, nextPage = '/', viewCommon}) {
+export default function UserSitePrefs({nextPage, viewCommon}) {
 	const userPrefsService = new UserPrefsService(viewCommon.net);
 	const navigate = useNavigate();
 
