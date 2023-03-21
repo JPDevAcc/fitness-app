@@ -3,8 +3,8 @@ import Form from "react-bootstrap/Form"
 export default function Select({id, name, value, onChange, disabled, opts}) {
 	
 	function buildOptions(opts) {
-		return opts.map((opt, i) => 
-			<option key={i} value={opt.value}>{opt.displayName || opt.value}</option>
+		return opts.map((opt) => 
+			<option key={opt.value} value={opt.value}>{opt.displayName || opt.value}</option>
 		) ;
 	}
 

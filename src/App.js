@@ -59,12 +59,12 @@ export default function App() {
 		const userPrefsService = new UserPrefsService(commonData.net);
 		const userProfileService = new UserProfileService(commonData.net);
 		Promise.all([userPrefsService.retrieve(), userProfileService.retrieve()])
-			.then(([{ data: prefsData }, { data: profileData }]) => {
-				console.log("SETTING INITIAL DATA FROM ENDPOINTS");
-				dispatch({ type: "setPrefs", data: prefsData });
-				dispatch({ type: "setProfile", data: profileData });
-				if (!(prefsData?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
-				else if (!(profileData?.onboardingStageComplete)) navigate('/profile'); // Start or resume setting up user profile
+		.then(([{data: prefsData}, {data: profileData}]) => {
+			console.log("SETTING INITIAL DATA FROM ENDPOINTS") ;
+			dispatch({ type: "setPrefs", data: prefsData || {} }) ;
+			dispatch({ type: "setProfile", data: profileData || {}}) ;
+			if (!(prefsData?.onboardingStageComplete)) navigate('/prefs') ; // Start or resume setting up site prefs
+			else if (!(profileData?.onboardingStageComplete)) navigate('/profile/main') ; // Start or resume setting up user profile
 
 				changeInitComplete(true);
 			});
@@ -116,18 +116,17 @@ export default function App() {
 						<Route path="/register" element={
 							<UserRegister viewCommon={commonData} />
 						} />
-						{(initComplete) &&
-							<Route path="/prefs" element={
-								<UserSitePrefs viewCommon={commonData}
-									nextPage={!state.prefs.onboardingStageComplete && "/profile"} />
-							} />}
+					{(initComplete) &&
+						<Route path="/prefs" element={
+							<UserSitePrefs viewCommon={commonData}
+								nextPage={!state.prefs.onboardingStageComplete && "/profile/main"} />
+						} />}
 
-						{(initComplete) &&
-							<Route path="/profile" element={
-								<UserProfile viewCommon={commonData}
-									nextPage={!state.profile.onboardingStageComplete && "/"} />
-							} />}
-
+					{(initComplete) &&
+						<Route path="/profile/:section" element={
+							<UserProfile viewCommon={commonData}
+								nextPage={!state.profile.onboardingStageComplete && "/"} />
+						} />}
 						{(token) &&
 							<Route path="/account" element={
 								<UserAccountSettings viewCommon={commonData}
