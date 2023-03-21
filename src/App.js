@@ -34,10 +34,10 @@ import Message from "./components/message";
 // ==============================================================================
 
 export default function App() {
-	const [ state, dispatch ] = React.useContext(UserContext) ;
+	const [state, dispatch] = React.useContext(UserContext);
 
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
-	const [initComplete, changeInitComplete] = useState(false) ;
+	const [initComplete, changeInitComplete] = useState(false);
 
 	const commonData = {
 		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setErrorFromNetResponse }
@@ -56,21 +56,21 @@ export default function App() {
 		const userPrefsService = new UserPrefsService(commonData.net);
 		const userProfileService = new UserProfileService(commonData.net);
 		Promise.all([userPrefsService.retrieve(), userProfileService.retrieve()])
-		.then(([{data: prefsData}, {data: profileData}]) => {
-			console.log("SETTING INITIAL DATA FROM ENDPOINTS") ;
-			dispatch({ type: "setPrefs", data: prefsData }) ;
-			dispatch({ type: "setProfile", data: profileData }) ;
-			if (!(prefsData?.onboardingStageComplete)) navigate('/prefs') ; // Start or resume setting up site prefs
-			else if (!(profileData?.onboardingStageComplete)) navigate('/profile') ; // Start or resume setting up user profile
+			.then(([{ data: prefsData }, { data: profileData }]) => {
+				console.log("SETTING INITIAL DATA FROM ENDPOINTS");
+				dispatch({ type: "setPrefs", data: prefsData });
+				dispatch({ type: "setProfile", data: profileData });
+				if (!(prefsData?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
+				else if (!(profileData?.onboardingStageComplete)) navigate('/profile'); // Start or resume setting up user profile
 
-			changeInitComplete(true) ;
-		}) ;
+				changeInitComplete(true);
+			});
 	}
 
 	// Get user prefs and profile info straight after login
 	useEffect(() => {
-		if (token) getUserData() ; // Development note: This gets called twice in strict mode (which is expected behavior)
-	}, [token]) ;
+		if (token) getUserData(); // Development note: This gets called twice in strict mode (which is expected behavior)
+	}, [token]);
 
 	// ==============================================================================
 
@@ -78,8 +78,8 @@ export default function App() {
 		userService.logout();
 		window.localStorage.removeItem('token');
 		setToken(null);
-		changeInitComplete(null) ;
-		navigate('/') ;
+		changeInitComplete(null);
+		navigate('/');
 	}
 
 	// Error handling
@@ -101,17 +101,16 @@ export default function App() {
 			<Message msgData={msgData} setMsgData={setMsgData} />
 			<NavigationBar logout={logout} />
 			<Container className="my-container">
+				<main className="main-container">
        {initComplete && (
     <Row>
       <SingleWorkoutCard viewCommon={commonData} />
     </Row>
   )}
-				<main>
 					<Routes>
 						<Route path="/register" element={
 							<UserRegister viewCommon={commonData} />
 						} />
-
 					{(initComplete) &&
 						<Route path="/prefs" element={
 							<UserSitePrefs viewCommon={commonData}

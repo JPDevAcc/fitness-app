@@ -1,0 +1,17 @@
+.recipe-wrapper {
+    // background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+
+    .recipe-card {
+        width: 150px !important;
+        height: 250px;
+        border: 1px solid black;
+        margin: 20px;
+
+    }
+}
+
