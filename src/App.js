@@ -26,10 +26,13 @@ import UserSitePrefs from "./views/UserPrefs";
 import UserProfile from "./views/UserProfile";
 import Dashboard from "./views/Dashboard";
 import UserAccountSettings from "./views/UserAccountSettings";
+import Recipes from './views/Recipes';
+import Exercises from './views/Exercises';
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 import Message from "./components/message";
+
 
 // ==============================================================================
 
@@ -41,7 +44,7 @@ export default function App() {
 
 	const commonData = {
 		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setErrorFromNetResponse }
-	} ;
+	};
 
 	const userService = new UserService(commonData.net);
 	const navigate = useNavigate();
@@ -89,11 +92,13 @@ export default function App() {
 	}
 	function setErrorFromNetResponse(statusCode, statusPhrase, errorMessage) {
 		if (statusCode !== null) {
-			const msg = statusCode + ': ' + statusPhrase + (errorMessage ? (" (" + errorMessage + ")") : "") ;
-			setError(msg) ;
+			const msg = statusCode + ': ' + statusPhrase + (errorMessage ? (" (" + errorMessage + ")") : "");
+			setError(msg);
 		}
-		else setError(null) ;
+		else setError(null);
 	}
+
+	const [recipes, changeRecipes] = useState([]);
 
 	// Template
 	return (
@@ -102,11 +107,11 @@ export default function App() {
 			<NavigationBar logout={logout} />
 			<Container className="my-container">
 				<main className="main-container">
-       {initComplete && (
-    <Row>
-      <SingleWorkoutCard viewCommon={commonData} />
-    </Row>
-  )}
+					{/* {initComplete && (
+						<Row>
+							<SingleWorkoutCard viewCommon={commonData} />
+						</Row>
+					)} */}
 					<Routes>
 						<Route path="/register" element={
 							<UserRegister viewCommon={commonData} />
@@ -122,13 +127,12 @@ export default function App() {
 							<UserProfile viewCommon={commonData}
 								nextPage={!state.profile.onboardingStageComplete && "/"} />
 						} />}
-
 						{(token) &&
-						<Route path="/account" element={
-							<UserAccountSettings viewCommon={commonData} 
-								logout={logout} />
-						} />}
-						
+							<Route path="/account" element={
+								<UserAccountSettings viewCommon={commonData}
+									logout={logout} />
+							} />}
+
 						<Route path="/" element={
 							<>
 								{(initComplete) ?
@@ -141,6 +145,22 @@ export default function App() {
 									/>}
 							</>
 						} />
+
+						{(initComplete) &&
+							<Route path="/recipe" element={
+								<Recipes viewCommon={commonData}
+									recipes={recipes}
+									changeRecipes={(recipes) => changeRecipes(recipes)}
+								/>
+							} />}
+
+						{(initComplete) &&
+							<Route path="/exc" element={
+								<Exercises viewCommon={commonData}
+
+								/>
+							} />}
+
 
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>

@@ -1,7 +1,7 @@
-import "./css/RecipeCard.scss"
-import SingleRecipeCard from './SingleRecipeCard'
+import "../components/css/RecipeCard.scss"
+import SingleRecipeCard from '../components/SingleRecipeCard'
 import FoodAPIClient from "../services/FoodApiClient";
-import { Button } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 
 function Recipes(props) {
 
@@ -42,11 +42,21 @@ function Recipes(props) {
 
     return (
         <>
-            <Button onClick={getRecipes} variant="primary">Fetch Pasta!</Button>
-            <div className="recipe-wrapper">
-                {showRecipes}
-            </div>
+            <Row lg={12}>
+                <Col lg={4} className="search-column">
+                    <Button onClick={getRecipes} variant="primary">Fetch Pasta!</Button>
+                </Col>
+                <Col lg={8} className="search-column">
+                    <div className="recipe-wrapper">
+                        <p>
+                            ipssfhuiekrugawgkauwflhgaeghuiaglhbuistgd
 
+
+                        </p>
+                        {showRecipes}
+                    </div>
+                </Col>
+            </Row>
         </>
     )
 }

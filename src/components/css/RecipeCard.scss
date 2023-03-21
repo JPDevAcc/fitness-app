@@ -1,17 +1,26 @@
-.recipe-wrapper {
-    // background-color: black;
+
+.search-column {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
-    width: 100%;
+    padding: 20px;
 
-    .recipe-card {
-        width: 150px !important;
-        height: 250px;
-        border: 1px solid black;
-        margin: 20px;
+    .recipe-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
 
+        .recipe-card {
+            width: 150px !important;
+            height: 250px;
+            border: 1px solid black;
+            margin: 20px;
+
+
+        }
     }
+
 }
 

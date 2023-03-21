@@ -6,12 +6,14 @@
 	max-width: 1550px;
 	/* Ensure footer is far enough down if the rest of the content takes up insufficient vertical space */
 	background-color: #212529;
+	color: #fff;
 
 }
 
 .main-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	/* display: flex; */
+	/* flex-direction: column; */
+	/* justify-content: center; */
+	/* align-items: center; */
+	height: 100vh;
 }
