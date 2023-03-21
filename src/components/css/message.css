@@ -1,0 +1,8 @@
+.my-message {
+	position: fixed !important;
+	top: 0vh ;
+	width: 100%;
+	z-index: 999;
+	border-bottom: 2px solid #aaa !important;
+	border-radius: 0 ;
+}

@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 
 // React-bootstrap components
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 
 // Core network services (try not to add to this list unless necessary!)
 import UserService from "./services/userService";
@@ -17,16 +17,19 @@ import UserProfileService from "./services/userProfileService";
 // Our components
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
+import SingleWorkoutCard from "./components/singleWorkoutCard.component";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
-import Login from './views/Login';
+import Login from "./views/Login";
 import UserSitePrefs from "./views/UserPrefs";
-import UserProfile from './views/UserProfile';
+import UserProfile from "./views/UserProfile";
 import Dashboard from "./views/Dashboard";
+import UserAccountSettings from "./views/UserAccountSettings";
 
 // Contexts (global data)
-import { UserContext } from "./contexts/User" // Stores user-prefs and profile data
+import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
+import Message from "./components/message";
 
 // ==============================================================================
 
@@ -37,8 +40,8 @@ export default function App() {
 	const [initComplete, changeInitComplete] = useState(false);
 
 	const commonData = {
-		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setError }
-	};
+		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setErrorFromNetResponse }
+	} ;
 
 	const userService = new UserService(commonData.net);
 	const navigate = useNavigate();
@@ -79,35 +82,53 @@ export default function App() {
 		navigate('/');
 	}
 
-	const [msgData, setMsgData] = useState({ msg: null, type: null });
-
 	// Error handling
+	const [msgData, setMsgData] = useState({ msg: null, type: null });
 	function setError(msg) {
 		setMsgData({ type: "err", msg });
+	}
+	function setErrorFromNetResponse(statusCode, statusPhrase, errorMessage) {
+		if (statusCode !== null) {
+			const msg = statusCode + ': ' + statusPhrase + (errorMessage ? (" (" + errorMessage + ")") : "") ;
+			setError(msg) ;
+		}
+		else setError(null) ;
 	}
 
 	// Template
 	return (
 		<>
+			<Message msgData={msgData} setMsgData={setMsgData} />
 			<NavigationBar logout={logout} />
 			<Container className="my-container">
 				<main className="main-container">
+       {initComplete && (
+    <Row>
+      <SingleWorkoutCard viewCommon={commonData} />
+    </Row>
+  )}
 					<Routes>
 						<Route path="/register" element={
 							<UserRegister viewCommon={commonData} />
 						} />
-						{(initComplete) &&
-							<Route path="/prefs" element={
-								<UserSitePrefs viewCommon={commonData}
-									nextPage={!state.prefs.onboardingStageComplete && "/profile"} />
-							} />}
+					{(initComplete) &&
+						<Route path="/prefs" element={
+							<UserSitePrefs viewCommon={commonData}
+								nextPage={!state.prefs.onboardingStageComplete && "/profile"} />
+						} />}
 
-						{(initComplete) &&
-							<Route path="/profile" element={
-								<UserProfile viewCommon={commonData}
-									nextPage={!state.profile.onboardingStageComplete && "/"} />
-							} />}
+					{(initComplete) &&
+						<Route path="/profile" element={
+							<UserProfile viewCommon={commonData}
+								nextPage={!state.profile.onboardingStageComplete && "/"} />
+						} />}
 
+						{(token) &&
+						<Route path="/account" element={
+							<UserAccountSettings viewCommon={commonData} 
+								logout={logout} />
+						} />}
+						
 						<Route path="/" element={
 							<>
 								{(initComplete) ?
