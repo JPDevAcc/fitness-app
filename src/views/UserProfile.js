@@ -3,6 +3,7 @@ import './css/UserProfile.css' ;
 
 // React and other packages
 import React, { useState } from 'react';
+import { useParams } from 'react-router';
 import { useNavigate } from "react-router-dom";
 
 // React-bootstrap components
@@ -17,8 +18,9 @@ import UserProfileService from "../services/userProfileService";
 // Our components
 import ProfileImageUpload from '../components/profileImageUpload';
 import Select from '../components/select';
-import UnitsComponent from '../components/unitsComponent';
+import UnitsInput from '../components/unitsInput';
 import PrivacyButtons from '../components/privacyButtons';
+import GoalsSelection from '../components/goalsSelection';
 
 // Utils
 import * as utils from "../utils/utils";
@@ -46,11 +48,23 @@ export const defaults = {
 	dietPracticePrivacy: 'pri',
 	dietType: "",
 	dietTypePrivacy: 'pri',
+	selectedGoalIds: [],
+	selectedGoalIdsPrivacy: 'pri'
 } ;
 
-export default function UserProfile({nextPage = '/', viewCommon}) {
+export default function UserProfile({nextPage, viewCommon}) {
 	const userProfileService = new UserProfileService(viewCommon.net);
 	const navigate = useNavigate();
+	let { section } = useParams();
+
+	const sections = ['main', 'goals'] ;
+	
+	// Get actual next page (subsection or the one given externally)
+	let actualNextPage = nextPage ;
+	if (actualNextPage) {
+		const currentSectionIndex = sections.indexOf(section) ;
+		if (sections[currentSectionIndex + 1]) actualNextPage = '/profile/' + sections[currentSectionIndex + 1] ;
+	}
 
 	// Form fields
 	const [ userState, dispatch ] = React.useContext(UserContext) ;
@@ -116,7 +130,7 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
   const handleNextPageClick = (event) => {
     event.preventDefault() ;
 		userProfileService.updateFieldValue('onboardingStageComplete', true) ;
-		navigate(nextPage) ;
+		navigate(actualNextPage) ;
   }
 
 	const handleFileUpload = (file) => {
@@ -132,6 +146,24 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 			};
 		}
 	} ;
+
+	const handleAddGoal = (goalId) => {
+		const newFormValues = {...formValues} ;
+		const newSelectedGoalIds = [...formValues.selectedGoalIds, goalId] ;
+		newFormValues.selectedGoalIds = newSelectedGoalIds ;
+		dispatch({type: 'setProfile', data: newFormValues}) ;
+
+		userProfileService.updateFieldValue('selectedGoalIds', newSelectedGoalIds) ;
+	}
+
+	const handleRemoveGoal = (goalId) => {
+		const newFormValues = {...formValues} ;
+		const newSelectedGoalIds = formValues.selectedGoalIds.filter(id => id !== goalId) ;
+		newFormValues.selectedGoalIds = newSelectedGoalIds ;
+		dispatch({type: 'setProfile', data: newFormValues});
+
+		userProfileService.updateFieldValue('selectedGoalIds', newSelectedGoalIds) ;
+	}
 
 	const handleImageRemove = () => {
 		const newFormValues = {...formValues} ;
@@ -165,12 +197,40 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 		{value: 'other', displayName: 'Other'},
 	]
 
+	const goalOpts = [
+		{value: '', displayName: '- Select -'},
+		{value: 'lose_weight', displayName: 'Lose weight'},
+		{value: 'make_friends', displayName: 'Make friends'},
+		{value: 'get_fit', displayName: 'Get fit'},
+		{value: 'build_muscle', displayName: 'Build muscle'},
+		{value: 'improve_diet', displayName: 'Improve diet'},
+		{value: 'explore', displayName: 'Explore the outdoors'},
+	]
+
+	const goalIdsToTitle = {
+		lose_weight : 'Lose weight',
+		make_friends: 'Make friends',
+		get_fit: 'Get fit',
+		build_muscle: 'Build muscle',
+		improve_diet: 'Improve diet',
+		explore:'Explore'
+	} ;
+
 	// Template
   return (
 		<div className="user-profile">
 			<h1>User Profile</h1>
 
-			<Form className="d-flex flex-column gap-3">
+			<div className="d-flex justify-content-around">
+				<Button variant="link" onClick={() => navigate('/profile/main')}>Bio</Button>
+				<Button variant="link" onClick={() => navigate('/profile/goals')}>Goals</Button>
+			</div>
+			
+		{(section === 'main') &&
+			<Form>
+			<fieldset className="d-flex flex-column gap-3 border p-3">
+				<legend className="float-none w-auto">Bio</legend>
+
 				<div className="image-upload-container-outer">
 					<ProfileImageUpload image={formValues.image} handleImageUpload={handleFileUpload} handleImageRemove={handleImageRemove} />
 					<div className="d-flex justify-content-center">
@@ -180,7 +240,7 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 
 				<Row className="gap-3">
 					<Col md>
-						<Form.Label htmlFor="bio">Bio</Form.Label>
+						<Form.Label htmlFor="bio">About me</Form.Label>
 						<PrivacyButtons id="bioPrivacy" value={formValues.bioPrivacy} onChange={(val) => handleChange(['bioPrivacy', val])} />
 						<Form.Control
 							name="bio"
@@ -204,7 +264,7 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 					<Col md>
 						<Form.Label htmlFor="Weight_i1">Weight</Form.Label>
 						<PrivacyButtons id="weightPrivacy" value={formValues.weightPrivacy} onChange={(val) => handleChange(['weightPrivacy', val])} />
-						<UnitsComponent unitType="Weight" unitOpts={weightUnitOpts} metricValue={formValues.weight} setErrorStatus={setErrorStatus}
+						<UnitsInput unitType="Weight" unitOpts={weightUnitOpts} metricValue={formValues.weight} setErrorStatus={setErrorStatus}
 							currentUnit={prefs.weightUnits} onValueChange = {(metricVal) => handleChange(['weight', metricVal])}
 							className={isSpecificError('Weight') ? 'is-invalid' : ''} conversionFunc = {convertWeight} />
 					</Col>
@@ -212,7 +272,7 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 					<Col md>
 						<Form.Label htmlFor="Height_i1">Height</Form.Label>
 						<PrivacyButtons id="heightPrivacy" value={formValues.heightPrivacy} onChange={(val) => handleChange(['heightPrivacy', val])} />
-						<UnitsComponent unitType="Height" unitOpts={heightUnitOpts} metricValue={formValues.height} setErrorStatus={setErrorStatus}
+						<UnitsInput unitType="Height" unitOpts={heightUnitOpts} metricValue={formValues.height} setErrorStatus={setErrorStatus}
 							currentUnit={prefs.heightUnits} onValueChange = {(metricVal) => handleChange(['height', metricVal])}
 							className={isSpecificError('Height') ? 'is-invalid' : ''} conversionFunc = {convertHeight} />
 					</Col>
@@ -236,12 +296,30 @@ export default function UserProfile({nextPage = '/', viewCommon}) {
 							/>
 					</Col>
 				</Row>
+				</fieldset>
+			</Form>}
+
+		{(section === 'goals') &&
+			<fieldset className="d-flex flex-column gap-2 border p-3">
+				<legend className="float-none w-auto">Goals</legend>
+
+				<div className="d-flex justify-content-center">
+					<PrivacyButtons id="selectedGoalIdsPrivacy" value={formValues.selectedGoalIdsPrivacy} onChange={(val) => handleChange(['selectedGoalIdsPrivacy', val])} />
+				</div>
+
+				<GoalsSelection
+					goalOpts={goalOpts}
+					selectedGoalIds={formValues.selectedGoalIds}
+					goalIdsToTitle={goalIdsToTitle}
+					handleAddGoal={handleAddGoal}
+					handleRemoveGoal={handleRemoveGoal} />
+			</fieldset>}
 				
-			{nextPage &&
+			{actualNextPage &&
 				<div className="text-center my-4">
 					<Button onClick={handleNextPageClick} variant="primary" type="submit" disabled={isError() || successMsg}>Next</Button>
 				</div>}
-			</Form>
+
 		</div>
   );
 }

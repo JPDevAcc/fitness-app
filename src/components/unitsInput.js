@@ -2,7 +2,7 @@ import InputWithSelect from "./inputWithSelect";
 import Input2WithSelect from "./input2WithSelect";
 import { useState } from "react";
 
-export default function UnitsComponent({
+export default function UnitsInput({
 	labelText,
 	unitType,
 	unitOpts,
