@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 
 // React-bootstrap components
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 
 // Core network services (try not to add to this list unless necessary!)
 import UserService from "./services/userService";
@@ -17,17 +17,18 @@ import UserProfileService from "./services/userProfileService";
 // Our components
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
+import SingleWorkoutCard from "./components/singleWorkoutCard.component";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
-import Login from './views/Login';
+import Login from "./views/Login";
 import UserSitePrefs from "./views/UserPrefs";
-import UserProfile from './views/UserProfile';
+import UserProfile from "./views/UserProfile";
 import Dashboard from "./views/Dashboard";
 import UserAccountSettings from "./views/UserAccountSettings";
 
 // Contexts (global data)
-import { UserContext } from "./contexts/User" // Stores user-prefs and profile data
+import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 import Message from "./components/message";
 
 // ==============================================================================
@@ -100,6 +101,11 @@ export default function App() {
 			<Message msgData={msgData} setMsgData={setMsgData} />
 			<NavigationBar logout={logout} />
 			<Container className="my-container">
+       {initComplete && (
+    <Row>
+      <SingleWorkoutCard viewCommon={commonData} />
+    </Row>
+  )}
 				<main>
 					<Routes>
 						<Route path="/register" element={
