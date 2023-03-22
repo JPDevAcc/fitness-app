@@ -2,8 +2,8 @@ import NetService from "./netService";
 
 export default class FoodAPIClient extends NetService {
 
-    getRecipe() {
-        return this.get('recipe');
+    getRecipe(data) {
+        return this.get(`recipe/${data}`);
     }
 
     addRecipe(data) {

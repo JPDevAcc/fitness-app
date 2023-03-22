@@ -17,7 +17,7 @@ import UserProfileService from "./services/userProfileService";
 // Our components
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
-import SingleWorkoutCard from "./components/singleWorkoutCard.component";
+
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
@@ -32,6 +32,7 @@ import Exercises from './views/Exercises';
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 import Message from "./components/message";
+import NetService from "./services/netService";
 
 
 // ==============================================================================
@@ -59,12 +60,12 @@ export default function App() {
 		const userPrefsService = new UserPrefsService(commonData.net);
 		const userProfileService = new UserProfileService(commonData.net);
 		Promise.all([userPrefsService.retrieve(), userProfileService.retrieve()])
-		.then(([{data: prefsData}, {data: profileData}]) => {
-			console.log("SETTING INITIAL DATA FROM ENDPOINTS") ;
-			dispatch({ type: "setPrefs", data: prefsData || {} }) ;
-			dispatch({ type: "setProfile", data: profileData || {}}) ;
-			if (!(prefsData?.onboardingStageComplete)) navigate('/prefs') ; // Start or resume setting up site prefs
-			else if (!(profileData?.onboardingStageComplete)) navigate('/profile/main') ; // Start or resume setting up user profile
+			.then(([{ data: prefsData }, { data: profileData }]) => {
+				console.log("SETTING INITIAL DATA FROM ENDPOINTS");
+				dispatch({ type: "setPrefs", data: prefsData || {} });
+				dispatch({ type: "setProfile", data: profileData || {} });
+				if (!(prefsData?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
+				else if (!(profileData?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 
 				changeInitComplete(true);
 			});
@@ -100,6 +101,10 @@ export default function App() {
 
 	const [recipes, changeRecipes] = useState([]);
 
+	const netService = new NetService(commonData.net);
+
+
+
 	// Template
 	return (
 		<>
@@ -107,26 +112,22 @@ export default function App() {
 			<NavigationBar logout={logout} />
 			<Container className="my-container">
 				<main className="main-container">
-					{/* {initComplete && (
-						<Row>
-							<SingleWorkoutCard viewCommon={commonData} />
-						</Row>
-					)} */}
+
 					<Routes>
 						<Route path="/register" element={
 							<UserRegister viewCommon={commonData} />
 						} />
-					{(initComplete) &&
-						<Route path="/prefs" element={
-							<UserSitePrefs viewCommon={commonData}
-								nextPage={!state.prefs.onboardingStageComplete && "/profile/main"} />
-						} />}
+						{(initComplete) &&
+							<Route path="/prefs" element={
+								<UserSitePrefs viewCommon={commonData}
+									nextPage={!state.prefs.onboardingStageComplete && "/profile/main"} />
+							} />}
 
-					{(initComplete) &&
-						<Route path="/profile/:section" element={
-							<UserProfile viewCommon={commonData}
-								nextPage={!state.profile.onboardingStageComplete && "/"} />
-						} />}
+						{(initComplete) &&
+							<Route path="/profile/:section" element={
+								<UserProfile viewCommon={commonData}
+									nextPage={!state.profile.onboardingStageComplete && "/"} />
+							} />}
 						{(token) &&
 							<Route path="/account" element={
 								<UserAccountSettings viewCommon={commonData}
@@ -149,8 +150,10 @@ export default function App() {
 						{(initComplete) &&
 							<Route path="/recipe" element={
 								<Recipes viewCommon={commonData}
+									netService={netService}
 									recipes={recipes}
 									changeRecipes={(recipes) => changeRecipes(recipes)}
+
 								/>
 							} />}
 
