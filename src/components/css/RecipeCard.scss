@@ -1,10 +1,19 @@
 
+.the-row {
+    margin: 0;
+}
+
+
 .search-column {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
+
+    button {
+        margin: 10px;
+    }
 
     .recipe-wrapper {
         display: flex;
@@ -14,9 +23,19 @@
 
         .recipe-card {
             width: 150px !important;
-            height: 250px;
+            min-height: 250px;
             border: 1px solid black;
             margin: 20px;
+            color: black;
+
+            .card-body {
+                padding: 5px !important;
+            }
+
+            .card-title {
+                font-size: 1rem;
+                font-weight: bold;
+            }
 
 
         }

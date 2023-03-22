@@ -2,20 +2,39 @@ import "../components/css/RecipeCard.scss"
 import SingleRecipeCard from '../components/SingleRecipeCard'
 import FoodAPIClient from "../services/FoodApiClient";
 import { Button, Col, Row } from 'react-bootstrap'
+import { Form } from "react-bootstrap";
+import { useEffect } from 'react';
 
 function Recipes(props) {
 
     const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
 
-    async function getRecipes() {
-        const response = await foodAPIClient.getRecipe();
+    async function getRecipes(data) {
+        const response = await foodAPIClient.getRecipe(data);
         console.log(response)
 
         return props.changeRecipes(response.data.results)
 
     }
 
+    useEffect(() => {
+        props.netService.get('allrecipes')
+            .then(response => {
+
+
+                props.changeRecipes(response.data)
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [])
+
+
     const showRecipes = props.recipes.map((recipe) => {
+
+        // THE MOST CLEVER LINE OF CODE I HAVE EVER WRITTEN  // DIFFERENT API'S HAVE DIFFERENT KEY NAMES FOR THE SAME THING // 
+        if (!recipe.image) { recipe.image = recipe.imageUrl }
         return (
             <SingleRecipeCard
                 key={recipe.id}
@@ -40,19 +59,33 @@ function Recipes(props) {
         });
     }
 
+    function submitHandlerRecipe(event) {
+        const data = event.target[0].value;
+        console.log(data)
+        event.preventDefault();
+
+        try {
+            getRecipes(data);
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>
-            <Row lg={12}>
-                <Col lg={4} className="search-column">
-                    <Button onClick={getRecipes} variant="primary">Fetch Pasta!</Button>
+            <Row lg={12} className="the-row">
+                <Col lg={3} md={12} className="search-column">
+                    <Form onSubmit={submitHandlerRecipe} >
+                        <Form.Group >
+                            {/* <Form.Label>Search for a recipe</Form.Label> */}
+                            <Form.Control type="text" placeholder="Enter name of food" />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">Fetch recipes!</Button>
+                    </Form>
                 </Col>
-                <Col lg={8} className="search-column">
+                <Col lg={9} md={12} className="search-column">
                     <div className="recipe-wrapper">
-                        <p>
-                            ipssfhuiekrugawgkauwflhgaeghuiaglhbuistgd
-
-
-                        </p>
                         {showRecipes}
                     </div>
                 </Col>
