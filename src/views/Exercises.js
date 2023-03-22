@@ -1,13 +1,31 @@
-import "./css/Exercises.scss"
-import SingleWorkoutCard from '../components/singleWorkoutCard.component'
-
+import "./css/Exercises.scss";
+import SingleWorkoutCard from "../components/singleWorkoutCard.component";
+import WorkoutCard from "../components/WorkoutCard";
+import ExerciseAPIClient from "../services/ExerciseAPIClient";
 
 function Exercises(props) {
+  const exerciseAPIClient = new ExerciseAPIClient(props.viewCommon.net);
+  async function getWorkout(bodypart) {
+    const response = await exerciseAPIClient.getExercise(bodypart);
+
+    return props.changeExercises(response.data.results);
+  }
+  const showExercises = props.exercises.map((exercise) => {
     return (
-        <SingleWorkoutCard
-            viewCommon={props.viewCommon}
-        />
-    )
+      <WorkoutCard
+        key={exercise.id}
+        title={exercise.name}
+        imgUrl={exercise.gifUrl}
+        viewCommon={props.viewCommon}
+      />
+    );
+  });
+
+  return (
+    <>
+      <SingleWorkoutCard viewCommon={props.viewCommon} />,{showExercises}
+    </>
+  );
 }
 
-export default Exercises
+export default Exercises;
