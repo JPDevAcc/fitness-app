@@ -28,6 +28,7 @@ import Dashboard from "./views/Dashboard";
 import UserAccountSettings from "./views/UserAccountSettings";
 import Recipes from './views/Recipes';
 import Exercises from './views/Exercises';
+import FrontPage from './views/FrontPage';
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
@@ -100,6 +101,19 @@ export default function App() {
 	}
 
 	const [recipes, changeRecipes] = useState([]);
+	const [currentRecipe, changeCurrentRecipe] = useState({
+		title: "Basic Chicken",
+		ingredients: [
+			"1/2 cup butter, softened",
+		],
+		instructions: {},
+		image: "https://spoonacular.com/recipeImages/602638-556x370.jpg",
+		ingredientsImages: [
+			"https://spoonacular.com/cdn/ingredients_100x100/butter-sliced.jpg",
+			"2 cups"
+		]
+
+	});
 
 	const netService = new NetService(commonData.net);
 
@@ -120,6 +134,11 @@ export default function App() {
 						<Route path="/register" element={
 							<UserRegister viewCommon={commonData} />
 						} />
+
+						<Route path="/login" element={
+							<Login viewCommon={commonData} login={login} />
+						} />
+
 						{(initComplete) &&
 							<Route path="/prefs" element={
 								<UserSitePrefs viewCommon={commonData}
@@ -143,9 +162,7 @@ export default function App() {
 									<Dashboard
 										viewCommon={commonData}
 									/> :
-									(!token) && <Login
-										viewCommon={commonData}
-										login={login}
+									(!token) && <FrontPage
 									/>}
 							</>
 						} />
@@ -156,6 +173,8 @@ export default function App() {
 									netService={netService}
 									recipes={recipes}
 									changeRecipes={(recipes) => changeRecipes(recipes)}
+									currentRecipe={currentRecipe}
+									changeCurrentRecipe={(recipe) => changeCurrentRecipe(recipe)}
 
 								/>
 							} />}

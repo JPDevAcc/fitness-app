@@ -31,9 +31,9 @@ function NavigationBar(props) {
             <Link className="nav-link" to="/">
               Home
             </Link>
-            <Link className="nav-link" to="/register">
+            {/* <Link className="nav-link" to="/register">
               Register
-            </Link>
+            </Link> */}
             <Link className="nav-link" to="/prefs">
               Site Prefs
             </Link>
