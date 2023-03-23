@@ -103,6 +103,9 @@ export default function App() {
 
 	const netService = new NetService(commonData.net);
 
+	const [exercises, changeExercises] = useState([]);
+
+
 
 
 	// Template
@@ -156,10 +159,13 @@ export default function App() {
 
 								/>
 							} />}
+							
 
 						{(initComplete) &&
 							<Route path="/exc" element={
 								<Exercises viewCommon={commonData}
+								exercises={exercises}
+								changeExercises={(exercises) => changeExercises(exercises)}
 
 								/>
 							} />}

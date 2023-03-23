@@ -5,7 +5,7 @@ export default class ExerciseAPIClient extends NetService {
     return this.get("bodyparts");
   }
 
-  getExercise() {
-    return this.get("exercise");
+  getExercise(bodypart) {
+    return this.get(`exercises/bodyPart/${bodypart}`);
   }
 }
