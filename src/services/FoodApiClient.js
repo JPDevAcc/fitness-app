@@ -9,4 +9,8 @@ export default class FoodAPIClient extends NetService {
     addRecipe(data) {
         return this.post('addRecipe', data);
     }
+
+    getFullRecipe(data) {
+        return this.get(`fullrecipe/${data}`);
+    }
 }

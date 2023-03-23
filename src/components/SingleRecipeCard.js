@@ -1,9 +1,14 @@
 import "./css/RecipeCard.scss"
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
+import { useState } from 'react';
+import RecipeModal from './RecipeModal.component';
+import FoodAPIClient from "../services/FoodApiClient";
 
 
 function SingleRecipeCard(props) {
+    const [lgShow, setLgShow] = useState(false);
+    const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
 
     function handleClickedRecipe() {
         const recipeParams = {
@@ -15,10 +20,39 @@ function SingleRecipeCard(props) {
         alert("Recipe Saved!")
     }
 
+    async function handleCardClick() {
+        const response = await foodAPIClient.getFullRecipe(props.id)
+        console.log(response.data)
+        const recipeInfo = response.data
+        const ingredientsList = recipeInfo.extendedIngredients.map((ingredient) => {
+            return ingredient.original
+        })
+
+        const ingredientsImages = recipeInfo.extendedIngredients.map((ingredient) => {
+            return [ingredient.image, ingredient.amount + " " + ingredient.unit]
+        })
+
+        console.log(ingredientsList)
+        console.log(ingredientsImages)
+
+        props.changeCurrentRecipe({
+            title: recipeInfo.title,
+            ingredients: ingredientsList,
+            instructions: recipeInfo.instructions,
+            image: recipeInfo.image,
+            ingredientsImages: ingredientsImages,
+
+        })
+
+        // props.changeCurrentRecipe(props.id)
+        setLgShow(true)
+
+    }
+
     return (
 
         <>
-            <Card className='recipe-card' style={{ width: '18rem' }}>
+            <Card onClick={handleCardClick} className='recipe-card' style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={props.imgUrl} />
                 <Card.Body>
                     <Card.Title>{props.title}</Card.Title>
@@ -29,6 +63,14 @@ function SingleRecipeCard(props) {
 
                 </Card.Body>
             </Card>
+            <RecipeModal
+                key={props.id}
+                currentRecipe={props.currentRecipe}
+                size="lg"
+                show={lgShow}
+                onHide={() => setLgShow(false)}
+                aria-labelledby="example-modal-sizes-title-lg"
+            />
         </>
 
     )

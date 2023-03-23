@@ -3,10 +3,14 @@ import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { useState } from 'react';
 import UserService from '../services/userService';
+import { useNavigate } from 'react-router-dom';
 
 function Login(props) {
     const userService = new UserService(props.viewCommon.net);
     const [disabled, changeDisabled] = useState(false);
+
+    const navigate = useNavigate();
+
 
     const submitHandler = async (event) => {
         event.preventDefault();
@@ -19,6 +23,7 @@ function Login(props) {
                 console.log(response)
                 props.login(response.data.token);
                 console.log("Success!")
+                navigate('/')
             })
             .catch((err) => {
                 console.log(err);

@@ -1,0 +1,81 @@
+.front-wrapper {
+    width: 100%;
+    height: auto;
+    position: relative;
+    color: white;
+
+    .front-title {
+        position: absolute;
+        width: 100%;
+        top: 5%;
+        left: 0;
+
+        h1 {
+            font-size: min(4rem, 10vw);
+            text-align: center;
+        }
+    }
+
+    .bottom-slogan {
+        position: absolute;
+        width: 100%;
+        bottom: 5%;
+        left: 0;
+        letter-spacing: 3px;
+
+        h1 {
+            font-size: min(3rem, 6vw);
+            text-align: center;
+        }
+    }
+    
+    img {
+        width: 100%;
+        height: 120vh;
+        object-fit: cover;
+    }
+    
+    .login-link {
+        text-decoration: none !important;
+        font-size: min(2.5em, 6vw);
+        position: absolute;
+        bottom: 20%;
+        left: 38%;
+        color: white;
+        
+    }
+
+    .slash {
+        font-size: min(3.5em, 7vw);
+        position: absolute;
+        bottom: 16%;
+        left: 48%;
+        color: white;
+    }
+    
+    .register-link {
+        text-decoration: none !important;
+        font-size: min(2.5em, 6vw);
+        position: absolute;
+        bottom: 20%;
+        right: 38%;
+        color: white;
+    }
+    
+}
+
+@media screen and (max-width: 998px) {
+    .front-wrapper {
+        .login-link {
+            left: 25vw;
+        }
+
+        .slash {
+            left: 43vw;
+        }
+        
+        .register-link {
+            right: 25vw;
+        }
+    }
+}

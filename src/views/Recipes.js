@@ -1,8 +1,8 @@
 import "../components/css/RecipeCard.scss"
 import SingleRecipeCard from '../components/SingleRecipeCard'
 import FoodAPIClient from "../services/FoodApiClient";
-import { Button, Col, Row } from 'react-bootstrap'
-import { Form } from "react-bootstrap";
+import { Button, Col, Row, Form } from 'react-bootstrap'
+// import { Form } from "react-bootstrap";
 import { useEffect } from 'react';
 
 function Recipes(props) {
@@ -20,8 +20,6 @@ function Recipes(props) {
     useEffect(() => {
         props.netService.get('allrecipes')
             .then(response => {
-
-
                 props.changeRecipes(response.data)
                 console.log(response.data)
             })
@@ -75,7 +73,7 @@ function Recipes(props) {
     return (
         <>
             <Row lg={12} className="the-row">
-                <Col lg={3} md={12} className="search-column">
+                <Col lg={3} md={12} className="search-column search-one">
                     <Form onSubmit={submitHandlerRecipe} >
                         <Form.Group >
                             {/* <Form.Label>Search for a recipe</Form.Label> */}
