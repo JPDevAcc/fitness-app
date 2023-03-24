@@ -1,4 +1,5 @@
-import React from 'react'
+import './css/Login.scss'
+import logo from '../components/Images/logo.png'
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 import { useState } from 'react';
@@ -32,10 +33,10 @@ function Login(props) {
     }
 
     return (
-        <div className='login-view'>
-            <h1>Login</h1>
+        <div className='login-wrapper'>
+            {/* <h1>Login</h1> */}
 
-            <Form onSubmit={(event) => submitHandler(event)}>
+            <Form className='login-form' onSubmit={(event) => submitHandler(event)}>
                 <Form.Group controlId="username">
                     <Form.Label>Username</Form.Label>
                     <Form.Control className='username'
@@ -57,6 +58,8 @@ function Login(props) {
                     <Button variant="primary" type="submit">Login</Button>
                 </div>
             </Form>
+            <img className='logo-login' src={logo} alt="logo" />
+
 
 
         </div>

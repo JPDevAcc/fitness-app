@@ -2,6 +2,7 @@ import "./css/RecipeCard.scss";
 import { Modal, Row, Col } from 'react-bootstrap'
 
 function RecipeModal(props) {
+
   return (
     <>
       <Modal
@@ -11,7 +12,6 @@ function RecipeModal(props) {
         aria-labelledby="example-modal-sizes-title-lg"
         centered
       >
-
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
             {props.currentRecipe.title}
@@ -23,36 +23,29 @@ function RecipeModal(props) {
               <ul>
                 {props.currentRecipe.ingredients.map((ingredient) => {
                   return (
-                    <li>{ingredient}</li>
+                    <li key={Math.random()} >{ingredient}</li>
                   )
                 })}
               </ul>
             </Col>
             <Col lg={6}>
-
               <img className="img-modal-recipe" src={props.currentRecipe.image} alt="" />
-
             </Col>
-
           </Row>
           <Row>
-
             {props.currentRecipe.instructions}
           </Row>
           <Row>
-            {/* <Col> */}
             {props.currentRecipe.ingredientsImages.map((image) => {
               return (
-                <>
-                  <div className="ingredient-wrapper">
-                    <img className="img-ingredient" src={`https://spoonacular.com/cdn/ingredients_100x100/${image[0]}`} alt="" />
-                    <label>{image[1]}</label>
-                  </div>
-                </>
+                <div
+                  key={Math.random()}
+                  className="ingredient-wrapper">
+                  <img className="img-ingredient" src={`https://spoonacular.com/cdn/ingredients_100x100/${image[0]}`} alt="" />
+                  <label>{image[1]}</label>
+                </div>
               )
-            })
-            }
-            {/* </Col> */}
+            })}
           </Row>
         </Modal.Body>
       </Modal>

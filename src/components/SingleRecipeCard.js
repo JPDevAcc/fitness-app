@@ -4,6 +4,8 @@ import { Card, Button } from 'react-bootstrap'
 import { useState } from 'react';
 import RecipeModal from './RecipeModal.component';
 import FoodAPIClient from "../services/FoodApiClient";
+import { ReactComponent as Heart } from "./Images/heart.svg"
+import { ReactComponent as Redheart } from "./Images/redheart.svg"
 
 
 function SingleRecipeCard(props) {
@@ -32,6 +34,7 @@ function SingleRecipeCard(props) {
             return [ingredient.image, ingredient.amount + " " + ingredient.unit]
         })
 
+
         console.log(ingredientsList)
         console.log(ingredientsImages)
 
@@ -43,8 +46,6 @@ function SingleRecipeCard(props) {
             ingredientsImages: ingredientsImages,
 
         })
-
-        // props.changeCurrentRecipe(props.id)
         setLgShow(true)
 
     }
@@ -57,14 +58,17 @@ function SingleRecipeCard(props) {
                 <Card.Body>
                     <Card.Title>{props.title}</Card.Title>
                     <Card.Text>
-                        {props.id}
+                        <Heart
+                            onClick={handleClickedRecipe}
+                        />
+                        <Redheart />
                     </Card.Text>
-                    <Button onClick={handleClickedRecipe} variant="primary">Save</Button>
+                    {/* <Button onClick={handleClickedRecipe} variant="primary">Save</Button> */}
 
                 </Card.Body>
             </Card>
             <RecipeModal
-                key={props.id}
+
                 currentRecipe={props.currentRecipe}
                 size="lg"
                 show={lgShow}
