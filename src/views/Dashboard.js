@@ -1,17 +1,39 @@
-import React from 'react'
-import { Button } from 'react-bootstrap'
-import UnsplashAPIClient from '../services/UnsplashAPIClient'
-import { useState } from 'react';
+// CSS
+import "./css/Dashboard.scss"
 
-export default function Dashboard(props) {
+// React and other packages
+import React, { useState, useEffect } from "react"
 
+// Our components
+import Notification from "../components/notification" ;
 
+// Utils
+import { NotificationsLib } from "../libs/notificationsLib";
 
-    return (
+// Contexts (global data)
+import { UserContext } from "../contexts/User"
 
-        <>
-            <h1>This is main dashboard shown after login</h1>
-        </>
+// ==============================================================================
 
-    )
+export default function Dashboard() {
+	const [ userState, dispatch ] = React.useContext(UserContext) ;
+	const notifications = userState.notifications ;
+	const [formattedNotifications, changeFormattedNotifications] = useState([]) ;
+
+	useEffect(() => {
+		console.log("NOTIFICATIONS: ", notifications) ;
+		const newFormattedNotifications = (notifications || []).map(notification => NotificationsLib.formatNotificationData(notification)) ;
+		changeFormattedNotifications(newFormattedNotifications) ;
+	}, [notifications]) ;
+
+	return (
+		<div className="page-dashboard">
+			<h1>Dashboard</h1>
+			<div className="my-notifications">
+			{
+				formattedNotifications.map((formattedNotification) => <Notification key={formattedNotification.id} data={formattedNotification} />)
+			}
+			</div> 
+		</div>
+  )
 }
