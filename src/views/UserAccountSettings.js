@@ -99,7 +99,7 @@ export default function UserAccountSettings({viewCommon, logout}) {
 			{/* {getErrorMessageHtml()} */}
 			{getSuccessMessageHtml()}
 
-			<div className="d-flex flex-column gap-4">
+			<div className="user-account-settings d-flex flex-column gap-4">
 				<Form onSubmit={(event) => submitHandlerPwdChange(event)}>
 					<fieldset className="d-flex flex-column gap-2 border p-3">
 						<legend className="float-none w-auto">Change Password</legend>

@@ -95,7 +95,7 @@ export default function UserSitePrefs({nextPage, viewCommon}) {
 		<div className="page-user-prefs">
 			<h1>Site Preferences</h1>
 
-			<Form className="d-flex flex-column gap-3">
+			<Form className="user-prefs d-flex flex-column gap-3">
 				<Row className="gap-3">
 					<Col sm>
 						<Form.Label htmlFor="weightUnits">Weight Units</Form.Label>

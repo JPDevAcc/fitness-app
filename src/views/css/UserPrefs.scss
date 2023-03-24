@@ -1,6 +1,11 @@
 .page-user-prefs {
 	color: #eee;
 
+	.user-prefs {
+		max-width: 1140px;
+		margin: auto;
+	}
+
 	.form-label {
 		font-weight: bold ;
 	}
