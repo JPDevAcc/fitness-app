@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 // React and other packages
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 
 // React-bootstrap components
@@ -13,6 +13,7 @@ import { Container, Row } from "react-bootstrap";
 import UserService from "./services/userService";
 import UserPrefsService from "./services/userPrefsService";
 import UserProfileService from "./services/userProfileService";
+import NotificationService from "./services/notificationService" ;
 
 // Our components
 import NavigationBar from "./components/navbar.component";
@@ -43,6 +44,7 @@ export default function App() {
 
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
 	const [initComplete, changeInitComplete] = useState(false);
+	const timerRef = useRef(null);
 
 	const commonData = {
 		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setErrorFromNetResponse }
@@ -76,6 +78,32 @@ export default function App() {
 	useEffect(() => {
 		if (token) getUserData(); // Development note: This gets called twice in strict mode (which is expected behavior)
 	}, [token]);
+
+	// === Retrieve notifications ===
+	function getNotifications() {
+		console.log("RETRIEVING NOTIFICATIONS") ;
+		const notificationService = new NotificationService(commonData.net);
+
+		notificationService.retrieve().then(({data}) => {
+			console.log("RESPONSE:", data) ;
+			dispatch({ type: "setNotifications", data });
+		}) ;
+	}
+
+	// Start polling for notifications
+	useEffect(() => {
+		if (timerRef.current) {
+			console.log("STOPPING POLLING TIMER FOR NOTIFICATIONS");
+			clearInterval(timerRef.current) ;
+			timerRef.current = 0 ;
+		}
+		if (initComplete) {
+			getNotifications() ;
+			console.log("STARTING POLLING TIMER FOR NOTIFICATIONS");
+			timerRef.current = setInterval(getNotifications, 10000) ;
+		}
+		
+	}, [initComplete]);
 
 	// ==============================================================================
 
