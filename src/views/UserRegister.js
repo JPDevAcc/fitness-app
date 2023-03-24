@@ -93,7 +93,7 @@ export default function UserRegister(viewCommon) {
 		delete regData.password_confirm ;
     userService.register(regData).then(() => {
 			changeSuccessMsg('Registration successful - please wait to be redirected to the login page') ;
-			setTimeout(() => navigate("/"), 3000);
+			setTimeout(() => navigate("/login"), 3000);
 		}).catch((err) => console.log(err)) ;
   }
 
