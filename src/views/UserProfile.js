@@ -1,5 +1,5 @@
 // CSS
-import './css/UserProfile.css' ;
+import './css/UserProfile.scss' ;
 
 // React and other packages
 import React, { useState } from 'react';
@@ -218,7 +218,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 
 	// Template
   return (
-		<div className="user-profile">
+		<div className="page-user-profile">
 			<h1>User Profile</h1>
 
 			<div className="d-flex justify-content-around">

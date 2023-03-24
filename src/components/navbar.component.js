@@ -1,3 +1,4 @@
+import "./css/navbar.scss" ;
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -8,7 +9,7 @@ import logo from "./Images/logo.png";
 
 function NavigationBar(props) {
   return (
-    <Navbar expand="lg" className="navbar-dark bg-dark">
+    <Navbar expand="lg" className="component-navbar navbar-dark bg-dark">
       <Container fluid>
         <Navbar.Brand href="#">
           {" "}

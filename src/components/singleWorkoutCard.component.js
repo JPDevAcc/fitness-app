@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import ExerciseAPIClient from "../services/ExerciseAPIClient";
-import "./css/SingleWorkoutCard.css";
+import "./css/SingleWorkoutCard.scss";
 import logo from "./Images/logo.png";
 import top from "./Images/top.png";
 import WorkoutCard from "./WorkoutCard";
@@ -38,7 +38,7 @@ function SingleWorkoutCard(props) {
   };
 
   return (
-    <div className="wrapper">
+    <div className="component-single-workout-card">
       <div className="card-container">
         {bodyparts ? (
           bodyparts.map((bp) => (

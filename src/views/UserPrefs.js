@@ -1,5 +1,5 @@
 // CSS
-import './css/UserPrefs.css' ;
+import './css/UserPrefs.scss' ;
 
 // React and other packages
 import React, { useState } from 'react';
@@ -92,7 +92,7 @@ export default function UserSitePrefs({nextPage, viewCommon}) {
 
 	// Template
   return (
-		<div className="user-prefs">
+		<div className="page-user-prefs">
 			<h1>Site Preferences</h1>
 
 			<Form className="d-flex flex-column gap-3">

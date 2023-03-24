@@ -1,4 +1,4 @@
-import "./css/goalsSelection.css";
+import "./css/goalsSelection.scss";
 import { useMemo, useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import RemovableTile from "./removableTile";
@@ -26,7 +26,7 @@ export default function GoalsSelection({goalOpts, selectedGoalIds, goalIdsToTitl
 
 	// Template
   return (
-		<div className="goals-outer">
+		<div className="component-goals">
 			<Row className="gap-3">
 				<Col className="d-flex">
 					<Select id='goals' disabled={goalIdsRemain.length === 1} opts={goalIdsRemain} onChange={(e) => changeSelectedGoalId(e.target.value)} value={selectedGoalId}	/>
