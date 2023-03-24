@@ -38,7 +38,7 @@ function NavigationBar(props) {
               Workouts
             </Link>
 
-						<hr class="hr-white" />
+						<hr className="hr-white" />
 
 						<Link className="d-lg-none nav-link" to="/prefs">
 							Preferences
@@ -47,7 +47,7 @@ function NavigationBar(props) {
 							Profile
 						</Link>
 
-						<hr class="hr-white" />
+						<hr className="hr-white" />
 
 						<Link className="d-lg-none nav-link" to="/account">
 							Account Settings

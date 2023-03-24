@@ -1,6 +1,18 @@
 .page-user-profile {
 	color: #eee;
+
+	.user-profile {
+		max-width: 1140px;
+		margin: auto;
+	}
 	
+	.user-profile-tab-link {
+		cursor: pointer; 
+		img {
+			width: 64px ;
+		}
+	}
+
 	.image-upload-container-outer {
 		margin: auto;
 		width: 280px;
