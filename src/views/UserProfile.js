@@ -1,5 +1,5 @@
 // CSS
-import './css/UserProfile.css' ;
+import './css/UserProfile.scss' ;
 
 // React and other packages
 import React, { useState } from 'react';
@@ -218,17 +218,23 @@ export default function UserProfile({nextPage, viewCommon}) {
 
 	// Template
   return (
-		<div className="user-profile">
+		<div className="page-user-profile">
 			<h1>User Profile</h1>
 
 			<div className="d-flex justify-content-around">
-				<Button variant="link" onClick={() => navigate('/profile/main')}>Bio</Button>
-				<Button variant="link" onClick={() => navigate('/profile/goals')}>Goals</Button>
+				<div className="user-profile-tab-link">
+					<img onClick={() => navigate('/profile/main')} src="images/bio.webp" alt="bio section" />
+					<div className="text-center">Bio</div>
+				</div>
+				<div className="user-profile-tab-link">
+					<img onClick={() => navigate('/profile/goals')} src="images/target.png" alt="goals section" />
+					<div className="text-center">Goals</div>
+				</div>
 			</div>
 			
 		{(section === 'main') &&
 			<Form>
-			<fieldset className="d-flex flex-column gap-3 border p-3">
+			<fieldset className="user-profile d-flex flex-column gap-3 border p-3">
 				<legend className="float-none w-auto">Bio</legend>
 
 				<div className="image-upload-container-outer">
@@ -300,7 +306,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 			</Form>}
 
 		{(section === 'goals') &&
-			<fieldset className="d-flex flex-column gap-2 border p-3">
+			<fieldset className="user-profile d-flex flex-column gap-2 border p-3">
 				<legend className="float-none w-auto">Goals</legend>
 
 				<div className="d-flex justify-content-center">

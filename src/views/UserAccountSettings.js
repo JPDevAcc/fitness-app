@@ -1,5 +1,5 @@
 // CSS
-import './css/UserAccountSettings.css' ;
+import './css/UserAccountSettings.scss' ;
 
 // React and other packages
 import { useState } from 'react';
@@ -94,12 +94,12 @@ export default function UserAccountSettings({viewCommon, logout}) {
 
 	// Template
   return (
-		<div className="user-account-settings">
+		<div className="page-user-account-settings">
 			<h1>Account Settings</h1>
 			{/* {getErrorMessageHtml()} */}
 			{getSuccessMessageHtml()}
 
-			<div className="d-flex flex-column gap-4">
+			<div className="user-account-settings d-flex flex-column gap-4">
 				<Form onSubmit={(event) => submitHandlerPwdChange(event)}>
 					<fieldset className="d-flex flex-column gap-2 border p-3">
 						<legend className="float-none w-auto">Change Password</legend>

@@ -88,20 +88,20 @@ export default function UserRegister(viewCommon) {
 	}
 
 	// Handle form submission
-	const submitHandler = (event) => {
-		event.preventDefault();
-		const regData = { ...formValues };
-		delete regData.password_confirm;
-		userService.register(regData).then(() => {
-			changeSuccessMsg('Registration successful - please wait to be redirected to the login page');
-			setTimeout(() => navigate("/"), 3000);
-		}).catch((err) => console.log(err));
-	}
+  const submitHandler = (event) => {
+    event.preventDefault();
+		const regData = {...formValues} ;
+		delete regData.password_confirm ;
+    userService.register(regData).then(() => {
+			changeSuccessMsg('Registration successful - please wait to be redirected to the login page') ;
+			setTimeout(() => navigate("/login"), 3000);
+		}).catch((err) => console.log(err)) ;
+  }
 
 	// Template
-	return (
-		<div className="register-wrapper">
-			{/* <h1>Create Account</h1> */}
+  return (
+		<div className="page-user-register">
+			<h1>Create Account</h1>
 			{getErrorMessageHtml()}
 			{getSuccessMessageHtml()}
 

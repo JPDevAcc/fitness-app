@@ -1,4 +1,4 @@
-import "./css/privacyButtons.css";
+import "./css/privacyButtons.scss";
 import ButtonsRadio from "./buttonsRadio";
 
 const opts = [
@@ -11,7 +11,7 @@ export default function PrivacyButtons({id, value, onChange, disabled}) {
 
 	// Template
   return (
-		<div className="privacy-opt-select">
+		<div className="component-privacy-buttons">
 			<ButtonsRadio id={id} value={value} onChange={onChange} disabled={disabled} opts={opts} />
 		</div>
   );

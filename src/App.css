@@ -1,6 +1,3 @@
-/* Container for body-content (between header and footer) */
-
-
 * {
 	margin: 0;
 	padding: 0;
@@ -9,19 +6,17 @@
 	font-size: large;
 }
 
+body {
+	background-color: #212529;
+}
 
+/* Container for body-content (between header and footer) */
 .my-container {
 	min-height: max(100vh, 800px);
-	padding: 0;
-	margin: 0;
-	min-width: 100vw;
-	/* max-width: 1550px; */
-	/* Ensure footer is far enough down if the rest of the content takes up insufficient vertical space */
-	background-color: #212529;
+	padding-top: 30px;
 	color: #fff;
 }
 
-.main-container {
-	min-height: 100vh;
-	padding-top: 30px;
+.my-link-pointer {
+	cursor: pointer;
 }

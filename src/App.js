@@ -3,21 +3,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 // React and other packages
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 
 // React-bootstrap components
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 // Core network services (try not to add to this list unless necessary!)
 import UserService from "./services/userService";
 import UserPrefsService from "./services/userPrefsService";
 import UserProfileService from "./services/userProfileService";
+import NotificationService from "./services/notificationService" ;
 
 // Our components
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
-
+import Message from "./components/message";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
@@ -32,9 +33,8 @@ import FrontPage from './views/FrontPage';
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
-import Message from "./components/message";
-import NetService from "./services/netService";
 
+import NetService from "./services/netService"; // (*** don't think this should be needed ***)
 
 // ==============================================================================
 
@@ -43,6 +43,7 @@ export default function App() {
 
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
 	const [initComplete, changeInitComplete] = useState(false);
+	const timerRef = useRef(null);
 
 	const commonData = {
 		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setErrorFromNetResponse }
@@ -77,6 +78,32 @@ export default function App() {
 		if (token) getUserData(); // Development note: This gets called twice in strict mode (which is expected behavior)
 	}, [token]);
 
+	// === Retrieve notifications ===
+	function getNotifications() {
+		console.log("RETRIEVING NOTIFICATIONS") ;
+		const notificationService = new NotificationService(commonData.net);
+
+		notificationService.retrieve().then(({data}) => {
+			console.log("RESPONSE:", data) ;
+			dispatch({ type: "setNotifications", data });
+		}) ;
+	}
+
+	// Start polling for notifications
+	useEffect(() => {
+		if (timerRef.current) {
+			console.log("STOPPING POLLING TIMER FOR NOTIFICATIONS");
+			clearInterval(timerRef.current) ;
+			timerRef.current = 0 ;
+		}
+		if (initComplete) {
+			getNotifications() ;
+			console.log("STARTING POLLING TIMER FOR NOTIFICATIONS");
+			timerRef.current = setInterval(getNotifications, 10000) ;
+		}
+		
+	}, [initComplete]);
+
 	// ==============================================================================
 
 	function logout() {
@@ -84,7 +111,7 @@ export default function App() {
 		window.localStorage.removeItem('token');
 		setToken(null);
 		changeInitComplete(null);
-		navigate('/');
+		navigate('/login');
 	}
 
 	// Error handling
@@ -121,14 +148,13 @@ export default function App() {
 
 	const [isRedHeart, changeIsRedHeart] = useState(false);
 
-
-
-
 	// Template
 	return (
 		<>
 			<Message msgData={msgData} setMsgData={setMsgData} />
-			<NavigationBar logout={logout} />
+
+			{(token) && <NavigationBar logout={logout} userIdentifier="User" />}
+
 			<Container className="my-container">
 				<main className="main-container">
 
@@ -190,7 +216,6 @@ export default function App() {
 
 								/>
 							} />}
-
 
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>

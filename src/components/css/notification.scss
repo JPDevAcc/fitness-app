@@ -1,0 +1,16 @@
+.component-notification {
+	height: 100% ;
+	color: black;
+
+	.notification-image {
+		width: 48px ;
+		height: 48px;
+		border: 1px inset #888 ;
+	}
+
+	.notification-image img {
+		width: 100%;
+		height: 100%;
+		vertical-align: unset;
+	}
+}
