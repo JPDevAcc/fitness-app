@@ -22,12 +22,25 @@
             border: 1px solid black;
             margin: 20px;
             color: black;
+            justify-content: center;
+
+            &:hover {
+                cursor: pointer;
+                background-color: aquamarine;
+                transform: translateY(-10px);
+                transform: translateY(5px);
+            }
 
             .card-body {
                 padding: 5px !important;
+
+            }
+            .card-text {
+                text-align: center;
             }
 
             .card-title {
+                text-align: center;
                 font-size: 1rem;
                 font-weight: bold;
             }
