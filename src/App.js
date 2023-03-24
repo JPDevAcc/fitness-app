@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
 
 // React-bootstrap components
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 // Core network services (try not to add to this list unless necessary!)
 import UserService from "./services/userService";
@@ -18,7 +18,7 @@ import NotificationService from "./services/notificationService" ;
 // Our components
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
-
+import Message from "./components/message";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
@@ -33,9 +33,8 @@ import FrontPage from './views/FrontPage';
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
-import Message from "./components/message";
-import NetService from "./services/netService";
 
+import NetService from "./services/netService"; // (*** don't think this should be needed ***)
 
 // ==============================================================================
 
@@ -147,14 +146,13 @@ export default function App() {
 
 	const [exercises, changeExercises] = useState([]);
 
-
-
-
 	// Template
 	return (
 		<>
 			<Message msgData={msgData} setMsgData={setMsgData} />
-			<NavigationBar logout={logout} />
+
+			{(token) && <NavigationBar logout={logout} userIdentifier="User" />}
+
 			<Container className="my-container">
 				<main className="main-container">
 
@@ -216,7 +214,6 @@ export default function App() {
 
 								/>
 							} />}
-
 
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>
