@@ -1,8 +1,0 @@
-.removable-tile {
-	width: 128px;
-}
-.removable-tile-image img {
-	width: 128px ;
-	height: 128px;
-	object-fit: cover;
-}

@@ -10,7 +10,7 @@ export default function Notification({data: {image, imageLink, title, msgMain, m
 	}
 
   return (
-    <Card className="my-notification-card text-center">
+    <Card className="component-notification text-center">
 			<Card.Body className="p-2">
 				<div className="d-flex align-items-center gap-2">
 					<div className={msgMainLink ? 'notification-image my-link-pointer' : 'notification-image'} onClick={() => handleNavigation(imageLink)}>

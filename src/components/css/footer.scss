@@ -1,0 +1,66 @@
+  .component-footer {
+    background: #212529;
+    padding: 5px;
+    font-family: "Play", sans-serif;
+    text-align: center;
+		margin: 0;
+    overflow-x: hidden;
+  
+		.row {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+		}
+		
+		.row {
+			width: 100%;
+			margin: 1% 0%;
+			padding: 0.6% 0%;
+			color: gray;
+			font-size: 0.8em;
+		}
+		
+		.row a {
+			text-decoration: none;
+			color: gray;
+			transition: 0.5s;
+		}
+		
+		.row a:hover {
+			color: #fff;
+		}
+		
+		.row ul {
+			width: 100%;
+		}
+		
+		.row a {
+			display: inline-block;
+			margin: 0px 30px;
+		}
+		
+		.row ul li {
+			display: inline-block;
+			margin: 0px 30px;
+		}
+		
+		.row a i {
+			font-size: 2em;
+			margin: 0% 1%;
+		} 
+		
+		@media (max-width: 720px) {
+			& {
+				text-align: left;
+				padding: 5%;
+			}
+			.row ul li {
+				display: block;
+				margin: 10px 0px;
+				text-align: left;
+			}
+			.row a i {
+				margin: 0% 3%;
+			}
+		}
+	}

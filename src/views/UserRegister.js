@@ -1,5 +1,5 @@
 // CSS
-import './css/UserRegister.css' ;
+import './css/UserRegister.scss' ;
 
 // React and other packages
 import { useState } from 'react';
@@ -99,7 +99,7 @@ export default function UserRegister(viewCommon) {
 
 	// Template
   return (
-		<div className="user-register">
+		<div className="page-user-register">
 			<h1>Create Account</h1>
 			{getErrorMessageHtml()}
 			{getSuccessMessageHtml()}
