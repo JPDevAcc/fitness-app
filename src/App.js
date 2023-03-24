@@ -112,7 +112,7 @@ export default function App() {
 		window.localStorage.removeItem('token');
 		setToken(null);
 		changeInitComplete(null);
-		navigate('/');
+		navigate('/login');
 	}
 
 	// Error handling
