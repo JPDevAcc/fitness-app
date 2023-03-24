@@ -1,11 +1,24 @@
 import "../components/css/RecipeCard.scss"
 import SingleRecipeCard from '../components/SingleRecipeCard'
-import FoodAPIClient from "../services/FoodApiClient";
+import FoodAPIClient from "../services/FoodApiClient"
 import { Button, Col, Row, Form } from 'react-bootstrap'
-// import { Form } from "react-bootstrap";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react'
+import NutritionModal from '../components/NutritionModal.component'
+
 
 function Recipes(props) {
+    const [lgShow, setLgShow] = useState(false);
+    const [nutrition, changeNutrition] = useState([{
+        name: "Calcium",
+        amount: "1",
+        unit: "mg",
+    }]);
+
+    const [ingredient, changeIngredient] = useState({
+        name: "Milk",
+        amount: 0,
+        unit: "g",
+    });
 
     const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
 
@@ -70,17 +83,87 @@ function Recipes(props) {
         }
     }
 
+    const getNutrition = async (data, amount, unit) => {
+        const response = await foodAPIClient.getIngredientInfo(data, amount, unit);
+        console.log("this is the response")
+        console.log(response.data)
+        return response.data
+
+    }
+
+    const getID = async (data) => {
+        const response = await foodAPIClient.getIngredientID(data);
+        console.log("this is the response")
+        console.log(response.data)
+        return response.data.results[0].id
+    }
+
+
+    async function sunbmitHandlerNutrition(event) {
+        const data = event.target[0].value;
+        const amount = event.target[1].value;
+        const unit = event.target[2].value;
+        console.log(data, amount, unit)
+        event.preventDefault();
+        const id = await getID(data);
+
+        try {
+            const nutrition = await getNutrition(id, amount, unit);
+            console.log(nutrition)
+            changeNutrition(nutrition.nutrition.nutrients)
+            changeIngredient({
+                name: data,
+                amount: amount,
+                unit: unit,
+            })
+
+            setLgShow(true);
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <Row lg={12} className="the-row">
                 <Col lg={3} md={12} className="search-column search-one">
                     <Form onSubmit={submitHandlerRecipe} >
                         <Form.Group >
-                            {/* <Form.Label>Search for a recipe</Form.Label> */}
                             <Form.Control type="text" placeholder="Enter name of food" />
                         </Form.Group>
+                        <br />
                         <Button variant="primary" type="submit">Fetch recipes!</Button>
                     </Form>
+
+                    <br />
+                    <br />
+                    <br />
+                    <Form onSubmit={sunbmitHandlerNutrition}>
+                        <Form.Group >
+                            <Form.Control type="text" placeholder="Enter ingredient name" />
+                        </Form.Group>
+                        <br />
+                        <Form.Group >
+                            <Form.Control type="text" placeholder="Enter amount" />
+                        </Form.Group>
+                        <br />
+                        <Form.Group >
+                            <Form.Control type="text" placeholder="Enter weight unit" />
+                        </Form.Group>
+                        <br />
+                        <Button variant="primary" type="submit">Fetch nutrition!</Button>
+                    </Form>
+                    <NutritionModal
+                        ingredient={ingredient}
+                        nutrition={nutrition}
+                        size="lg"
+                        show={lgShow}
+                        onHide={() => setLgShow(false)}
+                        aria-labelledby="example-modal-sizes-title-lg"
+
+
+                    />
                 </Col>
                 <Col lg={9} md={12} className="search-column">
                     <div className="recipe-wrapper">

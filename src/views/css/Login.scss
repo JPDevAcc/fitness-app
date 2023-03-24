@@ -1,0 +1,19 @@
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    .login-form {
+        margin-top: 50px;
+        width: 300px
+    }
+
+    .logo-login {
+        width: 200px;
+        height: 200px;
+        margin: 30px 0 50px 0;
+        filter: invert(100%);
+    } 
+}

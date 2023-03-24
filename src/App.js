@@ -146,6 +146,8 @@ export default function App() {
 
 	const [exercises, changeExercises] = useState([]);
 
+	const [isRedHeart, changeIsRedHeart] = useState(false);
+
 	// Template
 	return (
 		<>
@@ -204,13 +206,13 @@ export default function App() {
 
 								/>
 							} />}
-							
+
 
 						{(initComplete) &&
 							<Route path="/exc" element={
 								<Exercises viewCommon={commonData}
-								exercises={exercises}
-								changeExercises={(exercises) => changeExercises(exercises)}
+									exercises={exercises}
+									changeExercises={(exercises) => changeExercises(exercises)}
 
 								/>
 							} />}

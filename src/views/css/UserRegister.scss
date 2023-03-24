@@ -1,3 +1,18 @@
 .page-user-register {
-	color: #eee;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    .register-form {
+        width: 400px
+    }
+
+    .logo-login {
+        width: 200px;
+        height: 200px;
+        margin: 30px 0 50px 0;
+        filter: invert(100%);
+    } 
 }

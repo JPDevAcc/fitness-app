@@ -16,7 +16,6 @@ function FrontPage() {
                 <Link className='register-link' to={'/register'}>Register</Link>
                 <div className='bottom-slogan'>
                     <h1>Create healthy connections</h1>
-
                 </div>
             </div>
 

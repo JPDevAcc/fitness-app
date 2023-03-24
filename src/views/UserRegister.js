@@ -1,5 +1,6 @@
 // CSS
-import './css/UserRegister.scss' ;
+import './css/UserRegister.scss';
+import logo from '../components/Images/logo.png'
 
 // React and other packages
 import { useState } from 'react';
@@ -22,69 +23,69 @@ export default function UserRegister(viewCommon) {
 	const navigate = useNavigate();
 
 	// Minimum password length
-	const pwdMinLength = 8 ;
+	const pwdMinLength = 8;
 
 	// Form fields
 	const [formValues, changeFormValues] = useState({
 		email: "",
 		password: "",
 		password_confirm: "",
-	}) ;
+	});
 
 	// === STATUS HANDLING ===
 	// Error-status for fields
 	const [errorStatusList, changeErrorStatusList] = useState({
 		email: '',
 		password: ''
-	}) ;
+	});
 	// Success status
-	const [successMsg, changeSuccessMsg] = useState(null) ;
+	const [successMsg, changeSuccessMsg] = useState(null);
 
 	// Set and remove error-status for the specified category
 	function setErrorStatus(category, msg) {
-		utils.setErrorStatus(changeErrorStatusList, category, msg) ;
+		utils.setErrorStatus(changeErrorStatusList, category, msg);
 	}
 	function removeErrorStatus(category) {
-		utils.removeErrorStatus(changeErrorStatusList, category) ;
+		utils.removeErrorStatus(changeErrorStatusList, category);
 	}
 	// Retrieve active (non-blank) error
 	function getError() {
-		return utils.getError(errorStatusList) ;
+		return utils.getError(errorStatusList);
 	}
 	// Get current HTML error message
 	function getErrorMessageHtml() {
-		return utils.getMessageHtml(getError()) ;
+		return utils.getMessageHtml(getError());
 	}
 	// Get current HTML success message
 	function getSuccessMessageHtml() {
-		return utils.getMessageHtml(successMsg, 'success') ;
+		return utils.getMessageHtml(successMsg, 'success');
 	}
 	// Returns boolean denoting whether there is currently an error
 	function isError() {
-		return utils.isError(errorStatusList) ;
+		return utils.isError(errorStatusList);
 	}
 
 	// Handle form field user-input
-  const handleChange = (event) => {
-		const newFormValues = {...formValues} ;
-		const fieldName = event.target.name ;
+	const handleChange = (event) => {
+		const newFormValues = { ...formValues };
+		const fieldName = event.target.name;
 		const newValue = event.target.value;
 		newFormValues[fieldName] = newValue;
 
 		if (fieldName === 'email') {
-			if (newValue === '') setErrorStatus('email', 'Email address required') ;
+			if (newValue === '') setErrorStatus('email', 'Email address required');
 			else if (!/[^\s]*@[a-z0-9.-]+/i.test(newValue)) { // (very permissive so we hopefully don't reject valid ones)
-				setErrorStatus('email', 'Invalid email address') ;
+				setErrorStatus('email', 'Invalid email address');
 			}
-			else removeErrorStatus('email') ;
+			else removeErrorStatus('email');
 		}
 		else if (['password', 'password_confirm'].includes(fieldName)) {
-			if (newFormValues.password.length < 8) setErrorStatus('password', 'Password too short') ;
-			else if (newFormValues.password !== newFormValues.password_confirm) setErrorStatus('password', 'Password mismatch') ;
-			else removeErrorStatus('password') ;
+			if (newFormValues.password.length < 8) setErrorStatus('password', 'Password too short');
+			else if (newFormValues.password !== newFormValues.password_confirm) setErrorStatus('password', 'Password mismatch');
+			else removeErrorStatus('password');
 		}
-		changeFormValues(newFormValues) ;
-  }
+		changeFormValues(newFormValues);
+	}
 
 	// Handle form submission
   const submitHandler = (event) => {
@@ -104,12 +105,12 @@ export default function UserRegister(viewCommon) {
 			{getErrorMessageHtml()}
 			{getSuccessMessageHtml()}
 
-			<Form onSubmit={(event) => submitHandler(event)}>
+			<Form id="form" className='register-form' onSubmit={(event) => submitHandler(event)}>
 				<Form.Group controlId="email">
 					<Form.Label>Email</Form.Label>
 					<Form.Control
 						name="email"
-						onChange={(event)=>handleChange(event)}
+						onChange={(event) => handleChange(event)}
 						disabled={successMsg}
 					/>
 				</Form.Group>
@@ -118,8 +119,8 @@ export default function UserRegister(viewCommon) {
 					<Form.Control
 						name="password"
 						type="password"
-						onChange={(event)=>handleChange(event)}  
-						disabled={successMsg}  
+						onChange={(event) => handleChange(event)}
+						disabled={successMsg}
 					/>
 				</Form.Group>
 				<Form.Group controlId="password_confirm">
@@ -127,15 +128,16 @@ export default function UserRegister(viewCommon) {
 					<Form.Control
 						name="password_confirm"
 						type="password"
-						onChange={(event)=>handleChange(event)}
-						disabled={successMsg}  
+						onChange={(event) => handleChange(event)}
+						disabled={successMsg}
 					/>
 				</Form.Group>
-				
+
 				<div className="text-center my-4">
 					<Button variant="primary" type="submit" disabled={isError() || successMsg}>Register</Button>
 				</div>
 			</Form>
+			<img className='logo-login' src={logo} alt='logo' />
 		</div>
-  );
+	);
 }

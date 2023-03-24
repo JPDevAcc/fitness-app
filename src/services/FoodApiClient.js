@@ -13,4 +13,12 @@ export default class FoodAPIClient extends NetService {
     getFullRecipe(data) {
         return this.get(`fullrecipe/${data}`);
     }
+
+    getIngredientInfo(data, amount, unit) {
+        return this.get(`ingredient/${data}/${amount}/${unit}`);
+    }
+
+    getIngredientID(data) {
+        return this.get(`ingredient/${data}`);
+    }
 }
