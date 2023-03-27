@@ -6,8 +6,8 @@ export class NotificationsLib {
 				return {
 					id: data.type +':' + dataForType.messageId,
 					image: dataForType.image ?? "images/user.png",
-					imageLink: `showprofile/${dataForType.senderUsername}`,
-					title: `Message from ${dataForType.senderUsername}`,
+					imageLink: `showprofile/${dataForType.sourceUserName}`,
+					title: `Message from ${dataForType.sourceUserName}`,
 					msgMain: dataForType.subject,
 					msgMainLink: `showmessage/${dataForType.messageId}`,
 					msgSub: dataForType.msgSummary
@@ -16,8 +16,8 @@ export class NotificationsLib {
 				return {
 					id: data.type + ':' + dataForType.requestId,
 					image: dataForType.image ?? "images/user.png",
-					imageLink: `showprofile/${dataForType.senderUsername}`,
-					title: `Contact request from ${dataForType.senderUsername}`,
+					imageLink: `showprofile/${dataForType.sourceUserName}`,
+					title: `Contact request from ${dataForType.sourceUserName}`,
 				} ;
 			default:
 				console.error("Unknown notification type") ;

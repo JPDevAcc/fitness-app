@@ -20,8 +20,8 @@ import ContactRequestService from "../services/contactRequestService"; // TEMP: 
 export default function Dashboard({viewCommon}) {
 	const contactRequestService = new ContactRequestService(viewCommon.net); // TEMP: FOR TESTING CONTACT-REQUEST NOTIFICATIONS
 
-	const [ userState, dispatch ] = React.useContext(UserContext) ;
-	const notifications = userState.notifications ;
+	const [ userDataState, userDataDispatch ] = React.useContext(UserContext) ;
+	const notifications = userDataState.notifications ;
 	const [formattedNotifications, changeFormattedNotifications] = useState([]) ;
 
 	useEffect(() => {
@@ -32,8 +32,7 @@ export default function Dashboard({viewCommon}) {
 
 	return (
 		<>
-			{/* Testing with id for Z@Z.com */}
-			<button onClick={() => contactRequestService.create('641991c078045fab48f32c60')}>TEST: SEND A CONTACT REQUEST TO MYSELF</button>
+			<button onClick={() => contactRequestService.create('User_07b0bc34')}>TEST: SEND A CONTACT REQUEST TO 'User_07b0bc34' (NT@NT)</button>
 
 			<div className="page-dashboard">
 				<h1>Dashboard</h1>
