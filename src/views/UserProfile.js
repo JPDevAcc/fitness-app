@@ -147,6 +147,14 @@ export default function UserProfile({nextPage, viewCommon}) {
 		}
 	} ;
 
+	const handleImageRemove = () => {
+		userProfileService.updateFieldValue('image', "").then(() => {
+			const newFormValues = {...formValues} ;
+			newFormValues.image = "" ;
+			dispatch({type: 'setProfile', data: newFormValues});
+		}) ;	
+	}
+
 	const handleAddGoal = (goalId) => {
 		const newFormValues = {...formValues} ;
 		const newSelectedGoalIds = [...formValues.selectedGoalIds, goalId] ;
@@ -163,12 +171,6 @@ export default function UserProfile({nextPage, viewCommon}) {
 		dispatch({type: 'setProfile', data: newFormValues});
 
 		userProfileService.updateFieldValue('selectedGoalIds', newSelectedGoalIds) ;
-	}
-
-	const handleImageRemove = () => {
-		const newFormValues = {...formValues} ;
-		newFormValues.image = "" ;
-		dispatch({type: 'setProfile', data: newFormValues});
 	}
 
 	const ageOpts = [
