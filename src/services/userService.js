@@ -16,14 +16,14 @@ export default class UserService extends NetService {
 	}
 
 	logout() {
-		return this.post(EP_LOGOUT) ;
+		return this.post(EP_LOGOUT, {});
 	}
 
 	changePwd(currentPwd, newPwd) {
-		return this.post(EP_CHANGEPASS, { currentPwd, newPwd }) ;
+		return this.post(EP_CHANGEPASS, { currentPwd, newPwd });
 	}
 
 	deleteAccount(currentPwd) {
-		return this.post(EP_DELACCOUNT, { currentPwd }) ;
+		return this.post(EP_DELACCOUNT, { currentPwd });
 	}
 }
