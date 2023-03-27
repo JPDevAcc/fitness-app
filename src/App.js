@@ -11,8 +11,7 @@ import { Container } from "react-bootstrap";
 
 // Core network services (try not to add to this list unless necessary!)
 import UserService from "./services/userService";
-import UserPrefsService from "./services/userPrefsService";
-import UserProfileService from "./services/userProfileService";
+import UserDataService from "./services/userDataService";
 import NotificationService from "./services/notificationService" ;
 
 // Our components
@@ -39,7 +38,7 @@ import NetService from "./services/netService"; // (*** don't think this should 
 // ==============================================================================
 
 export default function App() {
-	const [state, dispatch] = React.useContext(UserContext);
+	const [userDataState, userDataDispatch] = React.useContext(UserContext);
 
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
 	const [initComplete, changeInitComplete] = useState(false);
@@ -59,15 +58,14 @@ export default function App() {
 
 	// === Retrieve user data ===
 	function getUserData() {
-		const userPrefsService = new UserPrefsService(commonData.net);
-		const userProfileService = new UserProfileService(commonData.net);
-		Promise.all([userPrefsService.retrieve(), userProfileService.retrieve()])
-			.then(([{ data: prefsData }, { data: profileData }]) => {
-				console.log("SETTING INITIAL DATA FROM ENDPOINTS");
-				dispatch({ type: "setPrefs", data: prefsData || {} });
-				dispatch({ type: "setProfile", data: profileData || {} });
-				if (!(prefsData?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
-				else if (!(profileData?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
+		const userDataService = new UserDataService(commonData.net);
+		userDataService.retrieve()
+			.then(({data: { userPrefs, userProfile }}) => {
+				console.log("RETRIEVING USER DATA FROM ENDPOINT");
+				userDataDispatch({ type: "setPrefs", data: userPrefs || {} });
+				userDataDispatch({ type: "setProfile", data: userProfile || {} });
+				if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
+				else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 
 				changeInitComplete(true);
 			});
@@ -85,7 +83,7 @@ export default function App() {
 
 		notificationService.retrieve().then(({data}) => {
 			console.log("RESPONSE:", data) ;
-			dispatch({ type: "setNotifications", data });
+			userDataDispatch({ type: "setNotifications", data });
 		}) ;
 	}
 
@@ -153,7 +151,7 @@ export default function App() {
 		<>
 			<Message msgData={msgData} setMsgData={setMsgData} />
 
-			{(token) && <NavigationBar logout={logout} userIdentifier="User" />}
+			{(initComplete) && <NavigationBar logout={logout} userIdentifier={userDataState.profile.userName} />}
 
 			<Container className="my-container">
 				<main className="main-container">
@@ -170,13 +168,13 @@ export default function App() {
 						{(initComplete) &&
 							<Route path="/prefs" element={
 								<UserSitePrefs viewCommon={commonData}
-									nextPage={!state.prefs.onboardingStageComplete && "/profile/main"} />
+									nextPage={!userDataState.prefs.onboardingStageComplete && "/profile/main"} />
 							} />}
 
 						{(initComplete) &&
 							<Route path="/profile/:section" element={
 								<UserProfile viewCommon={commonData}
-									nextPage={!state.profile.onboardingStageComplete && "/"} />
+									nextPage={!userDataState.profile.onboardingStageComplete && "/"} />
 							} />}
 						{(token) &&
 							<Route path="/account" element={
