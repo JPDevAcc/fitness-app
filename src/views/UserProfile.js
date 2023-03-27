@@ -25,6 +25,7 @@ import GoalsSelection from '../components/goalsSelection';
 // Utils
 import * as utils from "../utils/utils";
 import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight } from '../utils/units';
+import { getFullUrl } from "../utils/image";
 
 // Contexts (global data)
 import { UserContext } from "../contexts/User"
@@ -32,7 +33,7 @@ import { UserContext } from "../contexts/User"
 // ==============================================================================
 
 export const defaults = {
-	image: "",
+	imageUrl: "",
 	imagePrivacy: "pri",
 	bio: "",
 	bioPrivacy: "pri",
@@ -125,7 +126,6 @@ export default function UserProfile({nextPage, viewCommon}) {
 		userProfileService.updateFieldValue(fieldName, newValue) ;
   }
 
-
 	// Handle next-page action
   const handleNextPageClick = (event) => {
     event.preventDefault() ;
@@ -138,21 +138,21 @@ export default function UserProfile({nextPage, viewCommon}) {
 			var reader = new FileReader();
 			reader.readAsDataURL(file);
 			reader.onload = function(e) {
-				userProfileService.updateFieldValue('image', e.target.result).then(() => {
-				const newFormValues = {...formValues} ;
-				newFormValues.image = e.target.result;
-				dispatch({type: 'setProfile', data: newFormValues});
+				userProfileService.updateImage('profile', e.target.result).then(({data: {url}}) => {
+					const newFormValues = {...formValues} ;
+					newFormValues.imageUrl = url ;
+					dispatch({type: 'setProfile', data: newFormValues});
 				}) ;
 			};
 		}
 	} ;
 
 	const handleImageRemove = () => {
-		userProfileService.updateFieldValue('image', "").then(() => {
+		userProfileService.removeImage('profile').then(() => {
 			const newFormValues = {...formValues} ;
-			newFormValues.image = "" ;
+			newFormValues.imageUrl = "" ;
 			dispatch({type: 'setProfile', data: newFormValues});
-		}) ;	
+		}) ;
 	}
 
 	const handleAddGoal = (goalId) => {
@@ -240,7 +240,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 				<legend className="float-none w-auto">Bio</legend>
 
 				<div className="image-upload-container-outer">
-					<ProfileImageUpload image={formValues.image} handleImageUpload={handleFileUpload} handleImageRemove={handleImageRemove} />
+					<ProfileImageUpload image={getFullUrl(formValues.imageUrl)} handleImageUpload={handleFileUpload} handleImageRemove={handleImageRemove} />
 					<div className="d-flex justify-content-center">
 						<PrivacyButtons id="imagePrivacy" value={formValues.imagePrivacy} onChange={(val) => handleChange(['imagePrivacy', val])} />
 					</div>
