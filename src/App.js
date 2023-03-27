@@ -13,7 +13,7 @@ import { Container } from "react-bootstrap";
 import UserService from "./services/userService";
 import UserPrefsService from "./services/userPrefsService";
 import UserProfileService from "./services/userProfileService";
-import NotificationService from "./services/notificationService" ;
+import NotificationService from "./services/notificationService";
 
 // Our components
 import NavigationBar from "./components/navbar.component";
@@ -30,6 +30,8 @@ import UserAccountSettings from "./views/UserAccountSettings";
 import Recipes from './views/Recipes';
 import Exercises from './views/Exercises';
 import FrontPage from './views/FrontPage';
+import Community from './views/Community';
+import CustomWorkout from './views/CustomWorkout';
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
@@ -80,28 +82,28 @@ export default function App() {
 
 	// === Retrieve notifications ===
 	function getNotifications() {
-		console.log("RETRIEVING NOTIFICATIONS") ;
+		console.log("RETRIEVING NOTIFICATIONS");
 		const notificationService = new NotificationService(commonData.net);
 
-		notificationService.retrieve().then(({data}) => {
-			console.log("RESPONSE:", data) ;
+		notificationService.retrieve().then(({ data }) => {
+			console.log("RESPONSE:", data);
 			dispatch({ type: "setNotifications", data });
-		}) ;
+		});
 	}
 
 	// Start polling for notifications
 	useEffect(() => {
 		if (timerRef.current) {
 			console.log("STOPPING POLLING TIMER FOR NOTIFICATIONS");
-			clearInterval(timerRef.current) ;
-			timerRef.current = 0 ;
+			clearInterval(timerRef.current);
+			timerRef.current = 0;
 		}
 		if (initComplete) {
-			getNotifications() ;
+			getNotifications();
 			console.log("STARTING POLLING TIMER FOR NOTIFICATIONS");
-			timerRef.current = setInterval(getNotifications, 10000) ;
+			timerRef.current = setInterval(getNotifications, 10000);
 		}
-		
+
 	}, [initComplete]);
 
 	// ==============================================================================
@@ -131,7 +133,7 @@ export default function App() {
 	const [currentRecipe, changeCurrentRecipe] = useState({
 		title: "Basic Chicken",
 		ingredients: [
-			"1/2 cup butter, softened",
+			"1/2 cup butter",
 		],
 		instructions: {},
 		image: "https://spoonacular.com/recipeImages/602638-556x370.jpg",
@@ -147,6 +149,14 @@ export default function App() {
 	const [exercises, changeExercises] = useState([]);
 
 	const [isRedHeart, changeIsRedHeart] = useState(false);
+
+	const [currentPost, changeCurrentPost] = useState({
+		title: "Basic Post",
+		description: "This is a basic post",
+		imageUrl: "https://spoonacular.com/recipeImages/602638-556x370.jpg",
+		comments: [],
+		likes: 0,
+	});
 
 	// Template
 	return (
@@ -165,6 +175,13 @@ export default function App() {
 
 						<Route path="/login" element={
 							<Login viewCommon={commonData} login={login} />
+						} />
+
+						<Route path="/community" element={
+							<Community viewCommon={commonData} />
+						} />
+						<Route path="/myworkout" element={
+							<CustomWorkout viewCommon={commonData} />
 						} />
 
 						{(initComplete) &&
