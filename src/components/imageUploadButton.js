@@ -6,11 +6,11 @@ import { Button } from 'react-bootstrap';
 export default function ImageUpload({handleFileUpload}) {
   const inputRef = useRef(null);
 
-  const handleUpload = (e) => {
+  const handleUploadClick = (e) => {
 		e.preventDefault() ;
     inputRef.current?.click();
   };
-  const handleDisplayFileDetails = () => {
+  const handleFileUploadInternal = () => {
     inputRef.current?.files &&
       handleFileUpload(inputRef.current.files[0]);
   };
@@ -18,11 +18,11 @@ export default function ImageUpload({handleFileUpload}) {
     <div className="m-3">
       <input
         ref={inputRef}
-        onChange={handleDisplayFileDetails}
+        onChange={handleFileUploadInternal}
         className="d-none"
         type="file"
       />
-      <Button onClick={handleUpload} variant='primary'>
+      <Button onClick={handleUploadClick} variant='primary'>
         Upload
       </Button>
     </div>
