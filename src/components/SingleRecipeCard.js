@@ -53,18 +53,16 @@ function SingleRecipeCard(props) {
     return (
 
         <>
-            <Card onClick={handleCardClick} className='recipe-card' style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={props.imgUrl} />
+            <Card className='recipe-card' style={{ width: '18rem' }}>
+                <Card.Img onClick={handleCardClick} variant="top" src={props.imgUrl} />
                 <Card.Body>
                     <Card.Title>{props.title}</Card.Title>
                     <Card.Text>
                         <Heart
                             onClick={handleClickedRecipe}
                         />
-                        <Redheart />
+                        {/* <Redheart /> */}
                     </Card.Text>
-                    {/* <Button onClick={handleClickedRecipe} variant="primary">Save</Button> */}
-
                 </Card.Body>
             </Card>
             <RecipeModal

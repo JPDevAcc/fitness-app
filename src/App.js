@@ -12,7 +12,7 @@ import { Container } from "react-bootstrap";
 // Core network services (try not to add to this list unless necessary!)
 import UserService from "./services/userService";
 import UserDataService from "./services/userDataService";
-import NotificationService from "./services/notificationService" ;
+import NotificationService from "./services/notificationService";
 
 // Our components
 import NavigationBar from "./components/navbar.component";
@@ -31,6 +31,7 @@ import Exercises from './views/Exercises';
 import FrontPage from './views/FrontPage';
 import Community from './views/Community';
 import CustomWorkout from './views/CustomWorkout';
+import PostPage from "./views/PostPage";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
@@ -62,7 +63,7 @@ export default function App() {
 	function getUserData() {
 		const userDataService = new UserDataService(commonData.net);
 		userDataService.retrieve()
-			.then(({data: { userPrefs, userProfile }}) => {
+			.then(({ data: { userPrefs, userProfile } }) => {
 				console.log("RETRIEVING USER DATA FROM ENDPOINT");
 				userDataDispatch({ type: "setPrefs", data: userPrefs || {} });
 				userDataDispatch({ type: "setProfile", data: userProfile || {} });
@@ -83,10 +84,10 @@ export default function App() {
 		console.log("RETRIEVING NOTIFICATIONS");
 		const notificationService = new NotificationService(commonData.net);
 
-		notificationService.retrieve().then(({data}) => {
-			console.log("RESPONSE:", data) ;
+		notificationService.retrieve().then(({ data }) => {
+			console.log("RESPONSE:", data);
 			userDataDispatch({ type: "setNotifications", data });
-		}) ;
+		});
 	}
 
 	// Start polling for notifications
@@ -152,9 +153,12 @@ export default function App() {
 		title: "Basic Post",
 		description: "This is a basic post",
 		imageUrl: "https://spoonacular.com/recipeImages/602638-556x370.jpg",
+		date: "2021-04-01",
 		comments: [],
 		likes: 0,
 	});
+
+	const [comments, changeComments] = useState([]);
 
 	// Template
 	return (
@@ -176,10 +180,21 @@ export default function App() {
 						} />
 
 						<Route path="/community" element={
-							<Community viewCommon={commonData} />
+							<Community
+								viewCommon={commonData}
+								changeCurrentPost={changeCurrentPost}
+							/>
 						} />
 						<Route path="/myworkout" element={
 							<CustomWorkout viewCommon={commonData} />
+						} />
+						<Route path="/postview" element={
+							<PostPage
+								viewCommon={commonData}
+								currentPost={currentPost}
+								comments={comments}
+								changeComments={changeComments}
+							/>
 						} />
 
 						{(initComplete) &&

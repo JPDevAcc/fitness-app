@@ -8,15 +8,7 @@ import CommunityService from '../services/communityService'
 
 function Community(props) {
 
-    const [posts, changePosts] = useState([
-        {
-            // title: 'test',
-            // description: 'test',
-            // comments: [],
-            // likes: 0
-        },
-
-    ])
+    const [posts, changePosts] = useState([])
 
     const communityService = new CommunityService(props.viewCommon.net)
 
@@ -24,19 +16,21 @@ function Community(props) {
         communityService.getCommunityPosts()
             .then(response => {
                 changePosts(response.data)
-            }
-            )
+            })
             .catch(error => {
                 console.log(error)
-            }
-            )
+            })
     }, [])
 
-    const addCommunityPost = async (data) => {
-        console.log(`sending data to backend: ${data}`)
-        const response = await communityService.addCommunityPost(data)
-        // console.log(response.data)
-    }
+
+
+    // const addCommunityPost = async (data) => {
+    //     console.log(`sending data to backend: ${data}`)
+    //     const response = await communityService.addCommunityPost(data)
+    //     const postId = response.data
+    //     const post = await getPost(postId)
+    //     changePosts([...posts, post])
+    // }
 
 
     const [show, setShow] = useState(false);
@@ -48,25 +42,28 @@ function Community(props) {
         setShow(true)
     }
 
-
-
     return (
         <>
             <Row className='community-container'>
                 <Col lg={4} className='community-left-panel'>
                     <div className='community-left-panel-wrapper'>
                         <Button onClick={addPostHandler} variant="primary" size="lg"> Create Post </Button>
-                        {/* <Form>
+                        <br />
+                        <br />
+                        <Form>
                             <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label>Search</Form.Label>
-                                <Form.Control type="text" placeholder="Search" />
+                                {/* <Form.Label>Search</Form.Label> */}
+                                <Form.Control type="text" placeholder="Search for users..." />
                             </Form.Group>
-                        </Form> */}
+                        </Form>
                     </div>
                     <AddPostModal
                         show={show}
                         handleClose={() => setShow(false)}
-                        addCommunityPost={addCommunityPost}
+                        posts={posts}
+                        changePosts={changePosts}
+                        viewCommon={props.viewCommon}
+
                     />
                 </Col>
                 <Col lg={8} className='community-right-panel'>
@@ -74,9 +71,9 @@ function Community(props) {
                     <CommunityPosts
                         viewCommon={props.viewCommon}
                         posts={posts}
+                        changeCurrentPost={props.changeCurrentPost}
                     />
                 </Col>
-
             </Row>
         </>
     )
