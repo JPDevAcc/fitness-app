@@ -7,7 +7,8 @@ function RecipeModal(props) {
     <>
       <Modal
         className='recipe-modal'
-        {...props}
+        show={props.show}
+        onHide={() => props.onHide(false)}
         size="lg"
         aria-labelledby="example-modal-sizes-title-lg"
         centered

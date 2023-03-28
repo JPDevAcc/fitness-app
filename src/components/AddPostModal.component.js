@@ -1,23 +1,44 @@
 import { Modal, Button, Form } from 'react-bootstrap'
 import './css/communityPosts.scss'
+import CommunityService from '../services/communityService'
 
 export default function AddPostModal(props) {
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        alert('submit')
 
-        const data = {
-            title: document.getElementById('exampleForm.ControlInput1').value,
-            description: document.getElementById('exampleForm.ControlTextarea1').value,
-            imageUrl: document.getElementById('exampleForm.ControlTextarea2').value
+    const communityService = new CommunityService(props.viewCommon.net)
+
+    const getPost = async (postId) => {
+        const response = await communityService.getPostById(postId);
+        return response.data;
+    }
+
+    const addCommunityPost = async (data) => {
+        console.log(`sending data to backend: ${data}`)
+        try {
+
+            const response = await communityService.addCommunityPost(data)
+            const postId = response.data
+            const post = await getPost(postId)
+            props.changePosts([...props.posts, post])
+        } catch (error) {
+            console.log(error)
         }
 
-        // console.log(data)
-        props.addCommunityPost(data)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const data = {
+            title: document.getElementById('exampleForm.ControlTextarea1').value,
+            description: document.getElementById('exampleForm.ControlTextarea2').value,
+            imageUrl: document.getElementById('exampleForm.ControlTextarea3').value
+        }
+        addCommunityPost(data)
 
 
         props.handleClose();
     }
+
 
     return (
         <Modal className='post-modal' show={props.show} onHide={props.handleClose}>
@@ -26,21 +47,17 @@ export default function AddPostModal(props) {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group controlId="exampleForm.ControlInput1">
-                        {/* <Form.Label>Title</Form.Label> */}
-                        <Form.Control type="text" placeholder="Title" />
-                    </Form.Group>
-                    <br />
                     <Form.Group controlId="exampleForm.ControlTextarea1">
-                        {/* <Form.Label>Description</Form.Label> */}
-                        <Form.Control as="textarea" rows={3} placeholder="Description" />
+                        <Form.Control as="textarea" rows={2} placeholder="Header of the post" />
                     </Form.Group>
                     <br />
                     <Form.Group controlId="exampleForm.ControlTextarea2">
-                        {/* <Form.Label>Image</Form.Label> */}
+                        <Form.Control as="textarea" rows={5} placeholder="This is where you write" />
+                    </Form.Group>
+                    <br />
+                    <Form.Group controlId="exampleForm.ControlTextarea3">
                         <Form.Control type="text" placeholder="Image URL" />
                         <br />
-                        <Form.Control type="file" placeholder="Image" />
                     </Form.Group>
                 </Form>
             </Modal.Body>

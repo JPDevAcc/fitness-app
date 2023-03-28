@@ -19,7 +19,7 @@ function CustomWorkout() {
     return (
         <>
             <Row className='custom-workout-container'>
-                <Col className='left-section'>
+                <Col lg={4} className='left-section'>
                     CustomWorkouts
                     {generateCustomCards()}
                 </Col>
