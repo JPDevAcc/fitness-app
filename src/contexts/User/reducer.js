@@ -20,6 +20,8 @@ export const reducer = (state, action) => {
     case "setProfile":
 			//console.log("COMBINED: ", combineWithDefaults(profileDefaults, action.data)) ;
       return {...state, profile: combineWithDefaults(profileDefaults, action.data)} ;
+		case "setContacts":
+			return {...state, contacts: action.data} ;
 		case "setNotifications":
 			// console.log("NEW: ",{...state, notifications: action.data}) ;
 			return {...state, notifications: action.data} ;
