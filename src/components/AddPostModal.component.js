@@ -7,6 +7,7 @@ export default function AddPostModal(props) {
     const communityService = new CommunityService(props.viewCommon.net)
 
     const getPost = async (postId) => {
+        console.log(`getting post with id: ${postId}`)
         const response = await communityService.getPostById(postId);
         return response.data;
     }
@@ -22,7 +23,6 @@ export default function AddPostModal(props) {
         } catch (error) {
             console.log(error)
         }
-
     }
 
     const handleSubmit = (e) => {
@@ -34,11 +34,8 @@ export default function AddPostModal(props) {
             imageUrl: document.getElementById('exampleForm.ControlTextarea3').value
         }
         addCommunityPost(data)
-
-
         props.handleClose();
     }
-
 
     return (
         <Modal className='post-modal' show={props.show} onHide={props.handleClose}>

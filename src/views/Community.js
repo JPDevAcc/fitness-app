@@ -22,17 +22,6 @@ function Community(props) {
             })
     }, [])
 
-
-
-    // const addCommunityPost = async (data) => {
-    //     console.log(`sending data to backend: ${data}`)
-    //     const response = await communityService.addCommunityPost(data)
-    //     const postId = response.data
-    //     const post = await getPost(postId)
-    //     changePosts([...posts, post])
-    // }
-
-
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -40,6 +29,20 @@ function Community(props) {
 
     const addPostHandler = () => {
         setShow(true)
+    }
+
+    const findUser = async (data) => {
+        const response = await communityService.findUser(data)
+        console.log(response)
+        return response
+    }
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+        const data = e.target[0].value
+        findUser(data)
+
+        console.log(data)
     }
 
     return (
@@ -50,11 +53,11 @@ function Community(props) {
                         <Button onClick={addPostHandler} variant="primary" size="lg"> Create Post </Button>
                         <br />
                         <br />
-                        <Form>
+                        <Form onSubmit={submitHandler}>
                             <Form.Group controlId="exampleForm.ControlInput1">
-                                {/* <Form.Label>Search</Form.Label> */}
                                 <Form.Control type="text" placeholder="Search for users..." />
                             </Form.Group>
+                            <Button variant="primary" type="submit">Search</Button>
                         </Form>
                     </div>
                     <AddPostModal
@@ -72,6 +75,11 @@ function Community(props) {
                         viewCommon={props.viewCommon}
                         posts={posts}
                         changeCurrentPost={props.changeCurrentPost}
+                        counters={props.counters}
+                        changeCounters={props.changeCounters}
+                        updateLikes={props.updateLikes}
+                        updateLols={props.updateLols}
+                        updateComments={props.updateComments}
                     />
                 </Col>
             </Row>

@@ -32,12 +32,14 @@ import FrontPage from './views/FrontPage';
 import Community from './views/Community';
 import CustomWorkout from './views/CustomWorkout';
 import PostPage from "./views/PostPage";
+import Library from "./views/Library";
 import Contacts from "./views/Contacts";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 
 import NetService from "./services/netService"; // (*** don't think this should be needed ***)
+import CommunityService from "./services/communityService";
 
 // ==============================================================================
 
@@ -142,8 +144,9 @@ export default function App() {
 			"https://spoonacular.com/cdn/ingredients_100x100/butter-sliced.jpg",
 			"2 cups"
 		]
-
 	});
+
+	const [savedRecipes, changeSavedRecipes] = useState([]);
 
 	const netService = new NetService(commonData.net);
 
@@ -161,6 +164,11 @@ export default function App() {
 	});
 
 	const [comments, changeComments] = useState([]);
+
+	const [likeCounter, changeLikeCounter] = useState(0)
+	const [lolCounter, changeLolCounter] = useState(0)
+	const [commentCounter, changeCommentCounter] = useState(0)
+
 
 	// Template
 	return (
@@ -190,12 +198,26 @@ export default function App() {
 						<Route path="/myworkout" element={
 							<CustomWorkout viewCommon={commonData} />
 						} />
+						<Route path="/library" element={
+							<Library
+								viewCommon={commonData}
+								savedRecipes={savedRecipes}
+								changeSavedRecipes={changeSavedRecipes}
+								currentRecipe={currentRecipe}
+							/>
+						} />
 						<Route path="/postview" element={
 							<PostPage
 								viewCommon={commonData}
 								currentPost={currentPost}
 								comments={comments}
 								changeComments={changeComments}
+								likeCounter={likeCounter}
+								changeLikeCounter={changeLikeCounter}
+								lolCounter={lolCounter}
+								changeLolCounter={changeLolCounter}
+								commentCounter={commentCounter}
+								changeCommentCounter={changeCommentCounter}
 							/>
 						} />
 
@@ -241,7 +263,10 @@ export default function App() {
 									changeRecipes={(recipes) => changeRecipes(recipes)}
 									currentRecipe={currentRecipe}
 									changeCurrentRecipe={(recipe) => changeCurrentRecipe(recipe)}
-
+									isRedHeart={isRedHeart}
+									changeIsRedHeart={(isRedHeart) => changeIsRedHeart(isRedHeart)}
+									savedRecipes={savedRecipes}
+									changeSavedRecipes={(savedRecipes) => changeSavedRecipes(savedRecipes)}
 								/>
 							} />}
 
