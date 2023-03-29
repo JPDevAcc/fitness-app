@@ -1,0 +1,16 @@
+.component-contact-card {
+	height: 100% ;
+	color: black;
+
+	.contact-card-image {
+		width: 48px ;
+		height: 48px;
+		border: 1px inset #888 ;
+	}
+
+	.contact-card-image img {
+		width: 100%;
+		height: 100%;
+		vertical-align: unset;
+	}
+}
