@@ -33,6 +33,7 @@ import Community from './views/Community';
 import CustomWorkout from './views/CustomWorkout';
 import PostPage from "./views/PostPage";
 import Library from "./views/Library";
+import Contacts from "./views/Contacts";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
@@ -65,10 +66,11 @@ export default function App() {
 	function getUserData() {
 		const userDataService = new UserDataService(commonData.net);
 		userDataService.retrieve()
-			.then(({ data: { userPrefs, userProfile } }) => {
+			.then(({data: { userPrefs, userProfile, contacts }}) => {
 				console.log("RETRIEVING USER DATA FROM ENDPOINT");
 				userDataDispatch({ type: "setPrefs", data: userPrefs || {} });
 				userDataDispatch({ type: "setProfile", data: userProfile || {} });
+				userDataDispatch({ type: "setContacts", data: contacts});
 				if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
 				else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 
@@ -230,10 +232,16 @@ export default function App() {
 								<UserProfile viewCommon={commonData}
 									nextPage={!userDataState.profile.onboardingStageComplete && "/"} />
 							} />}
+
 						{(token) &&
 							<Route path="/account" element={
 								<UserAccountSettings viewCommon={commonData}
 									logout={logout} />
+							} />}
+
+						{(initComplete) &&
+							<Route path="/contacts" element={
+								<Contacts viewCommon={commonData} />
 							} />}
 
 						<Route path="/" element={

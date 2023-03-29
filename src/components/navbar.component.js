@@ -61,6 +61,7 @@ function NavigationBar(props) {
                     </Nav>
 
                     <NavDropdown className="d-none d-lg-block text-white" align="end" flip="true" title={props.userIdentifier}>
+												<NavDropdown.Item onClick={() => navigate("contacts")}>Contacts</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("myworkout")}>Custom Workouts</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("library")}>Library</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("prefs")}>Preferences</NavDropdown.Item>
