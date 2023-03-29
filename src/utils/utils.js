@@ -50,7 +50,6 @@ export function nextIdFromData(data) {
 }
 
 export function formatMonth(date) {
-	console.log(date)
 	const months = {
 		"01": "JAN",
 		"02": "FEB",
@@ -72,8 +71,5 @@ export function formatMonth(date) {
 }
 
 export function formatTime(date) {
-	console.log(date)
-	let time = date.slice(11, 16)
-	console.log(time)
-	return time
+	return date.slice(11, 16)
 }

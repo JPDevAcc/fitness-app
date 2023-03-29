@@ -9,17 +9,33 @@ import { ReactComponent as Redheart } from "./Images/redheart.svg"
 
 
 function SingleRecipeCard(props) {
-    const [lgShow, setLgShow] = useState(false);
+    const [heartIsRed, setHeartIsRed] = useState(false)
+
     const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
 
+    const changeUserRecipes = async (recipe) => {
+        const response = await foodAPIClient.getUserRecipes()
+        console.log(response.data)
+        props.changeSavedRecipes(response.data)
+        console.log(await props.savedRecipes)
+        return response.data
+    }
+
+    const [lgShow, setLgShow] = useState(false);
+
+
     function handleClickedRecipe() {
+
+        heartIsRed ? setHeartIsRed(false) : setHeartIsRed(true)
+
         const recipeParams = {
             title: props.title,
             id: props.id,
             imgUrl: props.imgUrl
         }
         props.saveRecipeToDatabase(recipeParams)
-        alert("Recipe Saved!")
+        changeUserRecipes()
+        // console.log(props.savedRecipes)
     }
 
     async function handleCardClick() {
@@ -34,10 +50,6 @@ function SingleRecipeCard(props) {
             return [ingredient.image, ingredient.amount + " " + ingredient.unit]
         })
 
-
-        console.log(ingredientsList)
-        console.log(ingredientsImages)
-
         props.changeCurrentRecipe({
             title: recipeInfo.title,
             ingredients: ingredientsList,
@@ -47,7 +59,6 @@ function SingleRecipeCard(props) {
 
         })
         setLgShow(true)
-
     }
 
     return (
@@ -58,10 +69,16 @@ function SingleRecipeCard(props) {
                 <Card.Body>
                     <Card.Title>{props.title}</Card.Title>
                     <Card.Text>
-                        <Heart
-                            onClick={handleClickedRecipe}
-                        />
-                        {/* <Redheart /> */}
+                        <div className={!heartIsRed ? "d-none" : "d-block"}>
+                            <Heart
+                                onClick={handleClickedRecipe}
+                            />
+                        </div>
+                        <div className={!heartIsRed ? "d-block" : "d-none"}>
+                            <Redheart
+                                onClick={handleClickedRecipe}
+                            />
+                        </div>
                     </Card.Text>
                 </Card.Body>
             </Card>

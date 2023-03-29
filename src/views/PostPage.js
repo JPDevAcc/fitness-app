@@ -10,6 +10,48 @@ import { formatTime, formatMonth } from '../utils/utils'
 
 function PostPage(props) {
 
+    const updateLikes = async () => {
+        const response = await communityService.getLikesCount(props.currentPost._id)
+        const likes = await response.data
+        props.changeLikeCounter(likes.length)
+
+    }
+
+    const updateLols = async () => {
+        const response = await communityService.getLolsCount(props.currentPost._id)
+        const lols = await response.data
+        props.changeLolCounter(lols.length)
+    }
+
+    const updateComments = async () => {
+        const response = await communityService.getCommentCount(props.currentPost._id)
+        const comments = await response.data
+        props.changeCommentCounter(comments.length)
+    }
+
+    useEffect(() => {
+        updateLikes()
+        updateLols()
+        updateComments()
+
+    }, [])
+
+    const likePost = async () => {
+        const response = await communityService.addLikeToPost(props.currentPost._id)
+
+        if (response.status === 200) {
+            updateLikes()
+        }
+    }
+
+    const lolPost = async () => {
+        const response = await communityService.addLolToPost(props.currentPost._id)
+
+        if (response.status === 200) {
+            updateLols()
+        }
+    }
+
     const communityService = new CommunityService(props.viewCommon.net)
 
     const [inputValue, setInputValue] = useState('');
@@ -39,6 +81,7 @@ function PostPage(props) {
             const commentId = response.data;
             const comment = await getComment(commentId)
             props.changeComments([...props.comments, comment]);
+            updateComments()
         } catch (error) {
             console.log(error)
         }
@@ -55,10 +98,6 @@ function PostPage(props) {
         )
     }
 
-
-
-
-    console.log(props.currentPost.date)
     return (
         <>
             <Row className='post-page-container'>
@@ -78,12 +117,12 @@ function PostPage(props) {
                                 {props.currentPost.description}
                             </Card.Text>
                             <div className='post-page-icons'>
-                                <Heart className='heart' />
-                                <span>0 </span><span> </span>
-                                <LolFace className='lol' />
-                                <span>0 </span><span> </span>
-                                <Comments className='comments' />
-                                <span>0 </span><span> </span>
+                                <Heart onClick={likePost} className='heart' />
+                                <span>{props.likeCounter} </span><span> </span>
+                                <LolFace onClick={lolPost} className='lol' />
+                                <span className='lol'>{props.lolCounter} </span><span> </span>
+                                <Comments />
+                                <span>{props.commentCounter} </span><span> </span>
                             </div>
                         </Card.Body>
                         <div className='add-comment'>

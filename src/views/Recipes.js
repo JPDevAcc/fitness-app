@@ -56,6 +56,10 @@ function Recipes(props) {
                 currentRecipe={props.currentRecipe}
                 changeCurrentRecipe={(currentRecipe) => props.changeCurrentRecipe(currentRecipe)}
                 saveRecipeToDatabase={(params) => saveRecipeToDatabase(params)}
+                isRedHeart={props.isRedHeart}
+                changeIsRedHeart={(isRedHeart) => props.changeIsRedHeart(isRedHeart)}
+                savedRecipes={props.savedRecipes}
+                changeSavedRecipes={(savedRecipes) => props.changeSavedRecipes(savedRecipes)}
             />
 
         )

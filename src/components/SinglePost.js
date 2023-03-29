@@ -3,14 +3,66 @@ import { Card, Button } from 'react-bootstrap'
 import { ReactComponent as Heart } from "./Images/redheart.svg"
 import { ReactComponent as Comments } from "./Images/comments.svg"
 import { ReactComponent as LolFace } from "./Images/lol2.svg"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import ProfileModal from './ProfileModal.component';
+import CommunityService from '../services/communityService'
 
 
 function SinglePost(props) {
 
+    const [likeCounter, changeLikeCounter] = useState(0)
+    const [lolCounter, changeLolCounter] = useState(0)
+    const [commentCounter, changeCommentCounter] = useState(0)
+
+
+    const communityService = new CommunityService(props.viewCommon.net)
+
+    const updateLikes = async () => {
+        const response = await communityService.getLikesCount(props.post._id)
+        const likes = await response.data
+        changeLikeCounter(likes.length)
+    }
+
+    const updateLols = async () => {
+        const response = await communityService.getLolsCount(props.post._id)
+        const lols = await response.data
+        changeLolCounter(lols.length)
+    }
+
+    const updateComments = async () => {
+        const response = await communityService.getCommentCount(props.post._id)
+        const comments = await response.data
+        changeCommentCounter(comments.length)
+    }
+
+    useEffect(() => {
+        const updateThings = () => {
+            updateLikes()
+            updateLols()
+            updateComments()
+        }
+        updateThings()
+    }, [])
+
+    const likePost = async () => {
+        const response = await communityService.addLikeToPost(props.post._id)
+
+        if (response.status === 200) {
+            updateLikes()
+        }
+    }
+
+    const lolPost = async () => {
+        const response = await communityService.addLolToPost(props.post._id)
+
+        if (response.status === 200) {
+            updateLols()
+        }
+    }
+
     const [lgShow, setLgShow] = useState(false);
+
 
     const navigate = useNavigate();
 
@@ -20,7 +72,6 @@ function SinglePost(props) {
     }
 
     const showProfile = () => {
-        console.log('show profile')
         setLgShow(true)
     }
 
@@ -37,14 +88,14 @@ function SinglePost(props) {
                     </div>
                     <div className='post-icon-wrapper' >
                         <div className='post-card-icons'>
-                            <Heart className='heart' />
-                            <LolFace className='lol' />
+                            <Heart onClick={likePost} className='heart' />
+                            <LolFace onClick={lolPost} className='lol' />
                             <Comments className='comments' />
                         </div>
                         <div className='post-card-numbers'>
-                            <label className='likes-count'>0</label>
-                            <label className='lols-count'>0</label>
-                            <label className='comments-count'>0</label>
+                            <label className='likes-count'>{likeCounter}</label>
+                            <label className='lols-count'>{lolCounter}</label>
+                            <label className='comments-count'>{commentCounter}</label>
                         </div>
                     </div>
                 </Card.Body>
