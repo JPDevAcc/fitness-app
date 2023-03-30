@@ -65,6 +65,6 @@ export function formatTime(dateString) {
 	return time;
 }
 
-export function formatDate(date) {
-	return date.slice(0, 10)
+export function formatDate(date) { // Is this function used anywhere?
+	return date.slice(0, 10) // Will produce wrong results sometimes if passed a UTC string and you want a local-time date out
 }
