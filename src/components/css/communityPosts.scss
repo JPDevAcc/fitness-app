@@ -27,12 +27,15 @@
     .post-card {
         box-shadow: rgba(50, 50, 93, 0.15) 0px 30px 60px -12px inset, rgba(168, 164, 164, 0.15) 0px 18px 36px -18px inset;
         color: black;
-        min-width: 600px !important;
+        min-width: 90% !important;
         margin: 0.1rem 0;
         padding: 0 !important;
+        position: relative;
         
         .post-card-body {
             display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
             padding: 0.3rem !important;
 
             .post-card-image {
@@ -50,7 +53,7 @@
             }
 
             .card-text {
-                min-width: 370px;
+                min-width: 100%;
                 font-size: 0.8rem;
                 font-weight: 500;
                 cursor: pointer;
@@ -71,6 +74,9 @@
             }
 
             .post-icon-wrapper {
+                position: absolute;
+                top: 5px;
+                right: 0;
                 display: flex;
                 flex-direction: column;
                 margin: 0 0.5rem 0 0.5rem;
@@ -102,14 +108,18 @@
 }
 
 @media screen and (min-width: 280px) and (max-width: 900px) {
-    .posts-wrapper {
-        .post-card {
-            max-width: 100px !important;
-            // flex-direction: column !important;
 
-            .card-text {
-                width: 50px;
-            }
+    .posts-wrapper {
+        margin-top: 30px;
+
+        .post-card {
+            width: 100% !important;
+          
+            .post-username{
+                width: 160px !important;
+        }
+
+            
         }
     }
 }

@@ -33,7 +33,7 @@ function SingleRecipeCard(props) {
             id: props.id,
             imgUrl: props.imgUrl
         }
-        props.saveRecipeToDatabase(recipeParams)
+        saveRecipeToDatabase(recipeParams)
         changeUserRecipes()
         // console.log(props.savedRecipes)
     }
@@ -61,6 +61,14 @@ function SingleRecipeCard(props) {
         setLgShow(true)
     }
 
+    async function saveRecipeToDatabase(params) {
+        foodAPIClient.addRecipe({
+            title: params.title,
+            id: params.id,
+            imageUrl: params.imgUrl
+        });
+    }
+
     return (
 
         <>
@@ -69,12 +77,12 @@ function SingleRecipeCard(props) {
                 <Card.Body>
                     <Card.Title>{props.title}</Card.Title>
                     <Card.Text>
-                        <div className={!heartIsRed ? "d-none" : "d-block"}>
+                        <div className={heartIsRed ? "d-none" : "d-block"}>
                             <Heart
                                 onClick={handleClickedRecipe}
                             />
                         </div>
-                        <div className={!heartIsRed ? "d-block" : "d-none"}>
+                        <div className={heartIsRed ? "d-block" : "d-none"}>
                             <Redheart
                                 onClick={handleClickedRecipe}
                             />

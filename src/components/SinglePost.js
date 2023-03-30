@@ -7,9 +7,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import ProfileModal from './ProfileModal.component';
 import CommunityService from '../services/communityService'
-
+import { getFullUrl } from '../utils/image'
 
 function SinglePost(props) {
+
+    const url = getFullUrl(props.post.profileImg)
 
     const [likeCounter, changeLikeCounter] = useState(0)
     const [lolCounter, changeLolCounter] = useState(0)
@@ -79,9 +81,9 @@ function SinglePost(props) {
         <>
             <Card className='post-card' style={{ width: '18rem' }}>
                 <Card.Body className='post-card-body'>
-                    <img onClick={showProfile} className='post-card-image' src='https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8aHVtYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'></img>
-                    <div>
-                        <Card.Title>Username</Card.Title>
+                    <img onClick={showProfile} className='post-card-image' src={url}></img>
+                    <div className='post-username'>
+                        <Card.Title>{props.post.username}</Card.Title>
                         <Card.Text onClick={navigateToPostView}>
                             {props.post.title}
                         </Card.Text>
