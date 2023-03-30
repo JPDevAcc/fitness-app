@@ -1,6 +1,6 @@
 // Main CSS
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import "./App.scss";
 
 // React and other packages
 import React, { useState, useEffect, useRef } from "react";
@@ -66,11 +66,11 @@ export default function App() {
 	function getUserData() {
 		const userDataService = new UserDataService(commonData.net);
 		userDataService.retrieve()
-			.then(({data: { userPrefs, userProfile, contacts }}) => {
+			.then(({ data: { userPrefs, userProfile, contacts } }) => {
 				console.log("RETRIEVING USER DATA FROM ENDPOINT");
 				userDataDispatch({ type: "setPrefs", data: userPrefs || {} });
 				userDataDispatch({ type: "setProfile", data: userProfile || {} });
-				userDataDispatch({ type: "setContacts", data: contacts});
+				userDataDispatch({ type: "setContacts", data: contacts });
 				if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
 				else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 

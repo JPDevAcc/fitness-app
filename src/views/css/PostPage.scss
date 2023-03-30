@@ -32,6 +32,7 @@
         .card {
             color: black;
             width: 100% !important;
+            position:relative;
 
             .add-comment {
                 min-height: 100px;
@@ -83,7 +84,9 @@
                     padding: 5px;
                     margin: 5px;
 
-                    img {
+
+
+                    .post-page-user-image {
                         width: 50px;
                         height: 50px;
                         object-fit: cover;
@@ -91,12 +94,29 @@
                         border-radius: 50%;
                         cursor: pointer;
                         margin-right: 10px;
-                        box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+                        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
                     }
 
                     .username {
-                        margin-right: 100px !important;
-                    }                   
+                        position: absolute;
+                        font-weight: 550;
+                        left: 80px;
+                        top: 30px;
+                    }
+                    
+                    .time {
+                        position: absolute;
+                        right: 100px;
+                        top: 30px;
+                        font-weight: 550;
+                    }
+
+                    .date {
+                        position: absolute;
+                        right: 20px;
+                        top: 30px;
+                        font-weight: 550;
+                    }
                 }
 
                 .post-page-icons {

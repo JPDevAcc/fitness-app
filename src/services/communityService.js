@@ -42,11 +42,11 @@ export default class CommunityService extends NetService {
     }
 
     addLikeToPost(postId) {
-        return this.get(`like/${postId}`);
+        return this.post(`like/${postId}`, {});
     }
 
     addLolToPost(postId) {
-        return this.get(`lol/${postId}`);
+        return this.post(`lol/${postId}`, {});
     }
 
 }

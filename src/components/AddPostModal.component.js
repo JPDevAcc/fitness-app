@@ -13,12 +13,13 @@ export default function AddPostModal(props) {
     }
 
     const addCommunityPost = async (data) => {
-        console.log(`sending data to backend: ${data}`)
+
         try {
 
             const response = await communityService.addCommunityPost(data)
             const postId = response.data
             const post = await getPost(postId)
+            console.log(await post)
             props.changePosts([...props.posts, post])
         } catch (error) {
             console.log(error)
@@ -33,6 +34,7 @@ export default function AddPostModal(props) {
             description: document.getElementById('exampleForm.ControlTextarea2').value,
             imageUrl: document.getElementById('exampleForm.ControlTextarea3').value
         }
+        console.log(data)
         addCommunityPost(data)
         props.handleClose();
     }

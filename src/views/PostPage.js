@@ -7,8 +7,11 @@ import { Card, Button, Col, Row } from 'react-bootstrap';
 import SingleComment from '../components/SingleComment'
 import CommunityService from '../services/communityService'
 import { formatTime, formatMonth } from '../utils/utils'
+import { getFullUrl } from '../utils/image'
 
 function PostPage(props) {
+
+    const url = getFullUrl(props.currentPost.profileImg)
 
     const updateLikes = async () => {
         const response = await communityService.getLikesCount(props.currentPost._id)
@@ -101,15 +104,15 @@ function PostPage(props) {
     return (
         <>
             <Row className='post-page-container'>
-                <Col lg={5} className='post-page-left-panel'>
+                <Col lg={6} className='post-page-left-panel'>
                     <Card style={{ width: '18rem' }}>
                         <Card.Body>
                             <Card.Text>
-                                <img className='post-page-user-image' src='https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGh1bWFufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60' alt='user image' />
-                                <span className='username'>Username</span>
-                                {formatTime(props.currentPost.date)}
+                                <img className='post-page-user-image' src={url} alt='' />
+                                <span className='username'>{props.currentPost.username}</span>
+                                <span className='time'>{formatTime(props.currentPost.date)}</span>
                                 {" "}
-                                {formatMonth(props.currentPost.date)}
+                                <span className='date'>{formatMonth(props.currentPost.date)}</span>
                             </Card.Text>
                             <Card.Img variant="top" src={props.currentPost.imageUrl} />
                             <Card.Title>{props.currentPost.title}</Card.Title>
@@ -140,7 +143,7 @@ function PostPage(props) {
                         </div>
                     </Card>
                 </Col>
-                <Col lg={4} className='post-page-right-panel'>
+                <Col lg={6} className='post-page-right-panel'>
                     {showComments()}
                 </Col>
             </Row>

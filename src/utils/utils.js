@@ -49,27 +49,22 @@ export function nextIdFromData(data) {
 	return Object.keys(data).reduce((max, id) => Math.max(max, id), -1) + 1;
 }
 
-export function formatMonth(date) {
-	const months = {
-		"01": "JAN",
-		"02": "FEB",
-		"03": "MAR",
-		"04": "APR",
-		"05": "MAY",
-		"06": "JUN",
-		"07": "JUL",
-		"08": "AUG",
-		"09": "SEP",
-		"10": "OCT",
-		"11": "NOV",
-		"12": "DEC"
-	}
+export function formatMonth(dateString) {
+	const date = new Date(dateString);
+	const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 
-	let month = date.slice(5, 7)
-	let day = date.slice(8, 10)
-	return day + " " + months[month]
+	const day = date.getDate();
+	const month = date.getMonth(); // 0-indexed!
+	return day + " " + months[month];
 }
 
-export function formatTime(date) {
-	return date.slice(11, 16)
+export function formatTime(dateString) {
+	const date = new Date(dateString);
+	const minutes = date.getMinutes().toString().padStart(2, '0');
+	const time = date.getHours() + ':' + minutes;
+	return time;
+}
+
+export function formatDate(date) {
+	return date.slice(0, 10)
 }
