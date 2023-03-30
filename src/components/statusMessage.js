@@ -1,8 +1,8 @@
-import './css/message.scss' ;
+import './css/statusMessage.scss' ;
 import React from "react" ;
 import { Alert } from 'react-bootstrap';
 
-export default function Message({msgData, setMsgData}) {
+export default function StatusMessage({msgData, setMsgData}) {
 	return (
 		<>
 		{(msgData.msg) &&

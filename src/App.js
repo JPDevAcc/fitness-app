@@ -17,7 +17,7 @@ import NotificationService from "./services/notificationService";
 // Our components
 import NavigationBar from "./components/navbar.component";
 import Footer from "./components/footer.component";
-import Message from "./components/message";
+import StatusMessage from "./components/statusMessage";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
@@ -34,6 +34,7 @@ import CustomWorkout from './views/CustomWorkout';
 import PostPage from "./views/PostPage";
 import Library from "./views/Library";
 import Contacts from "./views/Contacts";
+import Messages from "./views/Messages";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
@@ -66,11 +67,12 @@ export default function App() {
 	function getUserData() {
 		const userDataService = new UserDataService(commonData.net);
 		userDataService.retrieve()
-			.then(({ data: { userPrefs, userProfile, contacts } }) => {
+			.then(({data: { userPrefs, userProfile, contacts, messageMetas }}) => {
 				console.log("RETRIEVING USER DATA FROM ENDPOINT");
 				userDataDispatch({ type: "setPrefs", data: userPrefs || {} });
 				userDataDispatch({ type: "setProfile", data: userProfile || {} });
-				userDataDispatch({ type: "setContacts", data: contacts });
+				userDataDispatch({ type: "setContacts", data: contacts});
+				userDataDispatch({ type: "setMessageMetas", data: messageMetas});
 				if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
 				else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 
@@ -89,7 +91,6 @@ export default function App() {
 		const notificationService = new NotificationService(commonData.net);
 
 		notificationService.retrieve().then(({ data }) => {
-			console.log("RESPONSE:", data);
 			userDataDispatch({ type: "setNotifications", data });
 		});
 	}
@@ -173,7 +174,7 @@ export default function App() {
 	// Template
 	return (
 		<>
-			<Message msgData={msgData} setMsgData={setMsgData} />
+			<StatusMessage msgData={msgData} setMsgData={setMsgData} />
 
 			{(initComplete) && <NavigationBar logout={logout} userIdentifier={userDataState.profile.userName} />}
 
@@ -242,6 +243,16 @@ export default function App() {
 						{(initComplete) &&
 							<Route path="/contacts" element={
 								<Contacts viewCommon={commonData} />
+							} />}
+
+						{(initComplete) &&
+							<Route path="/messages" element={
+								<Messages viewCommon={commonData} />
+							} />}
+
+						{(initComplete) &&
+							<Route path="/messages/:id" element={
+								<Messages viewCommon={commonData} />
 							} />}
 
 						<Route path="/" element={

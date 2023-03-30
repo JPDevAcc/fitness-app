@@ -13,16 +13,18 @@ export class NotificationsLib {
 			case 'message':
 				return {
 					id,
+					dateTime: data.dateTime,
 					imageUrl: getFullUrl(dataForType.sourceImageUrl) ?? "images/user.png",
 					imageLink: `showprofile/${dataForType.sourceUserName}`,
 					title: `Message from ${dataForType.sourceUserName}`,
-					msgMain: dataForType.subject,
-					msgMainLink: `showmessage/${dataForType.idForType}`,
-					msgSub: dataForType.msgSummary,
+					msgMain: dataForType.messageSubject,
+					msgMainLink: `messages/${data.idForType}`,
+					msgSub: dataForType.messageSummary,
 				} ;
 			case 'contact_request':
 				return {
 					id,
+					dateTime: data.dateTime,
 					imageUrl: getFullUrl(dataForType.sourceImageUrl) ?? "images/user.png",
 					imageLink: `showprofile/${ data.idForType}`,
 					title: `Contact request from ${data.idForType}`,

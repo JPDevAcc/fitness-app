@@ -24,8 +24,8 @@ export default function ContactCard({data: {imageUrl, userName}, handleSendMessa
       </Card.Body>
 
 			<Card.Footer className="d-flex justify-content-evenly">
-				<Button onClick={handleSendMessage}>Send Message</Button>
-				<Button onClick={handleRemoveContact}>Remove</Button>
+				<Button variant="primary" onClick={handleSendMessage}>Send Message</Button>
+				<Button variant="danger" onClick={handleRemoveContact}>Remove</Button>
 			</Card.Footer>
     </Card>
   );
