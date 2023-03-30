@@ -4,7 +4,11 @@ export default function Select({id, name, value, onChange, disabled, opts}) {
 	
 	function buildOptions(opts) {
 		return opts.map((opt) => 
-			<option key={opt.value} value={opt.value}>{opt.displayName || opt.value}</option>
+			<option
+				key={(opt.value === undefined) ? opt : opt.value} 
+				value={(opt.value === undefined) ? opt : opt.value}>
+				{opt.displayName || ((opt.value === undefined) ? opt : opt.value)}
+			</option>
 		) ;
 	}
 

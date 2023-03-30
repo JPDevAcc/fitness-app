@@ -13,13 +13,9 @@ import { NotificationsLib } from "../libs/notificationsLib";
 // Contexts (global data)
 import { UserContext } from "../contexts/User"
 
-import ContactService from "../services/contactService"; // TEMP: FOR TESTING CONTACT-REQUEST NOTIFICATIONS
-
 // ==============================================================================
 
 export default function Dashboard({viewCommon}) {
-	const contactService = new ContactService(viewCommon.net); // TEMP: FOR TESTING CONTACT-REQUEST NOTIFICATIONS
-
 	const [ userDataState, userDataDispatch ] = React.useContext(UserContext) ;
 	const notifications = userDataState.notifications ;
 	const [formattedNotifications, changeFormattedNotifications] = useState([]) ;
@@ -27,7 +23,6 @@ export default function Dashboard({viewCommon}) {
 	const notificationsLib = new NotificationsLib(viewCommon.net) ;
 
 	useEffect(() => {
-		console.log("NOTIFICATIONS: ", notifications) ;
 		const newFormattedNotifications = (notifications || [])
 			.map(notification => notificationsLib.formatNotificationData(notification, removeNotificationCallback)) ;
 		changeFormattedNotifications(newFormattedNotifications) ;
@@ -40,8 +35,6 @@ export default function Dashboard({viewCommon}) {
 
 	return (
 		<>
-			<button onClick={() => contactService.createRequest(userDataState.profile.userName)}>TEST: SEND A CONTACT REQUEST TO '{userDataState.profile.userName}'</button>
-
 			<div className="page-dashboard">
 				<h1>Dashboard</h1>
 				<div className="my-notifications">

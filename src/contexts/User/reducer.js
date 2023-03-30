@@ -25,6 +25,9 @@ export const reducer = (state, action) => {
 		case "setNotifications":
 			// console.log("NEW: ",{...state, notifications: action.data}) ;
 			return {...state, notifications: action.data} ;
+		case "setMessageMetas":
+			// console.log("NEW: ",{...state, notifications: action.data}) ;
+			return {...state, messageMetas: action.data} ;
     default:
       return state ;
   }

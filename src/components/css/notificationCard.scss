@@ -1,10 +1,11 @@
 .component-notification {
 	height: 100% ;
 	color: black;
-
+	box-shadow: 5px -5px 10px -1px #111111;
+	
 	.notification-image {
-		width: 48px ;
-		height: 48px;
+		width: 64px ;
+		height: 64px;
 		border: 1px inset #888 ;
 	}
 

@@ -1,8 +1,9 @@
 import "./css/notificationCard.scss"
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { formatMonth, formatTime } from "../utils/utils";
 
-export default function NotificationCard({data: {imageUrl, imageLink, title, msgMain, msgMainLink, msgSub, acceptCallback, dismissCallback}}) {
+export default function NotificationCard({data: {imageUrl, imageLink, title, dateTime, msgMain, msgMainLink, msgSub, acceptCallback, dismissCallback}}) {
 	const navigate = useNavigate() ;
 
 	function handleNavigation(link) {
@@ -12,11 +13,18 @@ export default function NotificationCard({data: {imageUrl, imageLink, title, msg
   return (
     <Card className="component-notification text-center">
 			<Card.Body className="p-2">
-				<div className="d-flex align-items-center gap-2">
-					<div className={imageLink ? 'notification-image my-link-pointer' : 'notification-image'} onClick={() => handleNavigation(imageLink)}>
-						<img src={imageUrl} alt="" />
+				<div className="d-flex justify-content-between">
+					<div className="d-flex align-items-center gap-2">
+						<div className={imageLink ? 'notification-image my-link-pointer' : 'notification-image'} onClick={() => handleNavigation(imageLink)}>
+							<img src={imageUrl} alt="" />
+						</div>
+						<Card.Title className="fs-6">{title}</Card.Title>
 					</div>
-					<Card.Title className="fs-6">{title}</Card.Title>
+					<div>
+						{formatTime(dateTime)}
+						{" "}
+						{formatMonth(dateTime)}
+					</div>
 				</div>
 
         <Card.Text onClick={() => handleNavigation(msgMainLink)} className={msgMainLink ? 'link-primary my-link-pointer fs-3' : 'fs-3'}>{msgMain}</Card.Text>

@@ -43,6 +43,15 @@ function NavigationBar(props) {
 
                         <hr className="hr-white" />
 
+												<Link className="d-lg-none nav-link" to="/contacts">
+                            Contacts
+                        </Link>
+												<Link className="d-lg-none nav-link" to="/messages">
+                            Messages
+                        </Link>
+
+												 <hr className="hr-white" />
+
                         <Link className="d-lg-none nav-link" to="/prefs">
                             Preferences
                         </Link>
@@ -62,6 +71,7 @@ function NavigationBar(props) {
 
                     <NavDropdown className="d-none d-lg-block text-white" align="end" flip="true" title={props.userIdentifier}>
 												<NavDropdown.Item onClick={() => navigate("contacts")}>Contacts</NavDropdown.Item>
+												<NavDropdown.Item onClick={() => navigate("messages")}>Messages</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("myworkout")}>Custom Workouts</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("library")}>Library</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("prefs")}>Preferences</NavDropdown.Item>
