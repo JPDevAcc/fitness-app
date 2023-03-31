@@ -13,12 +13,11 @@
         @include flex-center(column);
 
         .community-left-panel-wrapper {
-            @include flex-center(column);
+            height: 100vh;
             padding: 20px;
 
             .form-search {
                 @include flex-center(column);
-
             }
 
             .user-card {
@@ -26,30 +25,39 @@
                 color: black;
                 width: 70% !important;
                 margin-top: 30px;
-                
-            .card-img-top {
-                width: 100%;
-                height: auto;
-                margin: 10px;
-                box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-            }
 
-            .icons {
-                @include flex-center(row);
-            //     margin-left: 20px !important;
-            //     margin-right: 10px !important;
-
-                * {
-                    margin: 0 20px 0 20px;
+                .user-card-username {
+                    font-weight: 550;
+                    margin-bottom: 20px;
                 }
-            }
+                
+                .user-card-img {
+                    cursor: pointer;
+                    width: 100%;
+                    height: auto;
+                    background: cover;
+                    margin: 10px;
+                    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+                }
+
+                .icons {
+                    @include flex-center(row);
+                    width: 100%;
+
+                    * {
+                        margin: 0 20px 0 20px;
+                        cursor: pointer;
+                    }
+                }
             
+            }
         }
-    }
-}
+    }   
 
         .community-right-panel {
-            @include flex-center(column);
+            padding-top: 30px;
+            height: 100vh;
+            justify-content: flex-start;
         }
  
     button {

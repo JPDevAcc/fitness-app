@@ -1,0 +1,33 @@
+.profile-wrapper {
+    display: flex;
+    flex-direction: column;
+
+
+    .profile-info {
+        
+        .profile-img-wrapper {
+           display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .profile-img{
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                object-fit: cover;
+                object-position: center;
+                margin: 20px;
+                box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+            }
+
+        }
+
+        .profile-info-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+        }
+    }
+}

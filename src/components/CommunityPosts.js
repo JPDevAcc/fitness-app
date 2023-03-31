@@ -16,6 +16,9 @@ function CommunityPosts(props) {
                 updateLikes={props.updateLikes}
                 updateLols={props.updateLols}
                 updateComments={props.updateComments}
+                userProfile={props.userProfile}
+                changeUserProfile={props.changeUserProfile}
+                showProfile={props.showProfile}
             />
         )
     }

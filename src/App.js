@@ -67,12 +67,12 @@ export default function App() {
 	function getUserData() {
 		const userDataService = new UserDataService(commonData.net);
 		userDataService.retrieve()
-			.then(({data: { userPrefs, userProfile, contacts, messageMetas }}) => {
+			.then(({ data: { userPrefs, userProfile, contacts, messageMetas } }) => {
 				console.log("RETRIEVING USER DATA FROM ENDPOINT");
 				userDataDispatch({ type: "setPrefs", data: userPrefs || {} });
 				userDataDispatch({ type: "setProfile", data: userProfile || {} });
-				userDataDispatch({ type: "setContacts", data: contacts});
-				userDataDispatch({ type: "setMessageMetas", data: messageMetas});
+				userDataDispatch({ type: "setContacts", data: contacts });
+				userDataDispatch({ type: "setMessageMetas", data: messageMetas });
 				if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
 				else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 
@@ -170,6 +170,13 @@ export default function App() {
 	const [lolCounter, changeLolCounter] = useState(0)
 	const [commentCounter, changeCommentCounter] = useState(0)
 
+	const [userProfile, changeUserProfile] = useState({
+		// userName: "User Name",
+		// profilePic: "https://spoonacular.com/recipeImages/602638-556x370.jpg",
+		// aboutMe: "This is a basic post",
+	})
+
+
 
 	// Template
 	return (
@@ -194,6 +201,8 @@ export default function App() {
 							<Community
 								viewCommon={commonData}
 								changeCurrentPost={changeCurrentPost}
+								userProfile={userProfile}
+								changeUserProfile={changeUserProfile}
 							/>
 						} />
 						<Route path="/myworkout" element={

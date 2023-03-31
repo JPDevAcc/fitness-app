@@ -27,7 +27,8 @@
     @include flex-center;
 
     .post-page-left-panel {
-        @include flex-center();
+        height: 100vh;
+        margin-top: 30px;
 
         .card {
             color: black;
@@ -144,6 +145,11 @@
                 }
             }
         }
+    }
+
+    .post-page-right-panel {
+        height: 100vh;
+        margin-top: 30px;
     }
 }
 
