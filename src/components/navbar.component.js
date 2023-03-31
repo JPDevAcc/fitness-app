@@ -40,6 +40,8 @@ function NavigationBar(props) {
                         <Link className="nav-link" to="/community">
                             Community
                         </Link>
+                        <Link className="nav-link" to="/challenge">Challenge</Link>
+
 
                         <hr className="hr-white" />
 
