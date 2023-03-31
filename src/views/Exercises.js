@@ -23,7 +23,7 @@ function Exercises(props) {
 
   return (
     <>
-      <SingleWorkoutCard viewCommon={props.viewCommon} />,{showExercises}
+      <SingleWorkoutCard viewCommon={props.viewCommon} />{showExercises}
     </>
   );
 }

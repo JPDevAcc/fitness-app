@@ -35,6 +35,7 @@ import PostPage from "./views/PostPage";
 import Library from "./views/Library";
 import Contacts from "./views/Contacts";
 import Messages from "./views/Messages";
+import Challenge from "./views/Challenge";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
@@ -205,6 +206,8 @@ export default function App() {
 								changeUserProfile={changeUserProfile}
 							/>
 						} />
+						<Route path="/challenge" element={<Challenge />} />
+
 						<Route path="/myworkout" element={
 							<CustomWorkout viewCommon={commonData} />
 						} />
