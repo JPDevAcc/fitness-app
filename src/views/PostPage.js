@@ -7,11 +7,11 @@ import { Card, Button, Col, Row } from 'react-bootstrap';
 import SingleComment from '../components/SingleComment'
 import CommunityService from '../services/communityService'
 import { formatTime, formatMonth } from '../utils/utils'
-import { getFullUrl } from '../utils/image'
+import { getProfileImageUrl } from '../utils/image'
 
 function PostPage(props) {
 
-    const url = getFullUrl(props.currentPost.profileImg)
+    const url = getProfileImageUrl(props.currentPost.profileImg)
 
     const updateLikes = async () => {
         const response = await communityService.getLikesCount(props.currentPost._id)

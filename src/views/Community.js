@@ -4,7 +4,7 @@ import AddPostModal from '../components/AddPostModal.component'
 import { Row, Col, Form, Button, Card } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import CommunityService from '../services/communityService'
-import { getFullUrl } from '../utils/image'
+import { getProfileImageUrl } from '../utils/image'
 import { ReactComponent as Message } from './images/message.svg'
 import { ReactComponent as Add } from './images/plus.svg'
 
@@ -51,7 +51,7 @@ function Community(props) {
 
     const displayUsercard = (user = null) => {
         if (user) {
-            const url = getFullUrl(user.imageUrl)
+            const url = getProfileImageUrl(user.imageUrl)
             return (
                 <Card className='user-card' style={{ width: '18rem' }}>
                     <Card.Img variant="top" src={url} />

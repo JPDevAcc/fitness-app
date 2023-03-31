@@ -7,11 +7,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import ProfileModal from './ProfileModal.component';
 import CommunityService from '../services/communityService'
-import { getFullUrl } from '../utils/image'
+import { getProfileImageUrl } from '../utils/image'
 
 function SinglePost(props) {
 
-    const url = getFullUrl(props.post.profileImg)
+    const url = getProfileImageUrl(props.post.profileImg)
 
     const [likeCounter, changeLikeCounter] = useState(0)
     const [lolCounter, changeLolCounter] = useState(0)

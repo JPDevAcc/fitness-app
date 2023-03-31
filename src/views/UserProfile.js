@@ -25,7 +25,7 @@ import GoalsSelection from '../components/goalsSelection';
 // Utils
 import * as utils from "../utils/utils";
 import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight } from '../utils/units';
-import { getFullUrl } from "../utils/image";
+import { getProfileImageUrl } from "../utils/image";
 
 // Contexts (global data)
 import { UserContext } from "../contexts/User"
@@ -240,7 +240,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 				<legend className="float-none w-auto">Bio</legend>
 
 				<div className="image-upload-container-outer">
-					<ProfileImageUpload image={getFullUrl(formValues.imageUrl)} handleImageUpload={handleFileUpload} handleImageRemove={handleImageRemove} />
+					<ProfileImageUpload image={getProfileImageUrl(formValues.imageUrl)} handleImageUpload={handleFileUpload} handleImageRemove={handleImageRemove} />
 					<div className="d-flex justify-content-center">
 						<PrivacyButtons id="imagePrivacy" value={formValues.imagePrivacy} onChange={(val) => handleChange(['imagePrivacy', val])} />
 					</div>
