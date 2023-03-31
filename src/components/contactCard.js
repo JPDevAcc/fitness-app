@@ -1,7 +1,7 @@
 import "./css/contactCard.scss"
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getFullUrl } from "../utils/image";
+import { getProfileImageUrl } from "../utils/image";
 
 export default function ContactCard({data: {imageUrl, userName}, handleSendMessage, handleRemoveContact}) {
 	const navigate = useNavigate() ;
@@ -17,7 +17,7 @@ export default function ContactCard({data: {imageUrl, userName}, handleSendMessa
 			<Card.Body className="p-2">
 				<div className="d-flex align-items-center gap-2">
 					<div className={imageLink ? 'contact-card-image my-link-pointer' : 'contact-card-image'} onClick={() => handleNavigation(imageLink)}>
-						<img src={getFullUrl(imageUrl)} alt="" />
+						<img src={getProfileImageUrl(imageUrl)} alt="" />
 					</div>
 					<Card.Title className="fs-6">{userName}</Card.Title>
 				</div>

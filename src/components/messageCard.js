@@ -1,7 +1,7 @@
 import "./css/messageCard.scss"
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getFullUrl } from "../utils/image";
+import { getProfileImageUrl } from "../utils/image";
 import { formatMonth, formatTime } from "../utils/utils";
 import { useState } from "react";
 
@@ -35,7 +35,7 @@ export default function MessageCard({data: {sourceImageUrl, sourceUserName, mess
 				<div className="d-flex justify-content-between">
 					<div className="d-flex align-items-center gap-2">
 						<div className='message-card-image my-link-pointer' onClick={() => handleNavigation(imageLink)}>
-							<img src={getFullUrl(sourceImageUrl)} alt="" />
+							<img src={getProfileImageUrl(sourceImageUrl)} alt="" />
 						</div>
 						<span className="fs-6">{sourceUserName}</span>
 					</div>

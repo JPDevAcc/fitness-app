@@ -1,4 +1,4 @@
-import { getFullUrl } from "../utils/image";
+import { getProfileImageUrl } from "../utils/image";
 import ContactService from "../services/contactService";
 
 export class NotificationsLib {
@@ -14,7 +14,7 @@ export class NotificationsLib {
 				return {
 					id,
 					dateTime: data.dateTime,
-					imageUrl: getFullUrl(dataForType.sourceImageUrl) ?? "images/user.png",
+					imageUrl: getProfileImageUrl(dataForType.sourceImageUrl),
 					imageLink: `showprofile/${dataForType.sourceUserName}`,
 					title: `Message from ${dataForType.sourceUserName}`,
 					msgMain: dataForType.messageSubject,
@@ -25,7 +25,7 @@ export class NotificationsLib {
 				return {
 					id,
 					dateTime: data.dateTime,
-					imageUrl: getFullUrl(dataForType.sourceImageUrl) ?? "images/user.png",
+					imageUrl: getProfileImageUrl(dataForType.sourceImageUrl),
 					imageLink: `showprofile/${ data.idForType}`,
 					title: `Contact request from ${data.idForType}`,
 					acceptCallback: () => this.contactService.acceptRequest(data.idForType).then(() => removeNotificationCallback(id)),

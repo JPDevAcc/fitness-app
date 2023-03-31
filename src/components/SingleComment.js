@@ -1,11 +1,11 @@
 import '../views/css/Comment.scss'
 import { Card } from 'react-bootstrap'
 import { formatTime, formatMonth } from '../utils/utils'
-import { getFullUrl } from '../utils/image'
+import { getProfileImageUrl } from '../utils/image'
 
 function SingleComment(props) {
 
-    const url = getFullUrl(props.comment.profileImg)
+    const url = getProfileImageUrl(props.comment.profileImg)
 
     return (
         <Card className='comment-card' style={{ width: '18rem' }}>
