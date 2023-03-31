@@ -2,7 +2,7 @@ import "./css/RecipeCard.scss";
 import { Modal, Row, Col } from 'react-bootstrap'
 
 function RecipeModal(props) {
-  console.log(props.currentRecipe)
+  // console.log(props.currentRecipe)
 
   return (
     <>

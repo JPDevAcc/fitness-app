@@ -20,10 +20,6 @@ function SingleComment(props) {
                 </Card.Title>
                 <Card.Text>
                     {props.comment.text}
-                    <br />
-                    {/* {formatTime(props.comment.date)}
-                    {" "}
-                    {formatMonth(props.comment.date)} */}
                 </Card.Text>
             </Card.Body>
         </Card>

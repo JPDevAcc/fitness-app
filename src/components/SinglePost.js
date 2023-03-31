@@ -73,7 +73,16 @@ function SinglePost(props) {
         navigate(`/postview`)
     }
 
-    const showProfile = () => {
+    const findUser = async (data) => {
+        const response = await communityService.findUser(data)
+        console.log(response)
+        return response.data
+    }
+
+    const showProfile = async () => {
+        const userData = await findUser(props.post.username)
+        const userProfile = await userData.userProfile
+        props.changeUserProfile(userProfile)
         setLgShow(true)
     }
 
@@ -107,6 +116,9 @@ function SinglePost(props) {
                 show={lgShow}
                 onHide={() => setLgShow(false)}
                 aria-labelledby="example-modal-sizes-title-lg"
+                viewCommon={props.viewCommon}
+                userProfile={props.userProfile}
+
             />
         </>
     )

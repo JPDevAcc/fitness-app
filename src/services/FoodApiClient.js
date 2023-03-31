@@ -25,4 +25,8 @@ export default class FoodAPIClient extends NetService {
     getUserRecipes() {
         return this.get('userrecipes');
     }
+
+    checkRecipe(data) {
+        return this.get(`checkrecipe/${data}`);
+    }
 }

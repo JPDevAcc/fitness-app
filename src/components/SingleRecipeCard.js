@@ -1,7 +1,7 @@
 import "./css/RecipeCard.scss"
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RecipeModal from './RecipeModal.component';
 import FoodAPIClient from "../services/FoodApiClient";
 import { ReactComponent as Heart } from "./Images/heart.svg"
@@ -12,6 +12,15 @@ function SingleRecipeCard(props) {
     const [heartIsRed, setHeartIsRed] = useState(false)
 
     const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
+
+    useEffect(() => {
+        const checkIfRecipeIsSaved = async () => {
+            const response = await foodAPIClient.checkRecipe(props.id)
+            console.log(response.data)
+            setHeartIsRed(response.data)
+        }
+        checkIfRecipeIsSaved()
+    }, [])
 
     const changeUserRecipes = async (recipe) => {
         const response = await foodAPIClient.getUserRecipes()
@@ -77,16 +86,16 @@ function SingleRecipeCard(props) {
                 <Card.Body>
                     <Card.Title>{props.title}</Card.Title>
                     <Card.Text>
-                        <div className={heartIsRed ? "d-none" : "d-block"}>
-                            <Heart
-                                onClick={handleClickedRecipe}
-                            />
-                        </div>
-                        <div className={heartIsRed ? "d-block" : "d-none"}>
-                            <Redheart
-                                onClick={handleClickedRecipe}
-                            />
-                        </div>
+                        {/* <div className={heartIsRed ? "d-none" : "d-block"}> */}
+                        <Heart className={heartIsRed ? "d-none" : "d-block"}
+                            onClick={handleClickedRecipe}
+                        />
+                        {/* </div> */}
+                        {/* <div className={heartIsRed ? "d-block" : "d-none"}> */}
+                        <Redheart className={heartIsRed ? "d-block" : "d-none"}
+                            onClick={handleClickedRecipe}
+                        />
+                        {/* </div> */}
                     </Card.Text>
                 </Card.Body>
             </Card>
