@@ -1,6 +1,7 @@
 // Set and remove error-status for the specified category
 export function setErrorStatus(changeErrorStatusList, category, msg) {
-	changeErrorStatusList((errorStatusList) => ({ ...errorStatusList, [category]: msg }));
+	if (msg === null) removeErrorStatus(changeErrorStatusList, category) ;
+	else changeErrorStatusList((errorStatusList) => ({ ...errorStatusList, [category]: msg }));
 }
 export function removeErrorStatus(changeErrorStatusList, category) {
 	changeErrorStatusList((errorStatusList) => {

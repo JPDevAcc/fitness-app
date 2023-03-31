@@ -44,20 +44,24 @@ export default function UnitsInput({
 			newFormValues[input1Id] = input1Value ;
 			newFormValues[input2Id] = input2Value ?? "";
 			setErrorStatus(unitType, null) ;
+			newFormValues[fieldName] = newValue;
 		} else {
-			isValid = (/^\d*[\\.]?[\d]*$/.test(e.target.value)) ;
+			newFormValues[fieldName] = newValue;
+
+			const isValid1 = (/^\d*[\\.]?[\d]*$/.test(newFormValues[input1Id])) ;
+			const isValid2 = (/^\d*[\\.]?[\d]*$/.test(newFormValues[input2Id])) ;
+			isValid = isValid1 && isValid2 ;
 			if (setErrorStatus) {
 				if (isValid) setErrorStatus(unitType, null) ;
 				else setErrorStatus(unitType, `Invalid ${unitType} value`) ;
 			}
 		}
 
-		newFormValues[fieldName] = newValue;
 		changeFormValues(newFormValues) ;
 
 		if (isValid) {
 			const metricValue = conversionFunc([newFormValues[input1Id], newFormValues[input2Id]], newFormValues[selectId], unitOpts[0].value)[0] ;
-			onValueChange(metricValue) ;
+			onValueChange(metricValue || "") ;
 		}
   }
 
