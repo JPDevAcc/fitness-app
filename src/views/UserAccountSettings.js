@@ -2,10 +2,11 @@
 import './css/UserAccountSettings.scss' ;
 
 // React and other packages
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 // Network services
 import UserService from "../services/userService";
+import UserProfileService from "../services/userProfileService";
 
 // React-bootstrap components
 import Form from "react-bootstrap/Form"
@@ -14,10 +15,17 @@ import Button from "react-bootstrap/Button"
 // Utils
 import * as utils from "../utils/utils";
 
+// Contexts (global data)
+import { UserContext } from "../contexts/User"
+
 // ==============================================================================
 
 export default function UserAccountSettings({viewCommon, logout}) {
 	const userService = new UserService(viewCommon.net);
+	const profileService = new UserProfileService(viewCommon.net);
+
+	const [ userState, dispatch ] = React.useContext(UserContext) ;
+	const userProfile = userState.profile ;
 
 	// Minimum password length
 	const pwdMinLength = 8 ;
@@ -77,11 +85,23 @@ export default function UserAccountSettings({viewCommon, logout}) {
 		changeFormValues(newFormValues) ;
   }
 
-	// Handle form submission
+	// Handle form submissions
   const submitHandlerPwdChange = (event) => {
     event.preventDefault();
     userService.changePwd(formValues.password, formValues.newPassword).then(() => {
 			changeSuccessMsg('Password updated') ;
+		}).catch((err) => console.log(err)) ;
+  }
+
+ const submitHandlerChangeUserName = (event) => {
+    event.preventDefault();
+    profileService.changeUserName(formValues.passwordForUserNameChange, formValues.userName).then(() => {
+			changeSuccessMsg('Username updated') ;
+
+			// Update locally
+			const newFormValues = {...userProfile} ;
+			newFormValues.userName = formValues.userName;
+			dispatch({type: 'setProfile', data: newFormValues});
 		}).catch((err) => console.log(err)) ;
   }
 
@@ -134,7 +154,41 @@ export default function UserAccountSettings({viewCommon, logout}) {
 					</fieldset>
 				</Form>
 
-				<Form onSubmit={(event) => submitHandlerDelAcc(event)}>
+			{/* Change username (currently only a change from the randomly allocated one is allowed - this is subject to change) */}
+			{(userProfile.userName.substring(0, 4).toLowerCase() === 'user') &&
+				<Form onSubmit={(event) => submitHandlerChangeUserName(event)}>
+					<fieldset className="d-flex flex-column gap-2 border p-3">
+						<legend className="float-none w-auto">Change Username</legend>
+
+						<Form.Group controlId="passwordForUserNameChange">
+							<Form.Label>Enter Your Password To Confirm</Form.Label>
+							<Form.Control
+								name="passwordForUserNameChange"
+								type="password"
+								onChange={(event)=>handleChange(event)}
+							/>
+						</Form.Group>
+
+						<Form.Group controlId="userName">
+							<Form.Label>Enter New Username</Form.Label>
+							<Form.Control
+								name="userName"
+								onChange={(event)=>handleChange(event)}
+							/>
+						</Form.Group>
+
+						<Button
+							variant="info"
+							type="submit"
+							className='mx-auto w-50 mb-4'
+							disabled={!formValues.passwordForUserNameChange || !formValues.userName}>
+								Change Username
+						</Button>
+
+					</fieldset>
+				</Form>}
+
+					<Form onSubmit={(event) => submitHandlerDelAcc(event)}>
 					<fieldset className="d-flex flex-column gap-2 border p-3">
 						<legend className="float-none w-auto">Account Deletion</legend>
 

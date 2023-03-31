@@ -243,7 +243,7 @@ export default function App() {
 									nextPage={!userDataState.profile.onboardingStageComplete && "/"} />
 							} />}
 
-						{(token) &&
+						{(initComplete) &&
 							<Route path="/account" element={
 								<UserAccountSettings viewCommon={commonData}
 									logout={logout} />
