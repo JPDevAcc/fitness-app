@@ -1,11 +1,16 @@
 import { ToggleButtonGroup, ToggleButton } from "react-bootstrap";
 
-export default function ButtonsRadio({id, name, value, onChange, disabled, opts}) {
-	
+export default function ButtonsRadio({id, name, value, onChange, disabled, opts, buttonVariant}) {
 	function buildOptions(opts) {
 		return opts.map((opt, i) => 
-			<ToggleButton key={i} name={name || id} id={id + i} value={opt.value} disabled={disabled}>
-				{opt.displayName || opt.value}
+			<ToggleButton variant={buttonVariant}
+				key={(opt.value === undefined) ? opt : opt.value} 
+				name={name || id}
+				id={id + i}
+				value={(opt.value === undefined) ? opt : opt.value}
+				disabled={disabled}
+			>
+				{opt.displayName || ((opt.value === undefined) ? opt : opt.value)}
 			</ToggleButton>
 		) ;
 	}

@@ -1,4 +1,8 @@
 .page-dashboard {
+	display: flex ;
+	flex-direction: column ;
+	gap: 32px;
+	
 	.my-notifications {
 		display: flex ;
 		flex-direction: column ;
