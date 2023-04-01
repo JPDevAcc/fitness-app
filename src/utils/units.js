@@ -70,4 +70,11 @@
 		return [valOut1, valOut2] ;
 	}
 
+	export function calcBMIValues(weightKm, heightM) {
+		const bmiExact = weightKm / (heightM * heightM) ;
+		const bmiPrime = roundValue(bmiExact / 25, 2) ; // Note: For SE Asian and S Chinese populations, this should actually be 23 - in future we could make this configurable
+		const bmi = roundValue(bmiExact, 1) ;
+		return {bmi, bmiPrime} ;
+	}
+
 	export { weightUnitOpts, heightUnitOpts, distanceUnitOpts, temperatureUnitOpts } ;
