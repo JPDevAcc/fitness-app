@@ -1,6 +1,7 @@
 import InputWithSelect from "./inputWithSelect";
 import Input2WithSelect from "./input2WithSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { roundValue } from "../utils/units" ;
 
 export default function UnitsInput({
 	labelText,
@@ -19,28 +20,41 @@ export default function UnitsInput({
 	const input2Id = unitType + '_i2' ;
 	const selectId = unitType + '_select' ;
 
-	const [input1Value, input2Value] = conversionFunc([metricValue], unitOpts[0].value, currentUnit) ;
-
 	// Form fields
 	const [formValues, changeFormValues] = useState({
-		[input1Id]: input1Value,
-		[input2Id]: input2Value ?? '',
-		[selectId]: currentUnit,
+		[input1Id]: "",
+		[input2Id]: "",
+		[selectId]: "",
+		metricValue: ""
 	}) ;
+
+	useEffect(() => {
+		// Convert from metric and round for display
+		let [input1Value, input2Value] = conversionFunc([metricValue], unitOpts[0].value, currentUnit) ;
+		if (currentUnit.split(' ').length === 1) input1Value = roundValue(input1Value, 1) ;
+		else input2Value = roundValue(input2Value, 1) ;
+
+		changeFormValues({
+			[input1Id]: input1Value,
+			[input2Id]: input2Value ?? '',
+			[selectId]: currentUnit,
+			metricValue
+		}) ;
+	}, []) ;
 
 	// Handle form field user-input
   const handleChange = (e) => {
-		const oldUnit = formValues[selectId] ;
 		const newFormValues = {...formValues} ;
 		const fieldName = e.target.name ;
 		const newValue = e.target.value;
-
+		
 		let isValid = true ;
 		if (e.target.id === selectId) {
-			const inputVal1 = (/^\d*[\\.]?[\d]*$/.test(formValues[input1Id])) ? formValues[input1Id] : 0 ;
-			const inputVal2 = (/^\d*[\\.]?[\d]*$/.test(formValues[input2Id])) ? formValues[input2Id] : 0 ;
-			const [input1Value, input2Value] = conversionFunc([inputVal1, inputVal2], oldUnit, e.target.value) ;
-			// console.log("CONVERT ", [formValues[input1Id], formValues[input2Id]], oldUnit, e.target.value, input1Value, input2Value) ;
+			// Convert from metric and round for display
+			let [input1Value, input2Value] = conversionFunc([formValues.metricValue], unitOpts[0].value, e.target.value) ;
+			if (newValue.split(' ').length === 1) input1Value = roundValue(input1Value, 1) ;
+			else input2Value = roundValue(input2Value, 1) ;
+
 			newFormValues[input1Id] = input1Value ;
 			newFormValues[input2Id] = input2Value ?? "";
 			setErrorStatus(unitType, null) ;
@@ -48,21 +62,22 @@ export default function UnitsInput({
 		} else {
 			newFormValues[fieldName] = newValue;
 
-			const isValid1 = (/^\d*[\\.]?[\d]*$/.test(newFormValues[input1Id])) ;
-			const isValid2 = (/^\d*[\\.]?[\d]*$/.test(newFormValues[input2Id])) ;
+			const isValid1 = (!formValues[input1Id] || (/^[0-9]+(\.[0-9]+)?$/.test(newFormValues[input1Id]))) ;
+			const isValid2 = (!formValues[input2Id] || (/^[0-9]+(\.[0-9]+)?$/.test(newFormValues[input2Id]))) ;
 			isValid = isValid1 && isValid2 ;
 			if (setErrorStatus) {
 				if (isValid) setErrorStatus(unitType, null) ;
 				else setErrorStatus(unitType, `Invalid ${unitType} value`) ;
 			}
-		}
 
-		changeFormValues(newFormValues) ;
-
-		if (isValid) {
-			const metricValue = conversionFunc([newFormValues[input1Id], newFormValues[input2Id]], newFormValues[selectId], unitOpts[0].value)[0] ;
-			onValueChange(metricValue || "") ;
+			// Re-calculate metric value
+			if (isValid) {
+				const metricValue = conversionFunc([newFormValues[input1Id], newFormValues[input2Id]], newFormValues[selectId], unitOpts[0].value)[0] ;
+				onValueChange(metricValue || "") ;
+				newFormValues.metricValue = metricValue ;
+			}
 		}
+		changeFormValues(state => ({...state, ...newFormValues})) ;
   }
 
 	// Template
