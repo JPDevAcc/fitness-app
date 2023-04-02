@@ -23,7 +23,8 @@
 
 	export function roundValue(val, decimalPlaces) {
 		const scale = Math.pow(10, decimalPlaces) ;
-		return Math.round((val * scale)) / scale ;
+		let result = Math.round((val * scale)) / scale ;
+		return (result === 0) ? 0 : result ; // (convert -0 to 0)
 	}
 
 	export function convertWeight(valsIn, valInUnits, valOutUnits) {
