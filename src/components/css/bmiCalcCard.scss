@@ -1,0 +1,44 @@
+.component-bmi-calc-card {
+	color: #222;
+	box-shadow: 5px -5px 10px -1px #111111;
+ 	background-color: rgb(196,196,196);
+	background: linear-gradient(180deg, rgba(196,196,196,0.75) 0%, rgba(152,152,152,0.75) 16%, rgba(147,147,147,0.75) 80%, rgba(105,105,105,0.75) 100%), url(noise.svg), linear-gradient(180deg, rgba(196,196,196,1) 0%, rgba(152,152,152,1) 16%, rgba(147,147,147,1) 80%, rgba(105,105,105,1) 100%) ;
+ 	background-blend-mode: normal, luminosity ;
+	border-width: 4px;
+
+	.bmi-calc-class {
+		white-space: pre-wrap ; /* So we can keep the vertical height with whitespace */
+	}
+
+	.card-footer {
+		background: #00000040 ;
+
+		.btn {
+			box-shadow: 0px 0px 5px 2px #00000080;
+		}
+	}
+
+	.bmi-underweight input {
+		background-color: #8080ff ;	
+	}
+
+	.bmi-normal input {
+		background-color: #40ff40 ;	
+	}
+
+	.bmi-overweight input {
+		background-color: yellow ;	
+	}
+
+	.bmi-obese1 input {
+		background-color: orange ;	
+	}
+
+	.bmi-obese2 input {
+		background-color: #ff4040 ;	
+	}
+
+	.bmi-obese3 input {
+		background-color: #ff6060 ;	
+	}
+}

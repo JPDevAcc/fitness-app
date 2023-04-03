@@ -35,14 +35,14 @@ export default class NetService {
 
 	request(method, url, data = null, extraHeaders = {}) {
 		let headers = {}
-		if (this.tokenProvider) headers.token = this.tokenProvider();
-		headers = { ...headers, ...extraHeaders };
-		if (data === null) delete headers['content-type']; // (don't set content-type if no data)
-		const axiosData = (data === null) ? { method, url, headers } : { method, url, data, headers };
+		if (this.tokenProvider) headers.token = this.tokenProvider() ;
+		headers = {...headers, ...extraHeaders} ;
+		if (data === null) delete headers['content-type'] ; // (don't set content-type if no data)
+		const axiosData = (data === null) ? {method, url, headers} : {method, url, data, headers} ;
 		return axios(axiosData).then((response) => {
-			this.errClearInternal();
-			return response;
-		}).catch((err) => this.errHandlerInternal(err));
+			this.errClearInternal() ;
+			return response ;
+		}).catch((err) => this.errHandlerInternal(err)) ;
 	}
 
 	// Empty-body functions
