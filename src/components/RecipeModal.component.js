@@ -2,7 +2,15 @@ import "./css/RecipeCard.scss";
 import { Modal, Row, Col } from 'react-bootstrap'
 
 function RecipeModal(props) {
-  // console.log(props.currentRecipe)
+
+  const handleClickedIngredient = (index) => {
+    props.changeSearchBarValues({
+      ingredient: props.currentRecipe.ingredientsValues[index][0],
+      amount: props.currentRecipe.ingredientsValues[index][1],
+      unit: props.currentRecipe.ingredientsValues[index][2],
+    })
+  }
+
 
   return (
     <>
@@ -16,32 +24,33 @@ function RecipeModal(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
-            {props.currentRecipe.title}
+            {props.currentRecipe?.title}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
             <Col className="ingredients" lg={5}>
               <ul>
-                {props.currentRecipe.ingredients.map((ingredient) => {
+                {props.currentRecipe?.ingredients.map((ingredient, index) => {
                   return (
-                    <li key={Math.random()} >{ingredient}</li>
+                    <li key={index} >{ingredient}</li>
                   )
                 })}
               </ul>
             </Col>
             <Col lg={6}>
-              <img className="img-modal-recipe" src={props.currentRecipe.image} alt="" />
+              <img className="img-modal-recipe" src={props.currentRecipe?.image} alt="" />
             </Col>
           </Row>
           <Row>
-            {props.currentRecipe.instructions}
+            {props.currentRecipe?.instructions}
           </Row>
           <Row>
-            {props.currentRecipe.ingredientsImages.map((image) => {
+            {props.currentRecipe?.ingredientsImages.map((image, index) => {
               return (
                 <div
-                  key={Math.random()}
+                  onClick={() => handleClickedIngredient(index)}
+                  key={index}
                   className="ingredient-wrapper">
                   <img className="img-ingredient" src={`https://spoonacular.com/cdn/ingredients_100x100/${image[0]}`} alt="" />
                   <label>{image[1]}</label>

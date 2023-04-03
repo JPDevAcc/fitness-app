@@ -119,6 +119,7 @@
 
         &:hover {
             background-color: rgb(127, 255, 212, 0.5);
+            background-image: linear-gradient(45deg, #f57960 0%, #f3ac48  51%, #f77257  100%) !important;
             transform: translateY(-10px);
             transform: translateY(5px);
         }

@@ -145,7 +145,12 @@ export default function App() {
 		ingredientsImages: [
 			"https://spoonacular.com/cdn/ingredients_100x100/butter-sliced.jpg",
 			"2 cups"
-		]
+		],
+		ingredientsValues: [
+			"Flour",
+			"2 ",
+			"cups"
+		],
 	});
 
 	const [savedRecipes, changeSavedRecipes] = useState([]);
@@ -171,13 +176,13 @@ export default function App() {
 	const [lolCounter, changeLolCounter] = useState(0)
 	const [commentCounter, changeCommentCounter] = useState(0)
 
-	const [userProfile, changeUserProfile] = useState({
-		// userName: "User Name",
-		// profilePic: "https://spoonacular.com/recipeImages/602638-556x370.jpg",
-		// aboutMe: "This is a basic post",
-	})
+	const [userProfile, changeUserProfile] = useState({})
 
-
+	const [searchBarValues, changeSearchBarValues] = useState({
+		ingredient: "",
+		amount: "",
+		unit: "",
+	});
 
 	// Template
 	return (
@@ -290,6 +295,8 @@ export default function App() {
 									changeIsRedHeart={(isRedHeart) => changeIsRedHeart(isRedHeart)}
 									savedRecipes={savedRecipes}
 									changeSavedRecipes={(savedRecipes) => changeSavedRecipes(savedRecipes)}
+									searchBarValues={searchBarValues}
+									changeSearchBarValues={changeSearchBarValues}
 								/>
 							} />}
 

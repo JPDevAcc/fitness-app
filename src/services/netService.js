@@ -2,65 +2,65 @@ import axios from "axios";
 
 const CONTENT_JSON = {
 	'content-type': 'application/json'
-} ;
+};
 
-const API_URL = process.env.REACT_APP_API_URL ;
+const API_URL = process.env.REACT_APP_API_URL;
 
 export default class NetService {
-	constructor({errHandler = null, tokenProvider = null, logoutHandler = null} = {}) {
-		this.errHandler = errHandler ;
-		this.tokenProvider = tokenProvider ;
-		this.logoutHandler = logoutHandler ;
+	constructor({ errHandler = null, tokenProvider = null, logoutHandler = null } = {}) {
+		this.errHandler = errHandler;
+		this.tokenProvider = tokenProvider;
+		this.logoutHandler = logoutHandler;
 
-		axios.defaults.withCredentials = true ; // Send cookies
+		axios.defaults.withCredentials = true; // Send cookies
 	}
 
 	errHandlerInternal(err) {
 		// If we got an unauthorized / forbidden status response then treat it as a log-out (if code also correct)
 		if ((err.response.status === 401 || err.response.status === 403) && err.response.data.code === 'NOT_AUTHORIZED') {
 			if (this.logoutHandler) {
-    		this.logoutHandler();
-				return ;
+				this.logoutHandler();
+				return;
 			}
-  	}
+		}
 
-		if (this.errHandler) this.errHandler(err.response.status, err.response.statusText, err.response.data.message) ;
-		else console.error(err.response.status + " : " + err.response.statusText) ;
-		throw(err) ; // (rethrow)
+		if (this.errHandler) this.errHandler(err.response.status, err.response.statusText, err.response.data.message);
+		else console.error(err.response.status + " : " + err.response.statusText);
+		throw (err); // (rethrow)
 	}
 
 	errClearInternal() {
-		if (this.errHandler) this.errHandler(null) ;
+		if (this.errHandler) this.errHandler(null);
 	}
 
 	request(method, url, data = null, extraHeaders = {}) {
 		let headers = {}
-		if (this.tokenProvider) headers.token = this.tokenProvider() ;
-		headers = {...headers, ...extraHeaders} ;
-		if (data === null) delete headers['content-type'] ; // (avoid stringifying null - interpret as no data instead)
-
-		return axios({method, url, data, headers}).then((response) => {
-			this.errClearInternal() ;
-			return response ;
-		}).catch((err) => this.errHandlerInternal(err)) ;
+		if (this.tokenProvider) headers.token = this.tokenProvider();
+		headers = { ...headers, ...extraHeaders };
+		if (data === null) delete headers['content-type']; // (don't set content-type if no data)
+		const axiosData = (data === null) ? { method, url, headers } : { method, url, data, headers };
+		return axios(axiosData).then((response) => {
+			this.errClearInternal();
+			return response;
+		}).catch((err) => this.errHandlerInternal(err));
 	}
 
 	// Empty-body functions
 	get(epUrl) {
-		return this.request('get', API_URL + epUrl) ;
+		return this.request('get', API_URL + epUrl);
 	}
 	delete(epUrl) {
-		return this.request('delete', API_URL + epUrl) ;
+		return this.request('delete', API_URL + epUrl);
 	}
 
 	// JSON functions
 	post(epUrl, data = null) {
-		return this.request('post', API_URL + epUrl, data, CONTENT_JSON) ;
+		return this.request('post', API_URL + epUrl, data, CONTENT_JSON);
 	}
 	put(epUrl, data = null) {
-		return this.request('put', API_URL + epUrl, data, CONTENT_JSON) ;
+		return this.request('put', API_URL + epUrl, data, CONTENT_JSON);
 	}
 	patch(epUrl, data = null) {
-		return this.request('patch', API_URL + epUrl, data, CONTENT_JSON) ;
+		return this.request('patch', API_URL + epUrl, data, CONTENT_JSON);
 	}
 }

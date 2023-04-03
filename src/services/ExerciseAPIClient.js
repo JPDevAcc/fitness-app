@@ -8,4 +8,12 @@ export default class ExerciseAPIClient extends NetService {
   getExercise(bodypart) {
     return this.get(`exercises/bodyPart/${bodypart}`);
   }
+
+  addCustomWorkout(customWorkout) {
+    return this.post("customWorkout", customWorkout);
+  }
+
+  getCustomWorkouts() {
+    return this.get("customWorkouts");
+  }
 }

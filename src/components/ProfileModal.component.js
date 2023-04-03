@@ -6,7 +6,7 @@ import { getFullUrl } from '../utils/image'
 function ProfileModal(props) {
 
     const url = getFullUrl(props.userProfile?.imageUrl)
-    console.log(props.userProfile)
+    // console.log(props.userProfile)
 
     return (
         <>
