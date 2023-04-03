@@ -10,7 +10,7 @@ function SingleComment(props) {
     return (
         <Card className='comment-card' style={{ width: '18rem' }}>
             <img className='comment-card-image' src={url}></img>
-            <Card.Body>
+            <Card.Body className='comment-body'>
                 <Card.Title>
                     <span className='username'>{props.comment.username}</span>
                     {" "}
@@ -18,7 +18,7 @@ function SingleComment(props) {
                     {" "}
                     <span className='date'>{formatMonth(props.comment.date)}</span>
                 </Card.Title>
-                <Card.Text>
+                <Card.Text className='comment-text'>
                     {props.comment.text}
                 </Card.Text>
             </Card.Body>

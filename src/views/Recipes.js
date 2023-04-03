@@ -24,17 +24,14 @@ function Recipes(props) {
 
     async function getRecipes(data) {
         const response = await foodAPIClient.getRecipe(data);
-        console.log(response)
 
         return props.changeRecipes(response.data.results)
-
     }
 
     useEffect(() => {
         props.netService.get('allrecipes')
             .then(response => {
                 props.changeRecipes(response.data)
-                console.log(response.data)
             })
             .catch(error => {
                 console.log(error)
@@ -60,8 +57,9 @@ function Recipes(props) {
                 changeIsRedHeart={(isRedHeart) => props.changeIsRedHeart(isRedHeart)}
                 savedRecipes={props.savedRecipes}
                 changeSavedRecipes={(savedRecipes) => props.changeSavedRecipes(savedRecipes)}
+                searchBarValues={props.searchBarValues}
+                changeSearchBarValues={props.changeSearchBarValues}
             />
-
         )
     })
 
@@ -76,7 +74,6 @@ function Recipes(props) {
 
     function submitHandlerRecipe(event) {
         const data = event.target[0].value;
-        console.log(data)
         event.preventDefault();
 
         try {
@@ -89,26 +86,20 @@ function Recipes(props) {
 
     const getNutrition = async (data, amount, unit) => {
         const response = await foodAPIClient.getIngredientInfo(data, amount, unit);
-        console.log("this is the response")
-        console.log(response.data)
         return response.data
-
     }
 
     const getID = async (data) => {
         const response = await foodAPIClient.getIngredientID(data);
-        console.log("this is the response")
-        console.log(response.data)
         return response.data.results[0].id
     }
 
-
     async function sunbmitHandlerNutrition(event) {
+        event.preventDefault();
+
         const data = event.target[0].value;
         const amount = event.target[1].value;
         const unit = event.target[2].value;
-        console.log(data, amount, unit)
-        event.preventDefault();
         const id = await getID(data);
 
         try {
@@ -145,15 +136,15 @@ function Recipes(props) {
                     <br />
                     <Form onSubmit={sunbmitHandlerNutrition}>
                         <Form.Group >
-                            <Form.Control type="text" placeholder="Enter ingredient name" />
+                            <Form.Control defaultValue={props.searchBarValues.ingredient} id="name" type="text" placeholder="Enter ingredient name" />
                         </Form.Group>
                         <br />
                         <Form.Group >
-                            <Form.Control type="text" placeholder="Enter amount" />
+                            <Form.Control defaultValue={props.searchBarValues.amount} id="amount" type="text" placeholder="Enter amount" />
                         </Form.Group>
                         <br />
                         <Form.Group >
-                            <Form.Control type="text" placeholder="Enter weight unit" />
+                            <Form.Control defaultValue={props.searchBarValues.unit} id="unit" type="text" placeholder="Enter weight unit" />
                         </Form.Group>
                         <br />
                         <Button className="btn-orange" variant="primary" type="submit">Fetch nutrition!</Button>
@@ -165,8 +156,6 @@ function Recipes(props) {
                         show={lgShow}
                         onHide={() => setLgShow(false)}
                         aria-labelledby="example-modal-sizes-title-lg"
-
-
                     />
                 </Col>
                 <Col lg={9} md={12} className="search-column">

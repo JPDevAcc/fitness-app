@@ -11,6 +11,7 @@ import { ReactComponent as Redheart } from "./Images/redheart.svg"
 function SingleRecipeCard(props) {
     const [heartIsRed, setHeartIsRed] = useState(false)
 
+
     const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
 
     useEffect(() => {
@@ -59,12 +60,17 @@ function SingleRecipeCard(props) {
             return [ingredient.image, ingredient.amount + " " + ingredient.unit]
         })
 
+        const ingredientsValues = recipeInfo.extendedIngredients.map((ingredient) => {
+            return [ingredient.name, ingredient.amount, ingredient.unit]
+        })
+
         props.changeCurrentRecipe({
             title: recipeInfo.title,
             ingredients: ingredientsList,
             instructions: recipeInfo.instructions,
             image: recipeInfo.image,
             ingredientsImages: ingredientsImages,
+            ingredientsValues: ingredientsValues
 
         })
         setLgShow(true)
@@ -86,21 +92,20 @@ function SingleRecipeCard(props) {
                 <Card.Body>
                     <Card.Title>{props.title}</Card.Title>
                     <Card.Text>
-                        {/* <div className={heartIsRed ? "d-none" : "d-block"}> */}
                         <Heart className={heartIsRed ? "d-none" : "d-block"}
                             onClick={handleClickedRecipe}
                         />
-                        {/* </div> */}
-                        {/* <div className={heartIsRed ? "d-block" : "d-none"}> */}
                         <Redheart className={heartIsRed ? "d-block" : "d-none"}
                             onClick={handleClickedRecipe}
                         />
-                        {/* </div> */}
                     </Card.Text>
                 </Card.Body>
             </Card>
             <RecipeModal
-
+                ingredient={props.ingredient}
+                changeIngredient={props.changeIngredient}
+                searchBarValues={props.searchBarValues}
+                changeSearchBarValues={props.changeSearchBarValues}
                 currentRecipe={props.currentRecipe}
                 size="lg"
                 show={lgShow}
