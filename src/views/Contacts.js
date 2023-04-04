@@ -1,5 +1,5 @@
 // CSS
-import "./css/_contacts.scss"
+import "./css/contacts.scss"
 
 // React and other packages
 import React, { useEffect, useRef } from "react";
@@ -12,8 +12,8 @@ import ContactService from "../services/contactService";
 import MessageService from "../services/messageService";
 
 // Our components
-import ContactCard from "../components/_ContactCard" ;
-import CreateMessageModal from "../components/_CreateMessageModal";
+import ContactCard from "../components/ContactCard" ;
+import CreateMessageModal from "../components/CreateMessageModal";
 
 // Contexts (global data)
 import { UserContext } from "../contexts/User"

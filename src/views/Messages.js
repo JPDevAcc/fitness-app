@@ -1,5 +1,5 @@
 // CSS
-import "./css/_messages.scss"
+import "./css/messages.scss"
 
 // React and other packages
 import React, { useEffect, useRef } from "react";
@@ -13,8 +13,8 @@ import ContactService from "../services/contactService";
 import MessageService from "../services/messageService";
 
 // Our components
-import MessageCard from "../components/_MessageCard" ;
-import CreateMessageModal from "../components/_CreateMessageModal";
+import MessageCard from "../components/MessageCard" ;
+import CreateMessageModal from "../components/CreateMessageModal";
 
 // Contexts (global data)
 import { UserContext } from "../contexts/User"

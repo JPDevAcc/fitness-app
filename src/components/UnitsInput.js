@@ -1,5 +1,5 @@
-import InputWithSelect from "./_InputWithSelect";
-import Input2WithSelect from "./_Input2WithSelect";
+import InputWithSelect from "./InputWithSelect";
+import Input2WithSelect from "./Input2WithSelect";
 import { useEffect, useState } from "react";
 import { roundValue } from "../utils/units" ;
 

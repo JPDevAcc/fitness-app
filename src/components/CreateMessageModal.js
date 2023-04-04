@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import './css/createMessageModal.scss';
-import Select from './_Select';
+import Select from './Select';
 
 export default function CreateMessageModal({ contacts, writingMessageTo, inputsDisabled, handleClose, handleSubmit }) {
 

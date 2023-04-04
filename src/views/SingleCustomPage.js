@@ -1,6 +1,6 @@
 import './css/customPage.scss'
 import { formatDate, formatMonth, formatTime } from '../utils/utils'
-import UnsplashAPIClient from '../services/_unsplashApiService'
+import UnsplashAPIClient from '../services/unsplashApiService'
 import { Button, Card } from 'react-bootstrap'
 
 

@@ -1,8 +1,8 @@
 import "./css/goalsSelection.scss";
 import { useMemo, useState } from "react";
 import { Row, Col, Button } from "react-bootstrap";
-import RemovableTile from "./_RemovableTile";
-import Select from "./_Select";
+import RemovableTile from "./RemovableTile";
+import Select from "./Select";
 
 export default function GoalsSelection({goalOpts, selectedGoalIds, goalIdsToTitle, handleAddGoal, handleRemoveGoal}) {
 	

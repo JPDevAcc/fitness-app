@@ -1,5 +1,5 @@
 // CSS
-import './css/_userAccountSettings.scss' ;
+import './css/userAccountSettings.scss' ;
 
 // React and other packages
 import React, { useState } from 'react';
