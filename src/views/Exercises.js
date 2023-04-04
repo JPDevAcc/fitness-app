@@ -1,7 +1,7 @@
-import "./css/Exercises.scss";
-import SingleWorkoutCard from "../components/singleWorkoutCard.component";
+import "./css/_exercises.scss";
+import SingleWorkoutCard from "../components/_SingleWorkoutCard";
 import WorkoutCard from "../components/WorkoutCard";
-import ExerciseAPIClient from "../services/ExerciseAPIClient";
+import ExerciseAPIClient from "../services/_exerciseApiService";
 
 function Exercises(props) {
   const exerciseAPIClient = new ExerciseAPIClient(props.viewCommon.net);

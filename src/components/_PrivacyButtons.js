@@ -1,5 +1,5 @@
 import "./css/privacyButtons.scss";
-import ButtonsRadio from "./buttonsRadio";
+import ButtonsRadio from "./_ButtonsRadio";
 
 const opts = [
 	{value: 'pri', displayName: 'Private'},

@@ -1,5 +1,5 @@
 // CSS
-import './css/UserProfile.scss' ;
+import './css/_userProfile.scss' ;
 
 // React and other packages
 import React, { useState } from 'react';
@@ -16,12 +16,12 @@ import Row from 'react-bootstrap/Row';
 import UserProfileService from "../services/userProfileService";
 
 // Our components
-import ProfileImageUpload from '../components/profileImageUpload';
-import Select from '../components/select';
-import UnitsInput from '../components/unitsInput';
-import PrivacyButtons from '../components/privacyButtons';
-import GoalsSelection from '../components/goalsSelection';
-import ButtonsRadio from '../components/buttonsRadio';
+import ProfileImageUpload from '../components/_ProfileImageUpload';
+import Select from '../components/_Select';
+import UnitsInput from '../components/_UnitsInput';
+import PrivacyButtons from '../components/_PrivacyButtons';
+import GoalsSelection from '../components/_GoalsSelection';
+import ButtonsRadio from '../components/_ButtonsRadio';
 
 // Utils
 import * as utils from "../utils/utils";

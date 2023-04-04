@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import ExerciseAPIClient from "../services/ExerciseAPIClient";
-import "./css/SingleWorkoutCard.scss";
+import ExerciseAPIClient from "../services/_exerciseApiService";
+import "./css/_singleWorkoutCard.scss";
 import logo from "./Images/logo.png";
 import top from "./Images/top.png";
 import WorkoutCard from "./WorkoutCard";

@@ -5,7 +5,7 @@ import { ReactComponent as Comments } from "./Images/comments.svg"
 import { ReactComponent as LolFace } from "./Images/lol2.svg"
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import ProfileModal from './ProfileModal.component';
+import ProfileModal from './ProfileModal';
 import CommunityService from '../services/communityService'
 import { getProfileImageUrl } from '../utils/image'
 

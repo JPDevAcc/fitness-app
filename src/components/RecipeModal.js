@@ -1,4 +1,4 @@
-import "./css/RecipeCard.scss";
+import "./css/_recipeCard.scss";
 import { Modal, Row, Col } from 'react-bootstrap'
 
 function RecipeModal(props) {

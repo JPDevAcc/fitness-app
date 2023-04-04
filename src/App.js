@@ -15,9 +15,9 @@ import UserDataService from "./services/userDataService";
 import NotificationService from "./services/notificationService";
 
 // Our components
-import NavigationBar from "./components/navbar.component";
-import Footer from "./components/footer.component";
-import StatusMessage from "./components/statusMessage";
+import NavigationBar from "./components/_Navbar";
+import Footer from "./components/_Footer";
+import StatusMessage from "./components/_StatusMessage";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";

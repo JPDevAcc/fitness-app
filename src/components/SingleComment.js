@@ -1,4 +1,4 @@
-import '../views/css/Comment.scss'
+import '../views/css/_comment.scss'
 import { Card } from 'react-bootstrap'
 import { formatTime, formatMonth } from '../utils/utils'
 import { getProfileImageUrl } from '../utils/image'

@@ -1,16 +1,16 @@
-import './css/Community.scss'
+import './css/_community.scss'
 import CommunityPosts from '../components/CommunityPosts'
-import AddPostModal from '../components/AddPostModal.component'
+import AddPostModal from '../components/AddPostModal'
 import { Row, Col, Form, Button, Card } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import CommunityService from '../services/communityService'
 import { getProfileImageUrl } from '../utils/image'
 import { ReactComponent as Message } from './images/message.svg'
 import { ReactComponent as Add } from './images/plus.svg'
-import ProfileModal from '../components/ProfileModal.component'
+import ProfileModal from '../components/ProfileModal'
 import MessageService from '../services/messageService'
 import ContactService from "../services/contactService";
-import CreateMessageModal from "../components/createMessageModal";
+import CreateMessageModal from "../components/_CreateMessageModal";
 
 function Community(props) {
 

@@ -1,4 +1,4 @@
-import './css/PostPage.scss'
+import './css/_postPage.scss'
 import { useState, useEffect } from 'react'
 import { ReactComponent as Heart } from './images/redheart.svg'
 import { ReactComponent as Comments } from './images/comments.svg'
