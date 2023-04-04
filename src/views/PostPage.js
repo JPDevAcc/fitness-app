@@ -16,20 +16,20 @@ function PostPage(props) {
     const updateLikes = async () => {
         const response = await communityService.getLikesCount(props.currentPost._id)
         const likes = await response.data
-        props.changeLikeCounter(likes.length)
+        props.changeLikeCounter(likes)
 
     }
 
     const updateLols = async () => {
         const response = await communityService.getLolsCount(props.currentPost._id)
         const lols = await response.data
-        props.changeLolCounter(lols.length)
+        props.changeLolCounter(lols)
     }
 
     const updateComments = async () => {
         const response = await communityService.getCommentCount(props.currentPost._id)
         const comments = await response.data
-        props.changeCommentCounter(comments.length)
+        props.changeCommentCounter(comments)
     }
 
     useEffect(() => {

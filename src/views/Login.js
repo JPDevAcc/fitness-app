@@ -2,26 +2,30 @@ import './css/Login.scss'
 import logo from '../components/Images/logo.png'
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserService from '../services/userService';
 import { useNavigate } from 'react-router-dom';
 
 function Login(props) {
+
     const userService = new UserService(props.viewCommon.net);
     const [disabled, changeDisabled] = useState(false);
 
-    const navigate = useNavigate();
+    useEffect(() => {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }, [])
 
+
+    const navigate = useNavigate();
 
     const submitHandler = async (event) => {
         event.preventDefault();
         changeDisabled(true);
 
-        console.log(event.target.username.value, event.target.password.value)
         userService.login(event.target.username.value, event.target.password.value)
             .then((response) => {
                 changeDisabled(false);
-                console.log(response)
                 props.login(response.data.token);
                 console.log("Success!")
                 navigate('/')
@@ -34,15 +38,11 @@ function Login(props) {
 
     return (
         <div className='login-wrapper'>
-            {/* <h1>Login</h1> */}
-
             <Form className='login-form' onSubmit={(event) => submitHandler(event)}>
                 <Form.Group controlId="username">
                     <Form.Label>Username</Form.Label>
                     <Form.Control className='username'
                         name="username"
-                    // onChange={(event) => handleChange(event)}
-                    // disabled={successMsg}
                     />
                 </Form.Group>
                 <Form.Group controlId="password">
@@ -50,18 +50,13 @@ function Login(props) {
                     <Form.Control className='password'
                         name="password"
                         type="password"
-                    // onChange={(event) => handleChange(event)}
-                    // disabled={successMsg}
                     />
                 </Form.Group>
-                <div className="text-center my-4">
-                    <Button variant="primary" type="submit">Login</Button>
+                <div className="button text-center my-4">
+                    <Button className='orange-button' variant="primary" type="submit">Login</Button>
                 </div>
             </Form>
             <img className='logo-login' src={logo} alt="logo" />
-
-
-
         </div>
     )
 }

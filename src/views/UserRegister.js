@@ -3,7 +3,7 @@ import './css/UserRegister.scss';
 import logo from '../components/Images/logo.png'
 
 // React and other packages
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 
 // Network services
@@ -21,6 +21,11 @@ import * as utils from "../utils/utils";
 export default function UserRegister(viewCommon) {
 	const userService = new UserService(viewCommon.net);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		document.body.scrollTop = 0; // For Safari
+		document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+	}, [])
 
 	// Minimum password length
 	const pwdMinLength = 8;
@@ -88,18 +93,18 @@ export default function UserRegister(viewCommon) {
 	}
 
 	// Handle form submission
-  const submitHandler = (event) => {
-    event.preventDefault();
-		const regData = {...formValues} ;
-		delete regData.password_confirm ;
-    userService.register(regData).then(() => {
-			changeSuccessMsg('Registration successful - please wait to be redirected to the login page') ;
+	const submitHandler = (event) => {
+		event.preventDefault();
+		const regData = { ...formValues };
+		delete regData.password_confirm;
+		userService.register(regData).then(() => {
+			changeSuccessMsg('Registration successful - please wait to be redirected to the login page');
 			setTimeout(() => navigate("/login"), 3000);
-		}).catch((err) => console.log(err)) ;
-  }
+		}).catch((err) => console.log(err));
+	}
 
 	// Template
-  return (
+	return (
 		<div className="page-user-register">
 			<h1>Create Account</h1>
 			{getErrorMessageHtml()}
@@ -133,8 +138,8 @@ export default function UserRegister(viewCommon) {
 					/>
 				</Form.Group>
 
-				<div className="text-center my-4">
-					<Button variant="primary" type="submit" disabled={isError() || successMsg}>Register</Button>
+				<div className="button text-center my-4">
+					<Button className='orange-button' variant="primary" type="submit" disabled={isError() || successMsg}>Register</Button>
 				</div>
 			</Form>
 			<img className='logo-login' src={logo} alt='logo' />

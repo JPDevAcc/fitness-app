@@ -14,10 +14,13 @@ function CustomWorkout(props) {
     const [customWorkouts, changeCustomWorkouts] = useState([])
     const [addedExercises, changeAddedExercises] = useState([])
 
+    const [tempExerciseList, changeTempExerciseList] = useState([])
+
+    const [currentExercise, changeCurrentExercise] = useState('')
+
     const [formValues, changeFormValues] = useState({
         title: '',
         sets: '',
-        exerciseID: '',
         exerciseName: '',
         reps: ''
     })
@@ -35,7 +38,11 @@ function CustomWorkout(props) {
 
     const generateCustomCards = () => {
         return customWorkouts?.map((customWorkout, index) =>
-            <SingleCustomCard key={index} customWorkout={customWorkout} />
+            <SingleCustomCard
+                key={index}
+                customWorkout={customWorkout}
+                changeCurrentCustomWorkout={props.changeCurrentCustomWorkout}
+            />
         )
     }
 
@@ -48,29 +55,30 @@ function CustomWorkout(props) {
         )
     }
 
-    const transferID = (id, name) => {
+    const transferID = (id, name, gif) => {
         changeFormValues({
             ...formValues,
+            exerciseName: name,
+        })
+
+        changeCurrentExercise({
             exerciseID: id,
-            exerciseName: name
+            gif: gif,
+            name: name
         })
     }
 
     const displayExercises = () => {
         return exercises?.map((exercise, index) => {
-            while (index < 20) {
+            while (index < 50) {
                 return (
-                    <Card onClick={() => transferID(exercise.id, exercise.name)} className='exc-card' key={index} style={{ width: '18rem' }}>
-                        <Card.Body>
-                            <Card.Title>{exercise.name}</Card.Title>
-                        </Card.Body>
+                    <Card onClick={() => transferID(exercise.id, exercise.name, exercise.gifUrl)} className='exc-card' key={index} style={{ width: '18rem' }}>
+                        <Card.Title>{exercise.name}</Card.Title>
                     </Card>
                 )
             }
         })
     }
-
-
 
     const getExercises = async (event) => {
         event.preventDefault()
@@ -78,18 +86,18 @@ function CustomWorkout(props) {
         const response = await exerciseAPIClient.getExercise(bodypart)
         const exercisesList = await response.data
         changeExercises(exercisesList)
+        changeTempExerciseList(exercisesList)
     }
 
     const addExercise = (event) => {
         event.preventDefault()
-        const newExercise = [event.target[0].value, event.target[1].value + ' reps']
+        const newExercise = [event.target[0].value, event.target[1].value + ' reps', currentExercise.gif]
         changeAddedExercises([...addedExercises, newExercise])
     }
 
     const addWorkoutToDatabase = async (workout) => {
         try {
             const response = await exerciseAPIClient.addCustomWorkout(workout)
-            console.log(response)
         }
         catch (err) {
             console.log(err)
@@ -98,21 +106,36 @@ function CustomWorkout(props) {
 
     const addWorkout = async () => {
         const imageData = await unsplashAPIClient.getSpecPic('workout')
-        console.log(imageData)
         const image = imageData.data[0].urls.regular
         const customWorkout = {
+            id: Math.floor(Math.random() * 1000000000),
             image: image,
             title: document.getElementById('formWorkoutname').value,
             sets: document.getElementById('formWorkoutSets').value,
             exercises: [...addedExercises]
         }
 
-        console.log(customWorkout)
+        const addWorkOut = await addWorkoutToDatabase(customWorkout)
 
-        addWorkoutToDatabase(customWorkout)
         const response = await exerciseAPIClient.getCustomWorkouts()
-        const workouts = await response.data
-        changeCustomWorkouts([...workouts])
+        const data = await response.data
+        changeCustomWorkouts([...data])
+    }
+
+    const filterExercises = (event) => {
+        const filteredExercises = tempExerciseList.filter(exercise => exercise.name.toLowerCase().includes(event.target.value.toLowerCase()))
+        changeExercises(filteredExercises)
+    }
+
+    const deleteList = () => {
+        console.log(formValues)
+        changeAddedExercises([])
+        changeFormValues({
+            title: '',
+            sets: '',
+            exerciseName: '',
+            reps: ''
+        })
     }
 
     return (
@@ -131,6 +154,7 @@ function CustomWorkout(props) {
                             <Form.Control type="text" placeholder="Sets" />
                         </Form.Group>
                         <br />
+                        <hr className='white' />
                         <br />
                         <Form onSubmit={(event) => addExercise(event)} className='form-add-exercise'>
                             <Form.Group controlId="formBasicEmail">
@@ -143,13 +167,15 @@ function CustomWorkout(props) {
                             <br />
                             <Button className='orange-button' variant="primary" type="submit">Add</Button>
                         </Form>
+
                         <div className='exc-list'>
                             {showList()}
                         </div>
+                        <Button onClick={deleteList} className='orange-btn' variant="primary">Delete List</Button>
                         <Button onClick={addWorkout} className='orange-button' variant="primary" >Create</Button>
                     </Col>
-                    <Col className='card-section'>
-                        <Form onSubmit={getExercises}>
+                    <Col lg={5} sm={12} className='card-section'>
+                        <Form className='find-form' onSubmit={getExercises}>
                             <Form.Select className='form-drop-bodypart' size="md">
                                 <option>Body part</option>
                                 <option>back</option>
@@ -165,6 +191,7 @@ function CustomWorkout(props) {
                             <br />
                             <Button className='orange-button' variant="primary" type="submit">Find exercises</Button>
                         </Form>
+                        <input onChange={filterExercises} type="text" placeholder="Search..." />
 
                         <br />
                         {displayExercises()}
