@@ -4,7 +4,7 @@ import "./App.scss";
 
 // React and other packages
 import React, { useState, useEffect, useRef } from "react";
-import { Route, Routes, useNavigate, Navigate } from "react-router-dom";
+import { Route, Routes, useNavigate, Navigate, useLocation } from "react-router-dom";
 
 // React-bootstrap components
 import { Container } from "react-bootstrap";
@@ -46,6 +46,8 @@ import NetService from "./services/netService"; // (*** don't think this should 
 // ==============================================================================
 
 export default function App() {
+	const location = useLocation();
+
 	const [userDataState, userDataDispatch] = React.useContext(UserContext);
 
 	const [token, setToken] = useState(window.localStorage.getItem('token'));
@@ -74,9 +76,13 @@ export default function App() {
 				userDataDispatch({ type: "setProfile", data: userProfile || {} });
 				userDataDispatch({ type: "setContacts", data: contacts });
 				userDataDispatch({ type: "setMessageMetas", data: messageMetas });
-				if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
-				else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 
+				// Switch to prefs or profile page if accessing root and first-login setup isn't complete yet
+				if (location.pathname === "/") {
+					if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
+					else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
+				}
+				
 				changeInitComplete(true);
 			});
 	}
@@ -270,52 +276,47 @@ export default function App() {
 							/>
 						} />
 
-						{(initComplete) &&
-							<Route path="/prefs" element={
+						<Route path="/prefs" element={<>{
+							(initComplete) &&
 								<UserSitePrefs viewCommon={commonData}
 									nextPage={!userDataState.prefs.onboardingStageComplete && "/profile/main"} />
-							} />}
+							}</>}
+						/>
 
-						{(initComplete) &&
-							<Route path="/profile/:section" element={
+						<Route path="/profile/:section" element={<>{
+							(initComplete) &&
 								<UserProfile viewCommon={commonData}
 									nextPage={!userDataState.profile.onboardingStageComplete && "/"} />
-							} />}
+							}</>}
+						/>
 
-						{(initComplete) &&
-							<Route path="/account" element={
+						<Route path="/account" element={<>{
+							(initComplete) &&
 								<UserAccountSettings viewCommon={commonData}
 									logout={logout} />
-							} />}
+							}</>}
+						/>
 
-						{(initComplete) &&
-							<Route path="/contacts" element={
+						<Route path="/contacts" element={<>{
+							(initComplete) &&
 								<Contacts viewCommon={commonData} />
-							} />}
+							}</>}
+						/>
 
-						{(initComplete) &&
-							<Route path="/messages" element={
+						<Route path="/messages" element={<>{
+							(initComplete) &&
 								<Messages viewCommon={commonData} />
-							} />}
+							}</>}
+						/>
 
-						{(initComplete) &&
-							<Route path="/messages/:id" element={
+						<Route path="/messages/:id" element={<>{
+							(initComplete) &&
 								<Messages viewCommon={commonData} />
-							} />}
+							}</>}
+						/>
 
-						<Route path="/" element={
-							<>
-								{(initComplete) ?
-									<Dashboard
-										viewCommon={commonData}
-									/> :
-									(!token) && <FrontPage
-									/>}
-							</>
-						} />
-
-						{(initComplete) &&
-							<Route path="/recipe" element={
+						<Route path="/recipe" element={<>{
+							(initComplete) &&
 								<Recipes viewCommon={commonData}
 									netService={netService}
 									recipes={recipes}
@@ -329,17 +330,24 @@ export default function App() {
 									searchBarValues={searchBarValues}
 									changeSearchBarValues={changeSearchBarValues}
 								/>
-							} />}
+							}</>}
+						/>
 
-
-						{(initComplete) &&
-							<Route path="/exc" element={
+						<Route path="/exc" element={<>{
+							(initComplete) &&
 								<Exercises viewCommon={commonData}
 									exercises={exercises}
 									changeExercises={(exercises) => changeExercises(exercises)}
-
 								/>
-							} />}
+							}</>}
+						/>
+
+						<Route path="/" element={<>{
+							(initComplete) ?
+								<Dashboard viewCommon={commonData} /> :
+								(!token) && <FrontPage />
+							}</>}
+						/>
 
 						<Route path="*" element={<Navigate to="/" replace />} />
 					</Routes>
