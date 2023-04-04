@@ -21,10 +21,11 @@ import Select from '../components/select';
 import UnitsInput from '../components/unitsInput';
 import PrivacyButtons from '../components/privacyButtons';
 import GoalsSelection from '../components/goalsSelection';
+import ButtonsRadio from '../components/buttonsRadio';
 
 // Utils
 import * as utils from "../utils/utils";
-import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight } from '../utils/units';
+import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight, convertBetweenWeightAndBMI, roundValue } from '../utils/units';
 import { getProfileImageUrl } from "../utils/image";
 
 // Contexts (global data)
@@ -50,7 +51,10 @@ export const defaults = {
 	dietType: "",
 	dietTypePrivacy: 'pri',
 	selectedGoalIds: [],
-	selectedGoalIdsPrivacy: 'pri'
+	selectedGoalIdsPrivacy: 'pri',
+	weightGoalValue: "", // absolute, bmi, or bmiPrime
+	weightGoalUnits: "", // absolute, bmi, or bmiPrime
+	weightGoalPrivacy: ""
 } ;
 
 export default function UserProfile({nextPage, viewCommon}) {
@@ -118,12 +122,21 @@ export default function UserProfile({nextPage, viewCommon}) {
 			newValue = changeData.target.value;
 		}
 
+		const oldValue = formValues[fieldName] ;
 		const newFormValues = {...formValues} ;
 		newFormValues[fieldName] = newValue;
-		dispatch({type: 'setProfile', data: newFormValues});
+
+		// Handle conversion between weight-goal-units
+		if (fieldName === 'weightGoalUnits') {
+			newFormValues.weightGoalValue = roundValue(convertBetweenWeightAndBMI(formValues.weightGoalValue, oldValue, newValue, formValues.height), 2) ;
+			// (Ideally this should be an atomic operation to ensure data-consistency (together with the units-type-update))
+			// (TODO: so maybe add a multi-field-update endpoint for this later)
+			userProfileService.updateFieldValue('weightGoalValue', newFormValues.weightGoalValue) ;
+		}
 
 		console.log(fieldName, newValue) ;
 		userProfileService.updateFieldValue(fieldName, newValue) ;
+		dispatch({type: 'setProfile', data: newFormValues});
   }
 
 	// Handle next-page action
@@ -218,6 +231,12 @@ export default function UserProfile({nextPage, viewCommon}) {
 		explore:'Explore'
 	} ;
 
+	const weightGoalUnits = [
+		{value: 'absolute', displayName: 'Weight'},
+		{value: 'bmi', displayName: 'BMI'},
+		{value: 'bmiPrime', displayName: 'BMI Prime'}
+	]
+
 	// Template
   return (
 		<div className="page-user-profile">
@@ -308,7 +327,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 			</Form>}
 
 		{(section === 'goals') &&
-			<fieldset className="user-profile d-flex flex-column gap-2 border p-3">
+			<fieldset className="user-profile d-flex flex-column gap-4 border p-3">
 				<legend className="float-none w-auto">Goals</legend>
 
 				<div className="d-flex justify-content-center">
@@ -320,7 +339,28 @@ export default function UserProfile({nextPage, viewCommon}) {
 					selectedGoalIds={formValues.selectedGoalIds}
 					goalIdsToTitle={goalIdsToTitle}
 					handleAddGoal={handleAddGoal}
-					handleRemoveGoal={handleRemoveGoal} />
+					handleRemoveGoal={handleRemoveGoal}
+				/>
+
+			{formValues.selectedGoalIds.includes('lose_weight') &&
+				<fieldset className="user-profile-weight-goal d-flex flex-column gap-3 border p-2">
+				<legend className="float-none w-auto">Weight Target</legend>
+					<div className="d-flex justify-content-center">
+						<ButtonsRadio id='weight_goal_units' value={formValues.weightGoalUnits} onChange={(val) => handleChange(['weightGoalUnits', val])} opts={weightGoalUnits} />
+					</div>
+					<div className="d-flex justify-content-center">
+					{formValues.weightGoalUnits === 'absolute' &&
+						<UnitsInput unitType="weightGoalValue" unitOpts={weightUnitOpts} metricValue={formValues.weightGoalValue} setErrorStatus={setErrorStatus}
+							currentUnit={prefs.weightUnits} onValueChange = {(metricVal) => handleChange(['weightGoalValue', metricVal])}
+							className={isSpecificError('WeightGoalValue') ? 'is-invalid' : ''} conversionFunc={convertWeight} />}
+					{formValues.weightGoalUnits !== 'absolute' &&
+						<Form.Control
+							name="weightGoalValue"
+							value={formValues.weightGoalValue}
+							onChange={handleChange}
+						/>}
+					</div>
+				</fieldset>}
 			</fieldset>}
 				
 			{actualNextPage &&
