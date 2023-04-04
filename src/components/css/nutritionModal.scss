@@ -1,0 +1,23 @@
+.nutrition-modal {
+
+    * {
+        color: white !important;
+    }
+
+    .nutrition-wrapper {
+        width: 90%;
+        
+        .table {
+            table-layout: fixed;  
+            
+        }
+        .table>thead>tr>th {
+            color: #f57960 !important;
+        }
+        
+        .table>tbody>tr>th {
+            font-weight: 400 !important;
+        }
+    }
+  
+}

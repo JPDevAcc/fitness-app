@@ -23,19 +23,19 @@ function SinglePost(props) {
     const updateLikes = async () => {
         const response = await communityService.getLikesCount(props.post._id)
         const likes = await response.data
-        changeLikeCounter(likes.length)
+        changeLikeCounter(likes)
     }
 
     const updateLols = async () => {
         const response = await communityService.getLolsCount(props.post._id)
         const lols = await response.data
-        changeLolCounter(lols.length)
+        changeLolCounter(lols)
     }
 
     const updateComments = async () => {
         const response = await communityService.getCommentCount(props.post._id)
         const comments = await response.data
-        changeCommentCounter(comments.length)
+        changeCommentCounter(comments)
     }
 
     useEffect(() => {

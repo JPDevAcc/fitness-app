@@ -8,6 +8,9 @@ import { getProfileImageUrl } from '../utils/image'
 import { ReactComponent as Message } from './images/message.svg'
 import { ReactComponent as Add } from './images/plus.svg'
 import ProfileModal from '../components/ProfileModal.component'
+import MessageService from '../services/messageService'
+import ContactService from "../services/contactService";
+import CreateMessageModal from "../components/createMessageModal";
 
 function Community(props) {
 
@@ -17,6 +20,8 @@ function Community(props) {
     const [lgShow, setLgShow] = useState(false);
 
     const communityService = new CommunityService(props.viewCommon.net)
+
+    const messageService = new MessageService(props.viewCommon.net)
 
     useEffect(() => {
         communityService.getCommunityPosts()
@@ -39,24 +44,23 @@ function Community(props) {
 
     const findUser = async (data) => {
         const response = await communityService.findUser(data)
-        console.log(response)
         return response.data
     }
 
     const submitHandler = async (e) => {
         e.preventDefault()
         const data = e.target[0].value
-        const userData = await findUser(data)
-        const userProfile = await userData.userProfile
-        console.log(userProfile)
+        const userProfile = await findUser(data)
         changeUser(userProfile)
     }
 
     const showProfile = async () => {
-        const userData = await findUser(user?.userName)
-        const userProfile = await userData.userProfile
+        const userProfile = await findUser(user?.userName)
         props.changeUserProfile(userProfile)
         setLgShow(true)
+    }
+
+    const sendmessage = async () => {
     }
 
     const displayUsercard = (user = null) => {
@@ -69,9 +73,8 @@ function Community(props) {
                         <Card.Title className='user-card-username'>{user.userName}</Card.Title>
                         <Card.Text>
                         </Card.Text>
-                        {/* {user.bio} */}
                         <div className='icons'>
-                            <Message className='message-icon' />
+                            <Message onClick={sendmessage} className='message-icon' />
                             <Add className='add-icon' />
                         </div>
                     </Card.Body>

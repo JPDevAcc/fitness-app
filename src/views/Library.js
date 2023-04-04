@@ -1,24 +1,36 @@
 import './css/Library.scss'
 import '../components/css/RecipeCard.scss'
 import { Row, Card } from 'react-bootstrap'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import FoodAPIClient from '../services/FoodApiClient'
-import { ReactComponent as Heart } from '../components/Images/heart.svg'
-import { ReactComponent as Redheart } from '../components/Images/redheart.svg'
+import ExerciseAPIClient from '../services/ExerciseAPIClient'
 import SingleRecipeCard from '../components/SingleRecipeCard'
+import { useNavigate } from 'react-router-dom'
 
 function Library(props) {
 
+    const navigate = useNavigate();
+
+
     const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
+    const exerciseAPIClient = new ExerciseAPIClient(props.viewCommon.net);
+
+    // const [savedWorkouts, changeSavedWorkouts] = useState([]);
+    console.log(props.savedWorkouts)
 
     useEffect(() => {
         const getUserRecipes = async () => {
             const response = await foodAPIClient.getUserRecipes()
             props.changeSavedRecipes(response.data)
         }
+        const getUserWorkouts = async () => {
+            const response = await exerciseAPIClient.getCustomWorkoutForUser()
+            const workouts = await response.data
+            props.changeSavedWorkouts([...workouts])
+        }
         getUserRecipes()
+        getUserWorkouts()
     }, [])
-
 
     const showRecipes = () => {
         return props.savedRecipes?.map((recipe) =>
@@ -33,6 +45,25 @@ function Library(props) {
         )
     }
 
+    const showWorkoutPage = (workout) => {
+        props.changeCurrentCustomWorkout(workout)
+        navigate('/custompage')
+    }
+
+    const showWorkouts = () => {
+        console.log(props.savedWorkouts)
+        return props.savedWorkouts?.map((workout) =>
+            <Card onClick={() => showWorkoutPage(workout)} className='recipe-card' style={{ width: '18rem' }}>
+                <Card.Img variant="top" src={workout.image} />
+                <Card.Body>
+                    <Card.Title>{workout.title}</Card.Title>
+                    <Card.Text>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        )
+    }
+
     return (
         <>
             <h1>My recipes</h1>
@@ -40,6 +71,9 @@ function Library(props) {
                 {showRecipes()}
             </div>
             <h1>My workouts</h1>
+            <div className='recipe-wrapper'>
+                {showWorkouts()}
+            </div>
         </>
     )
 }

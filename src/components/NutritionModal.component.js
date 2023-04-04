@@ -1,14 +1,19 @@
-import "./css/RecipeCard.scss";
+import "./css/nutritionModal.scss";
 
-import { Modal, Row, Col } from 'react-bootstrap'
+import { Modal, Row, Col, Table } from 'react-bootstrap'
 
-function RecipeModal(props) {
+function NutritionModal(props) {
+
+    console.log(props.nutrition)
 
     return (
         <>
             <Modal
-                className='recipe-modal'
-                {...props}
+                className='nutrition-modal'
+                ingredient={props.ingredient}
+                nutrition={props.nutrition}
+                show={props.show}
+                onHide={() => props.onHide(false)}
                 size="lg"
                 aria-labelledby="example-modal-sizes-title-lg"
                 centered
@@ -20,14 +25,27 @@ function RecipeModal(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
-                        <Col className="ingredients" lg={5}>
-                            <ul>
-                                {props.nutrition.map((nutrient) => {
-                                    return (
-                                        <li key={Math.random()} >{nutrient.name} {nutrient.amount} {nutrient.unit}</li>
-                                    )
-                                })}
-                            </ul>
+                        <Col className="nutrition-wrapper" lg={5}>
+                            <Table className="table-nutrients" striped bordered hover>
+                                <thead>
+                                    <tr className="top-table">
+                                        <th>Nutrient</th>
+                                        <th>Amount</th>
+                                        <th>Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {props.nutrition.map((nutrient, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <th >{nutrient.name}</th>
+                                                <th>{nutrient.amount}</th>
+                                                <th>{nutrient.unit}</th>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </Table>
                         </Col>
                     </Row>
                 </Modal.Body>
@@ -36,4 +54,4 @@ function RecipeModal(props) {
     )
 }
 
-export default RecipeModal
+export default NutritionModal

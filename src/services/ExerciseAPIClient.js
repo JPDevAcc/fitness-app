@@ -16,4 +16,8 @@ export default class ExerciseAPIClient extends NetService {
   getCustomWorkouts() {
     return this.get("customWorkouts");
   }
+
+  getCustomWorkoutForUser() {
+    return this.get("customforuser");
+  }
 }

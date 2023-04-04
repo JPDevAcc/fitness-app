@@ -2,4 +2,14 @@
 
 .custom-card {
     color: #000;
+    margin: 10px;
+    border: none !important;
+    cursor: pointer;
+
+    &:hover {
+        background-image: linear-gradient(45deg, #f57960 0%, #f3ac48  51%, #f77257  100%);
+        scale: 1.02;
+    }
+    
 }
+

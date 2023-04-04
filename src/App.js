@@ -36,12 +36,12 @@ import Library from "./views/Library";
 import Contacts from "./views/Contacts";
 import Messages from "./views/Messages";
 import Challenge from "./views/Challenge";
+import SingleCustomPage from "./views/SingleCustomPage";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 
 import NetService from "./services/netService"; // (*** don't think this should be needed ***)
-import CommunityService from "./services/communityService";
 
 // ==============================================================================
 
@@ -184,6 +184,24 @@ export default function App() {
 		unit: "",
 	});
 
+	const [currentCustomWorkout, changeCurrentCustomWorkout] = useState();
+
+	const [savedWorkouts, changeSavedWorkouts] = useState([]);
+
+
+	const [quote, changeQuote] = useState('');
+
+	const getQuote = async () => {
+		const response = await netService.post('quote');
+		const data = await response.data;
+		console.log(data);
+	}
+
+	// useEffect(() => {
+	// 	getQuote();
+	// }, []);
+
+
 	// Template
 	return (
 		<>
@@ -214,7 +232,9 @@ export default function App() {
 						<Route path="/challenge" element={<Challenge />} />
 
 						<Route path="/myworkout" element={
-							<CustomWorkout viewCommon={commonData} />
+							<CustomWorkout viewCommon={commonData}
+								changeCurrentCustomWorkout={changeCurrentCustomWorkout}
+							/>
 						} />
 						<Route path="/library" element={
 							<Library
@@ -222,6 +242,10 @@ export default function App() {
 								savedRecipes={savedRecipes}
 								changeSavedRecipes={changeSavedRecipes}
 								currentRecipe={currentRecipe}
+								savedWorkouts={savedWorkouts}
+								changeSavedWorkouts={changeSavedWorkouts}
+								currentCustomWorkout={currentCustomWorkout}
+								changeCurrentCustomWorkout={changeCurrentCustomWorkout}
 							/>
 						} />
 						<Route path="/postview" element={
@@ -236,6 +260,13 @@ export default function App() {
 								changeLolCounter={changeLolCounter}
 								commentCounter={commentCounter}
 								changeCommentCounter={changeCommentCounter}
+							/>
+						} />
+
+						<Route path="/custompage" element={
+							<SingleCustomPage
+								viewCommon={commonData}
+								currentCustomWorkout={currentCustomWorkout}
 							/>
 						} />
 
