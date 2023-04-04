@@ -31,6 +31,9 @@ import { getProfileImageUrl } from "../utils/image";
 // Contexts (global data)
 import { UserContext } from "../contexts/User"
 
+// Data
+import locationOpts from "../data/geoRegions.json" ;
+
 // ==============================================================================
 
 export const defaults = {
@@ -38,6 +41,8 @@ export const defaults = {
 	imagePrivacy: "pri",
 	bio: "",
 	bioPrivacy: "pri",
+	location: "",
+	locationPrivacy: "pri",
 	age: "",
 	agePrivacy: "pri",
 	weight: "", // kg
@@ -266,7 +271,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 				</div>
 
 				<Row className="gap-3">
-					<Col md>
+					<Col>
 						<Form.Label htmlFor="bio">About me</Form.Label>
 						<PrivacyButtons id="bioPrivacy" value={formValues.bioPrivacy} onChange={(val) => handleChange(['bioPrivacy', val])} />
 						<Form.Control
@@ -280,6 +285,15 @@ export default function UserProfile({nextPage, viewCommon}) {
 
 				<Row className="gap-3">
 					<Col md>
+						<Form.Label htmlFor="location">Location</Form.Label>
+						<PrivacyButtons id="locationPrivacy" value={formValues.locationPrivacy} onChange={(val) => handleChange(['locationPrivacy', val])} />
+						<Select id='location' opts={locationOpts}
+							value={formValues.location}
+							onChange={(event)=>handleChange(event)}
+							/>
+					</Col>
+
+					<Col md>
 						<Form.Label htmlFor="age">Age</Form.Label>
 						<PrivacyButtons id="agePrivacy" value={formValues.agePrivacy} onChange={(val) => handleChange(['agePrivacy', val])} />
 						<Select id='age' opts={ageOpts}
@@ -287,7 +301,9 @@ export default function UserProfile({nextPage, viewCommon}) {
 							onChange={(event)=>handleChange(event)}
 							/>
 					</Col>
+				</Row>
 
+				<Row className="gap-3">
 					<Col md>
 						<Form.Label htmlFor="Weight_i1">Weight</Form.Label>
 						<PrivacyButtons id="weightPrivacy" value={formValues.weightPrivacy} onChange={(val) => handleChange(['weightPrivacy', val])} />
