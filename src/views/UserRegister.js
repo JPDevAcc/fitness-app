@@ -1,5 +1,5 @@
 // CSS
-import './css/UserRegister.scss';
+import './css/userRegister.scss';
 import logo from '../components/Images/logo.png'
 
 // React and other packages

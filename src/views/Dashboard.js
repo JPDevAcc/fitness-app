@@ -1,5 +1,5 @@
 // CSS
-import "./css/Dashboard.scss"
+import "./css/dashboard.scss"
 
 // React and other packages
 import React, { useState, useEffect } from "react"
@@ -9,9 +9,9 @@ import UserProfileService from "../services/userProfileService";
 import UserValuesHistoryService from "../services/userValuesHistoryService";
 
 // Our components
-import NotificationCard from "../components/notificationCard" ;
-import TargetProgressCard from "../components/targetProgressCard";
-import BMICard from "../components/bmiCalcCard";
+import NotificationCard from "../components/NotificationCard" ;
+import TargetProgressCard from "../components/TargetProgressCard";
+import BMICard from "../components/BmiCalcCard";
 
 // Utils
 import { NotificationsLib } from "../libs/notificationsLib";

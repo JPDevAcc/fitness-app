@@ -1,4 +1,4 @@
-import './css/CustomWorkoutCard.scss'
+import './css/customWorkoutCard.scss'
 import { Card, Button } from 'react-bootstrap'
 import { formatDate, formatMonth, formatTime } from '../utils/utils'
 import { Link } from 'react-router-dom'

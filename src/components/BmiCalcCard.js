@@ -8,8 +8,8 @@ import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Form, Button } from "react-bootstrap";
 
 // Our components
-import ButtonsRadio from "./buttonsRadio";
-import UnitsInput from "./unitsInput";
+import ButtonsRadio from "./ButtonsRadio";
+import UnitsInput from "./UnitsInput";
 
 // Utils
 import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight, calcBMIValues } from '../utils/units';

@@ -1,4 +1,4 @@
-import NetService from "./netService";
+import NetService from "../../netService";
 
 export default class ExerciseAPIClient extends NetService {
   getBodyparts() {

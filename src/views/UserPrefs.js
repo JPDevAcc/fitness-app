@@ -1,5 +1,5 @@
 // CSS
-import './css/UserPrefs.scss' ;
+import './css/userPrefs.scss' ;
 
 // React and other packages
 import React, { useState } from 'react';
@@ -15,7 +15,7 @@ import Row from 'react-bootstrap/Row';
 import UserPrefsService from "../services/userPrefsService";
 
 // Our components
-import Select from '../components/select';
+import Select from '../components/Select';
 
 // Utils
 import * as utils from "../utils/utils";

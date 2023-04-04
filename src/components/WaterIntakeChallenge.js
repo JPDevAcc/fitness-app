@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import waterImage from "./Images/Water.jpg";
+import waterImage from "./Images/water.jpg";
 
 function WaterIntakeChallenge() {
   const [waterIntake, setWaterIntake] = useState(0);

@@ -1,4 +1,4 @@
-import NetService from "./netService";
+import NetService from "../netService";
 
 const EP_CONTACT_REQUESTS = 'contactrequests';
 const EP_CONTACT_REQUESTS_SELF = 'contactrequests/self';

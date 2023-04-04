@@ -1,7 +1,7 @@
 // Reducer for all common user state
 
 import { defaults as prefsDefaults } from "../../views/UserPrefs" ;
-import { defaults as profileDefaults } from "../../views/UserProfile" ;
+import { defaults as profileDefaults } from "../../views/UserProfile/UserProfile" ;
 
 function combineWithDefaults(defaults, obj) {
 	const newObj = { ...defaults } ;

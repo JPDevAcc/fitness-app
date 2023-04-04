@@ -1,9 +1,9 @@
-import './css/Library.scss'
-import '../components/css/RecipeCard.scss'
+import './css/library.scss'
+import '../components/css/recipeCard.scss'
 import { Row, Card } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
-import FoodAPIClient from '../services/FoodApiClient'
-import ExerciseAPIClient from '../services/ExerciseAPIClient'
+import FoodAPIClient from '../services/API/foodApiService'
+import ExerciseAPIClient from '../services/API/exerciseApiService'
 import SingleRecipeCard from '../components/SingleRecipeCard'
 import { useNavigate } from 'react-router-dom'
 

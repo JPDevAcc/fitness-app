@@ -15,15 +15,15 @@ import UserDataService from "./services/userDataService";
 import NotificationService from "./services/notificationService";
 
 // Our components
-import NavigationBar from "./components/navbar.component";
-import Footer from "./components/footer.component";
-import StatusMessage from "./components/statusMessage";
+import NavigationBar from "./components/Navbar";
+import Footer from "./components/Footer";
+import StatusMessage from "./components/StatusMessage";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
 import Login from "./views/Login";
 import UserSitePrefs from "./views/UserPrefs";
-import UserProfile from "./views/UserProfile";
+import UserProfile from "./views/UserProfile/UserProfile";
 import Dashboard from "./views/Dashboard";
 import UserAccountSettings from "./views/UserAccountSettings";
 import Recipes from './views/Recipes';
@@ -41,7 +41,7 @@ import SingleCustomPage from "./views/SingleCustomPage";
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 
-import NetService from "./services/netService"; // (*** don't think this should be needed ***)
+import NetService from "./netService"; // (*** don't think this should be needed ***)
 
 // ==============================================================================
 

@@ -1,4 +1,4 @@
-import './css/Login.scss'
+import './css/login.scss'
 import logo from '../components/Images/logo.png'
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"

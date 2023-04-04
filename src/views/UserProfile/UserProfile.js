@@ -1,5 +1,5 @@
 // CSS
-import './css/UserProfile.scss' ;
+import '../css/userProfile.scss' ;
 
 // React and other packages
 import React, { useState } from 'react';
@@ -13,26 +13,26 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 // Network services
-import UserProfileService from "../services/userProfileService";
+import UserProfileService from "../../services/userProfileService";
 
 // Our components
-import ProfileImageUpload from '../components/profileImageUpload';
-import Select from '../components/select';
-import UnitsInput from '../components/unitsInput';
-import PrivacyButtons from '../components/privacyButtons';
-import GoalsSelection from '../components/goalsSelection';
-import ButtonsRadio from '../components/buttonsRadio';
+import ProfileImageUpload from './components/ProfileImageUpload';
+import Select from '../../components/Select';
+import UnitsInput from '../../components/UnitsInput';
+import PrivacyButtons from './components/PrivacyButtons';
+import GoalsSelection from './components/GoalsSelection';
+import ButtonsRadio from '../../components/ButtonsRadio';
 
 // Utils
-import * as utils from "../utils/utils";
-import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight, convertBetweenWeightAndBMI, roundValue } from '../utils/units';
-import { getProfileImageUrl } from "../utils/image";
+import * as utils from "../../utils/utils";
+import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight, convertBetweenWeightAndBMI, roundValue } from '../../utils/units';
+import { getProfileImageUrl } from "../../utils/image";
 
 // Contexts (global data)
-import { UserContext } from "../contexts/User"
+import { UserContext } from "../../contexts/User"
 
 // Data
-import locationOpts from "../data/geoRegions.json" ;
+import locationOpts from "../../data/geoRegions.json" ;
 
 // ==============================================================================
 

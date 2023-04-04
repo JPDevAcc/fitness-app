@@ -1,4 +1,4 @@
-import NetService from "./netService";
+import NetService from "../netService";
 
 const EP_USERVALUEHISTORY = 'userValueHistory';
 const EP_USERVALUEHISTORY_FIRSTVALFORFIELD = EP_USERVALUEHISTORY + '/getFirstValueForField' ;

@@ -1,4 +1,4 @@
-import NetService from "./netService";
+import NetService from "../netService";
 
 const EP_REGISTER = 'register';
 const EP_AUTH = 'auth';

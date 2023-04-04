@@ -1,4 +1,4 @@
-import './css/FrontPage.scss'
+import './css/frontPage.scss'
 import { Link } from 'react-router-dom'
 
 
