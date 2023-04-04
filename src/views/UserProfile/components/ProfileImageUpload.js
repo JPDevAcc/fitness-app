@@ -1,6 +1,6 @@
-import "./css/profileImageUpload.scss";
+import "./profileImageUpload.scss";
 import { Button } from 'react-bootstrap';
-import ImageUpload from '../components/ImageUploadButton';
+import ImageUpload from './ImageUploadButton';
 
 export default function ProfileImageUpload({image, handleImageUpload, handleImageRemove}) {
 

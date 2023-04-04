@@ -1,4 +1,4 @@
-import NetService from "./netService" ;
+import NetService from "../netService" ;
 
 const EP_MESSAGE = 'messages' ;
 const EP_MESSAGEMETAS = 'messageMetas' ;

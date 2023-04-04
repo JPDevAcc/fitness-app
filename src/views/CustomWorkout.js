@@ -1,7 +1,7 @@
 import './css/customWorkout.scss'
 import SingleCustomCard from '../components/SingleCustomCard'
-import ExerciseAPIClient from '../services/exerciseApiService'
-import UnsplashAPIClient from '../services/unsplashApiService'
+import ExerciseAPIClient from '../services/API/exerciseApiService'
+import UnsplashAPIClient from '../services/API/unsplashApiService'
 import { useState, useEffect } from 'react'
 import { Button, Col, Form, Row, Card } from 'react-bootstrap'
 

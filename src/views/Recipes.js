@@ -1,6 +1,6 @@
 import "../components/css/recipeCard.scss"
 import SingleRecipeCard from '../components/SingleRecipeCard'
-import FoodAPIClient from "../services/foodApiService"
+import FoodAPIClient from "../services/API/foodApiService"
 import { Button, Col, Row, Form } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 import NutritionModal from '../components/NutritionModal'

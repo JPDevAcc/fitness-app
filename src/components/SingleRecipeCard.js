@@ -3,7 +3,7 @@ import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { useState, useEffect } from 'react';
 import RecipeModal from './RecipeModal';
-import FoodAPIClient from "../services/foodApiService";
+import FoodAPIClient from "../services/API/foodApiService";
 import { ReactComponent as Heart } from "./Images/heart.svg"
 import { ReactComponent as Redheart } from "./Images/redheart.svg"
 

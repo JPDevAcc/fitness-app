@@ -1,4 +1,4 @@
-import NetService from "./netService";
+import NetService from "../netService";
 
 const EP_PROFILE = 'profile' ;
 const EP_PROFILE_IMAGE = EP_PROFILE + '/image' ;
