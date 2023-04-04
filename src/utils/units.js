@@ -21,7 +21,7 @@
 		{value: 'Fahrenheit'}
 	] ;
 
-	export function roundValue(val, decimalPlaces) {
+	export function roundValue(val, decimalPlaces = 0) {
 		const scale = Math.pow(10, decimalPlaces) ;
 		let result = Math.round((val * scale)) / scale ;
 		return (result === 0) ? 0 : result ; // (convert -0 to 0)
@@ -79,11 +79,35 @@
 		return [valOut1, valOut2] ;
 	}
 
+	const bmiPrimeNormalisationFactor = 25 ; // Note: For SE Asian and S Chinese populations, this should actually be 23 - in future we could make this configurable
+
+	export function convertBetweenWeightAndBMI(valIn, valInUnits, valOutUnits, heightM) {
+		if (valInUnits === valOutUnits) return valIn ;
+
+		if (heightM === "") return "" ; // Unknown height so can't convert
+		
+		// Convert to absolute weight (kg)
+		let valWeight = valIn ;
+		if (valInUnits === 'bmi') valWeight = valIn * (heightM * heightM) ;
+		else if (valInUnits === 'bmiPrime') valWeight = valIn * bmiPrimeNormalisationFactor * (heightM * heightM) ;
+
+		// Convert to output units
+		if (valOutUnits === 'absolute') return valWeight ;
+		if (valOutUnits === 'bmi') return valWeight / (heightM * heightM) ;
+		if (valOutUnits === 'bmiPrime') return valWeight / (heightM * heightM) / bmiPrimeNormalisationFactor ;
+	}
+
 	export function calcBMIValues(weightKm, heightM) {
 		const bmiExact = weightKm / (heightM * heightM) ;
-		const bmiPrime = roundValue(bmiExact / 25, 2) ; // Note: For SE Asian and S Chinese populations, this should actually be 23 - in future we could make this configurable
+		const bmiPrime = roundValue(bmiExact / bmiPrimeNormalisationFactor, 2) ;
 		const bmi = roundValue(bmiExact, 1) ;
 		return {bmi, bmiPrime} ;
+	}
+
+	export function formatUnits(vals, units) {
+		const splitUnits = units.split(' ') ;
+		if (!splitUnits[1]) return roundValue(vals[0]) + ' ' + units ;
+		return roundValue(vals[0]) + ' ' + splitUnits[0] + ' ' + roundValue(vals[1]) + ' ' + splitUnits[1]
 	}
 
 	export { weightUnitOpts, heightUnitOpts, distanceUnitOpts, temperatureUnitOpts } ;

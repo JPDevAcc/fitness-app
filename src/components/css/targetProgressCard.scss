@@ -1,0 +1,26 @@
+.component-target-progress-card {
+	color: #222;
+	box-shadow: 5px -5px 10px -1px #111111;
+	background-color: #8888ff ;
+
+	.target-progress-card-image {
+		width: 64px ;
+		height: 64px;
+		border: 1px inset #888 ;
+	}
+
+	.target-progress-card-image img {
+		width: 100%;
+		height: 100%;
+		vertical-align: unset;
+	}
+
+	.target-progress-card-smalltext {
+		font-size: 90%;
+	}
+
+	.target-progress-card-bar {
+		min-width: 112px ;
+		flex-grow: 1 ;
+	}
+}

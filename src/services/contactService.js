@@ -5,8 +5,8 @@ const EP_CONTACT_REQUESTS_SELF = 'contactrequests/self';
 const EP_CONTACTS = 'contacts';
 
 export default class ContactService extends NetService {
-	createRequest(destUserId) {
-		return this.put(EP_CONTACT_REQUESTS + '/' + destUserId) ;
+	createRequest(destUserName) {
+		return this.put(EP_CONTACT_REQUESTS + '/' + destUserName) ;
 	}
 
 	acceptRequest(userName) {
