@@ -38,13 +38,13 @@ export default function Messages({viewCommon}) {
 	const timerRef = useRef(null);
 
 	// === Retrieve contacts and message metadata ===
-	function getContacts() {
-		contactService.retrieveContacts().then(({data: contacts}) => {
+	function getContacts(isAuto = false) {
+		contactService.retrieveContacts(isAuto).then(({data: contacts}) => {
 			userDataDispatch({ type: "setContacts", data: contacts});
 		}) ;
 	}
-	function getMessageMetas() {
-		messageService.retrieveMessageMetas().then(({data: messageMetas}) => {
+	function getMessageMetas(isAuto = false) {
+		messageService.retrieveMessageMetas(isAuto).then(({data: messageMetas}) => {
 			userDataDispatch({ type: "setMessageMetas", data: messageMetas});
 		}) ;
 	}
@@ -67,8 +67,8 @@ export default function Messages({viewCommon}) {
 		getContacts() ;
 		getMessageMetas() ;
 		timerRef.current = setInterval(() => {
-			getContacts() ;
-			getMessageMetas() ;
+			getContacts(true) ;
+			getMessageMetas(true) ;
 		}, 10000);
 
 		return () => {

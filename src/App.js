@@ -60,7 +60,6 @@ export default function App() {
 	const [slowRequestCounter, changeSlowRequestCounter] = useState(0) ;
 	const handleSlowRequestDetect = () => changeSlowRequestCounter(count => count + 1) ;
 	const handleSlowRequestComplete = () => changeSlowRequestCounter(count => count - 1) ;
-	console.log("slowRequestCounter: ", slowRequestCounter) ;
 	
 	const commonData = {
 		net: {
@@ -106,11 +105,11 @@ export default function App() {
 	}, [token]);
 
 	// === Retrieve notifications ===
-	function getNotifications() {
+	function getNotifications(isAuto = false) {
 		console.log("RETRIEVING NOTIFICATIONS");
 		const notificationService = new NotificationService(commonData.net);
 
-		notificationService.retrieve().then(({ data }) => {
+		notificationService.retrieve(isAuto).then(({ data }) => {
 			userDataDispatch({ type: "setNotifications", data });
 		});
 	}
@@ -125,7 +124,7 @@ export default function App() {
 		if (initComplete) {
 			getNotifications();
 			console.log("STARTING POLLING TIMER FOR NOTIFICATIONS");
-			timerRef.current = setInterval(getNotifications, 10000);
+			timerRef.current = setInterval(() => getNotifications(true), 10000);
 		}
 
 	}, [initComplete]);
@@ -214,7 +213,6 @@ export default function App() {
 	// Template
 	return (
 		<>
-			<span className="text-white">{"SLOW: " + slowRequestCounter}</span>
 			<Spinner isActive={slowRequestCounter > 0} />
 
 			<StatusMessage msgData={msgData} setMsgData={setMsgData} />
