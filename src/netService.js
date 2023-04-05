@@ -4,13 +4,22 @@ const CONTENT_JSON = {
 	'content-type': 'application/json'
 };
 
+const SLOW_REQUEST_THRESHOLD_MS = 300 ;
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default class NetService {
-	constructor({ errHandler = null, tokenProvider = null, logoutHandler = null } = {}) {
+	constructor({
+		errHandler = null,
+		tokenProvider = null,
+		logoutHandler = null,
+		handleSlowRequestDetect = null,
+		handleSlowRequestComplete = null} = {}) {
 		this.errHandler = errHandler;
 		this.tokenProvider = tokenProvider;
 		this.logoutHandler = logoutHandler;
+		this.handleSlowRequestDetect = handleSlowRequestDetect;
+		this.handleSlowRequestComplete = handleSlowRequestComplete;
 
 		axios.defaults.withCredentials = true; // Send cookies
 	}
@@ -34,15 +43,30 @@ export default class NetService {
 	}
 
 	request(method, url, data = null, extraHeaders = {}, opts = {}) {
+		let isSlowRequest = false ;
+		if (this.handleSlowRequestDetect) {
+			setTimeout(() => {
+				isSlowRequest = true ;
+				console.log("SLOW") ;
+				this.handleSlowRequestDetect() ;
+			}, SLOW_REQUEST_THRESHOLD_MS) ;
+		}
+
 		let headers = {}
 		if (this.tokenProvider) headers.token = this.tokenProvider() ;
 		headers = {...headers, ...extraHeaders} ;
 		if (data === null) delete headers['content-type'] ; // (don't set content-type if no data)
 		const axiosData = (data === null) ? {method, url, headers} : {method, url, data, headers} ;
 		return axios(axiosData).then((response) => {
+			console.log("REQUEST COMPLETED (success)") ;
+			if (isSlowRequest && this.handleSlowRequestComplete) this.handleSlowRequestComplete() ;
 			if (!opts.noErrorClear) this.errClearInternal() ;
 			return response ;
-		}).catch((err) => this.errHandlerInternal(err)) ;
+		}).catch((err) => {
+			console.log("REQUEST COMPLETED (failure)") ;
+			if (isSlowRequest && this.handleSlowRequestComplete) this.handleSlowRequestComplete() ;
+			this.errHandlerInternal(err)
+		}) ;
 	}
 
 	// Empty-body functions

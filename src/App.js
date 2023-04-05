@@ -42,6 +42,7 @@ import SingleCustomPage from "./views/SingleCustomPage";
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 
 import NetService from "./netService"; // (*** don't think this should be needed ***)
+import Spinner from "./components/Spinner";
 
 // ==============================================================================
 
@@ -54,8 +55,19 @@ export default function App() {
 	const [initComplete, changeInitComplete] = useState(false);
 	const timerRef = useRef(null);
 
+	// Slow-request handling (for spinner)
+	const [slowRequestCounter, changeSlowRequestCounter] = useState(0) ;
+	const handleSlowRequestDetect = () => changeSlowRequestCounter(count => count + 1) ;
+	const handleSlowRequestComplete = () => changeSlowRequestCounter(count => count - 1) ;
+	console.log("slowRequestCounter: ", slowRequestCounter) ;
+	
 	const commonData = {
-		net: { tokenProvider: () => token, logoutHandler: logout, errHandler: setErrorFromNetResponse }
+		net: {
+			tokenProvider: () => token,
+			logoutHandler: logout, errHandler: setErrorFromNetResponse,
+			handleSlowRequestDetect,
+			handleSlowRequestComplete
+		}
 	};
 
 	const userService = new UserService(commonData.net);
@@ -211,6 +223,9 @@ export default function App() {
 	// Template
 	return (
 		<>
+			<span className="text-white">{"SLOW: " + slowRequestCounter}</span>
+			<Spinner isActive={slowRequestCounter > 0} />
+
 			<StatusMessage msgData={msgData} setMsgData={setMsgData} />
 
 			{(initComplete) && <NavigationBar logout={logout} userIdentifier={userDataState.profile.userName} />}
