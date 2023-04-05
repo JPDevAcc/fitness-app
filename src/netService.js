@@ -33,34 +33,34 @@ export default class NetService {
 		if (this.errHandler) this.errHandler(null);
 	}
 
-	request(method, url, data = null, extraHeaders = {}) {
+	request(method, url, data = null, extraHeaders = {}, opts = {}) {
 		let headers = {}
 		if (this.tokenProvider) headers.token = this.tokenProvider() ;
 		headers = {...headers, ...extraHeaders} ;
 		if (data === null) delete headers['content-type'] ; // (don't set content-type if no data)
 		const axiosData = (data === null) ? {method, url, headers} : {method, url, data, headers} ;
 		return axios(axiosData).then((response) => {
-			this.errClearInternal() ;
+			if (!opts.noErrorClear) this.errClearInternal() ;
 			return response ;
 		}).catch((err) => this.errHandlerInternal(err)) ;
 	}
 
 	// Empty-body functions
-	get(epUrl) {
-		return this.request('get', API_URL + epUrl);
+	get(epUrl, opts = {}) {
+		return this.request('get', API_URL + epUrl, null, {}, opts);
 	}
-	delete(epUrl) {
-		return this.request('delete', API_URL + epUrl);
+	delete(epUrl, opts = {}) {
+		return this.request('delete', API_URL + epUrl, null, {}, opts);
 	}
 
 	// JSON functions
-	post(epUrl, data = null) {
-		return this.request('post', API_URL + epUrl, data, CONTENT_JSON);
+	post(epUrl, data = null, opts = {}) {
+		return this.request('post', API_URL + epUrl, data, CONTENT_JSON, opts);
 	}
-	put(epUrl, data = null) {
-		return this.request('put', API_URL + epUrl, data, CONTENT_JSON);
+	put(epUrl, data = null, opts = {}) {
+		return this.request('put', API_URL + epUrl, data, CONTENT_JSON, opts);
 	}
-	patch(epUrl, data = null) {
-		return this.request('patch', API_URL + epUrl, data, CONTENT_JSON);
+	patch(epUrl, data = null, opts = {}) {
+		return this.request('patch', API_URL + epUrl, data, CONTENT_JSON, opts);
 	}
 }

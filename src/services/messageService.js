@@ -9,7 +9,7 @@ export default class MessageService extends NetService {
 	}
 
 	retrieveMessageMetas() {
-		return this.get(EP_MESSAGEMETAS) ;
+		return this.get(EP_MESSAGEMETAS, {noErrorClear: true}) ;
 	}
 
 	removeMessage(messageId) {
