@@ -8,8 +8,8 @@ export default class MessageService extends NetService {
 		return this.post(EP_MESSAGE + '/' + recipientUserName, messageData) ;
 	}
 
-	retrieveMessageMetas() {
-		return this.get(EP_MESSAGEMETAS, {noErrorClear: true}) ;
+	retrieveMessageMetas(isAuto = false) {
+		return this.get(EP_MESSAGEMETAS, isAuto ? {noErrorClear: true, noSlowRequestHandling: true} : {}) ;
 	}
 
 	removeMessage(messageId) {

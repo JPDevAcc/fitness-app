@@ -33,8 +33,8 @@ export default function Contacts({viewCommon}) {
 	const timerRef = useRef(null);
 
 	// === Retrieve contacts ===
-	function getContacts() {
-		contactService.retrieveContacts().then(({data: contacts}) => {
+	function getContacts(isAuto = false) {
+		contactService.retrieveContacts(isAuto).then(({data: contacts}) => {
 			userDataDispatch({ type: "setContacts", data: contacts});
 		}) ;
 	}
@@ -42,7 +42,7 @@ export default function Contacts({viewCommon}) {
 	// Start/stop polling for updates to contacts list
 	useEffect(() => {
 		getContacts() ;
-		timerRef.current = setInterval(getContacts, 10000);
+		timerRef.current = setInterval(() => getContacts(true), 10000);
 
 		return () => {
 			clearInterval(timerRef.current); // Stop update timer when user leaves the page

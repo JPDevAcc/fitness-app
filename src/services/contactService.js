@@ -21,7 +21,7 @@ export default class ContactService extends NetService {
 		return this.delete(EP_CONTACTS + '/' + userName) ;
 	}
 
-	retrieveContacts() {
-		return this.get(EP_CONTACTS, {noErrorClear: true}) ;
+	retrieveContacts(isAuto = false) {
+		return this.get(EP_CONTACTS, isAuto ? {noErrorClear: true, noSlowRequestHandling: true} : {}) ;
 	}
 }

@@ -4,7 +4,7 @@ const CONTENT_JSON = {
 	'content-type': 'application/json'
 };
 
-const SLOW_REQUEST_THRESHOLD_MS = 300 ;
+const SLOW_REQUEST_THRESHOLD_MS = 400 ;
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -44,10 +44,11 @@ export default class NetService {
 
 	request(method, url, data = null, extraHeaders = {}, opts = {}) {
 		let isSlowRequest = false ;
-		if (this.handleSlowRequestDetect) {
-			setTimeout(() => {
+		let timerId = null ;
+		if (this.handleSlowRequestDetect && !opts.noSlowRequestHandling) {
+			timerId = setTimeout(() => {
 				isSlowRequest = true ;
-				console.log("SLOW") ;
+				console.log("SLOW REQUEST") ;
 				this.handleSlowRequestDetect() ;
 			}, SLOW_REQUEST_THRESHOLD_MS) ;
 		}
@@ -59,14 +60,16 @@ export default class NetService {
 		if (data === null) delete headers['content-type'] ; // (don't set content-type if no data)
 		const axiosData = (data === null) ? {method, url, headers} : {method, url, data, headers} ;
 		return axios(axiosData).then((response) => {
-			console.log("REQUEST COMPLETED (success)") ;
-			if (isSlowRequest && this.handleSlowRequestComplete) this.handleSlowRequestComplete() ;
 			if (!opts.noErrorClear) this.errClearInternal() ;
 			return response ;
-		}).catch((err) => {
-			console.log("REQUEST COMPLETED (failure)") ;
-			if (isSlowRequest && this.handleSlowRequestComplete) this.handleSlowRequestComplete() ;
-			this.errHandlerInternal(err)
+		})
+		.catch((err) => this.errHandlerInternal(err))
+		.finally(() => {
+			clearTimeout(timerId) ;
+			if (isSlowRequest && this.handleSlowRequestComplete) {
+				this.handleSlowRequestComplete() ;
+				console.log("SLOW REQUEST COMPLETED") ;
+			}
 		}) ;
 	}
 
