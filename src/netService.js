@@ -55,6 +55,7 @@ export default class NetService {
 		let headers = {}
 		if (this.tokenProvider) headers.token = this.tokenProvider() ;
 		headers = {...headers, ...extraHeaders} ;
+		if (method !== 'get') headers['X-Requested-With'] = 'XMLHttpRequest' ; // (to allow for some minimal CSRF protection on non-safe requests)
 		if (data === null) delete headers['content-type'] ; // (don't set content-type if no data)
 		const axiosData = (data === null) ? {method, url, headers} : {method, url, data, headers} ;
 		return axios(axiosData).then((response) => {
