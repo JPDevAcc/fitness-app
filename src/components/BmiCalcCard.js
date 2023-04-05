@@ -11,9 +11,9 @@ import { Card, Row, Col, Form, Button } from "react-bootstrap";
 import ButtonsRadio from "./ButtonsRadio";
 import UnitsInput from "./UnitsInput";
 
-// Utils
+// Utils and Libraries
 import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight, calcBMIValues } from '../utils/units';
-import * as utils from "../utils/utils.js" ;
+import StatusLib from '../libs/statusLib';
 
 // ==============================================================================
 
@@ -43,7 +43,9 @@ export default function BMICard({weightMetric, heightMetric, weightUnits, height
 	// === STATUS HANDLING ===
 	// Error-status for fields
 	const [errorStatusList, changeErrorStatusList] = useState({}) ;
-
+	// Status library
+	const statusLib = new StatusLib(errorStatusList, changeErrorStatusList) ;
+	
 	// State
 	const [formValues, changeFormValues] = useState({
 		weightMetric: weightMetric ?? "",
@@ -67,21 +69,6 @@ export default function BMICard({weightMetric, heightMetric, weightUnits, height
 			changeBmiClass(getBmiClass(bmiValues.bmiPrime)) ;
 		}
 	}, [weightMetric, heightMetric]) ;
-
-	// Set and remove error-status for the specified category
-	function setErrorStatus(category, msg) {
-		utils.setErrorStatus(changeErrorStatusList, category, msg) ;
-		if (msg) changeBmiClass(null) ;
-	}
-
-	// Returns boolean denoting whether there is currently an error
-	function isError() {
-		return utils.isError(errorStatusList) ;
-	}
-	// Returns boolean denoting whether there is currently an error
-	function isSpecificError(category) {
-		return utils.isSpecificError(errorStatusList, category) ;
-	}
 
 	function handleChange([field, value]) {
 		const newFormValues = {...formValues, [field]: value} ;
@@ -130,18 +117,18 @@ export default function BMICard({weightMetric, heightMetric, weightUnits, height
 				<Row>
 					<Col md>
 						<Form.Label htmlFor="Weight_i1">Weight</Form.Label>
-						<UnitsInput unitType="Weight" unitOpts={weightUnitOpts} metricValue={formValues.weightMetric} setErrorStatus={setErrorStatus}
+						<UnitsInput unitType="Weight" unitOpts={weightUnitOpts} metricValue={formValues.weightMetric} setErrorStatus={(u, v) => statusLib.setErrorStatus(u, v)}
 							currentUnit={weightUnits} onValueChange = {(metricVal) => handleChange(['weightMetric', metricVal])}
-							className={isSpecificError('Weight') ? 'is-invalid' : ''}
+							className={statusLib.isSpecificError('Weight') ? 'is-invalid' : ''}
 							conversionFunc = {convertWeight} />
 					</Col>
 
 					<Col md>
 						<Form.Label htmlFor="Height_i1">Height</Form.Label>
-						<UnitsInput unitType="Height" unitOpts={heightUnitOpts} metricValue={formValues.heightMetric} setErrorStatus={setErrorStatus}
+						<UnitsInput unitType="Height" unitOpts={heightUnitOpts} metricValue={formValues.heightMetric} setErrorStatus={(u, v) => statusLib.setErrorStatus(u, v)}
 							currentUnit={heightUnits} onValueChange = {(metricVal) => handleChange(['heightMetric', metricVal])} 
 							conversionFunc = {convertHeight}
-							className={isSpecificError('Height') ? 'is-invalid' : ''}
+							className={statusLib.isSpecificError('Height') ? 'is-invalid' : ''}
 							disabled={formValues.lockSetting === 'Locked height'} />
 					</Col>
 				</Row>
@@ -150,14 +137,16 @@ export default function BMICard({weightMetric, heightMetric, weightUnits, height
 					<div className="fw-bold bmi-calc-class">{bmiClass ?? ' '}</div>	
 					<Row>
 						<Col className={bmiClassToCSSClass[bmiClass]}>
-							<input readOnly value={(isError() || !formValues.weightMetric || !formValues.heightMetric) ? '' : `${bmiValues.bmi}`} className="text-center" />
-							<input readOnly value={(isError() || !formValues.weightMetric || !formValues.heightMetric) ? '' : `(Prime = ${bmiValues.bmiPrime})`} className="text-center" />
+							<input readOnly value={(statusLib.isError() || !formValues.weightMetric || !formValues.heightMetric) ? '' : `${bmiValues.bmi}`} className="text-center" />
+							<input readOnly value={(statusLib.isError() || !formValues.weightMetric || !formValues.heightMetric) ? '' : `(Prime = ${bmiValues.bmiPrime})`} className="text-center" />
 						</Col>
 					</Row>
 				</div>
       </Card.Body>
 			<Card.Footer>
-				<Button onClick={recordWeightAndHeight} disabled={(isError() || !formValues.weightMetric || !formValues.heightMetric)}>Record as current</Button>
+				<Button onClick={recordWeightAndHeight} disabled={(statusLib.isError() || !formValues.weightMetric || !formValues.heightMetric)}>
+					Record as current
+				</Button>
 			</Card.Footer>
     </Card>
   );

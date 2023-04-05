@@ -22,6 +22,6 @@ export default class ContactService extends NetService {
 	}
 
 	retrieveContacts() {
-		return this.get(EP_CONTACTS) ;
+		return this.get(EP_CONTACTS, {noErrorClear: true}) ;
 	}
 }

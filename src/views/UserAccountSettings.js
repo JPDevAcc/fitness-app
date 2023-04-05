@@ -12,8 +12,8 @@ import UserProfileService from "../services/userProfileService";
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 
-// Utils
-import * as utils from "../utils/utils";
+// Utils and Libraries
+import StatusLib from '../libs/statusLib';
 
 // Contexts (global data)
 import { UserContext } from "../contexts/User"
@@ -45,30 +45,8 @@ export default function UserAccountSettings({viewCommon, logout}) {
 	}) ;
 	// Success status
 	const [successMsg, changeSuccessMsg] = useState(null) ;
-
-	// Set and remove error-status for the specified category
-	function setErrorStatus(category, msg) {
-		utils.setErrorStatus(changeErrorStatusList, category, msg) ;
-	}
-	function removeErrorStatus(category) {
-		utils.removeErrorStatus(changeErrorStatusList, category) ;
-	}
-	// Retrieve active (non-blank) error
-	function getError() {
-		return utils.getError(errorStatusList) ;
-	}
-	// Get current HTML error message
-	function getErrorMessageHtml() {
-		return utils.getMessageHtml(getError()) ;
-	}
-	// Get current HTML success message
-	function getSuccessMessageHtml() {
-		return utils.getMessageHtml(successMsg, 'success') ;
-	}
-	// Returns boolean denoting whether there is currently an error
-	function isError() {
-		return utils.isError(errorStatusList) ;
-	}
+	// Status library
+	const statusLib = new StatusLib(errorStatusList, changeErrorStatusList, successMsg, changeSuccessMsg) ;
 
 	// Handle form field user-input
   const handleChange = (event) => {
@@ -78,9 +56,9 @@ export default function UserAccountSettings({viewCommon, logout}) {
 		newFormValues[fieldName] = newValue;
 
 		if (['newPassword', 'newPassword_Confirm'].includes(fieldName)) {
-			if (newFormValues.newPassword.length < 8) setErrorStatus('newPassword', 'Password too short') ;
-			else if (newFormValues.newPassword !== newFormValues.newPassword_Confirm) setErrorStatus('newPassword', 'Password mismatch') ;
-			else removeErrorStatus('newPassword') ;
+			if (newFormValues.newPassword.length < 8) statusLib.setErrorStatus('newPassword', 'Password too short') ;
+			else if (newFormValues.newPassword !== newFormValues.newPassword_Confirm) statusLib.setErrorStatus('newPassword', 'Password mismatch') ;
+			else statusLib.removeErrorStatus('newPassword') ;
 		}
 		changeFormValues(newFormValues) ;
   }
@@ -89,14 +67,14 @@ export default function UserAccountSettings({viewCommon, logout}) {
   const submitHandlerPwdChange = (event) => {
     event.preventDefault();
     userService.changePwd(formValues.password, formValues.newPassword).then(() => {
-			changeSuccessMsg('Password updated') ;
+			statusLib.changeSuccessMsg('Password updated') ;
 		}).catch((err) => console.log(err)) ;
   }
 
  const submitHandlerChangeUserName = (event) => {
     event.preventDefault();
     profileService.changeUserName(formValues.passwordForUserNameChange, formValues.userName).then(() => {
-			changeSuccessMsg('Username updated') ;
+			statusLib.changeSuccessMsg('Username updated') ;
 
 			// Update locally
 			const newFormValues = {...userProfile} ;
@@ -116,8 +94,7 @@ export default function UserAccountSettings({viewCommon, logout}) {
   return (
 		<div className="page-user-account-settings">
 			<h1>Account Settings</h1>
-			{/* {getErrorMessageHtml()} */}
-			{getSuccessMessageHtml()}
+			{statusLib.getStatusMessageHtml()}
 
 			<div className="user-account-settings d-flex flex-column gap-4">
 				<Form onSubmit={(event) => submitHandlerPwdChange(event)}>
@@ -149,7 +126,7 @@ export default function UserAccountSettings({viewCommon, logout}) {
 							/>
 						</Form.Group>
 						
-						<Button variant="primary" type="submit" className='mx-auto my-4' disabled={isError()}>Update Password</Button>
+						<Button variant="primary" type="submit" className='mx-auto my-4' disabled={statusLib.isError()}>Update Password</Button>
 
 					</fieldset>
 				</Form>

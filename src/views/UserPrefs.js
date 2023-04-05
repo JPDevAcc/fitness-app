@@ -2,7 +2,7 @@
 import './css/userPrefs.scss' ;
 
 // React and other packages
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 
 // React-bootstrap components
@@ -17,8 +17,7 @@ import UserPrefsService from "../services/userPrefsService";
 // Our components
 import Select from '../components/Select';
 
-// Utils
-import * as utils from "../utils/utils";
+// Utils and Libraries
 import { weightUnitOpts, heightUnitOpts, distanceUnitOpts, temperatureUnitOpts } from '../utils/units';
 
 // Contexts (global data)
@@ -40,37 +39,6 @@ export default function UserSitePrefs({nextPage, viewCommon}) {
 	// Form fields
 	const [ userState, dispatch ] = React.useContext(UserContext) ;
 	const formValues = userState.prefs ;
-
-	// === STATUS HANDLING ===
-	// Error-status for fields
-	const [errorStatusList, changeErrorStatusList] = useState({}) ;
-
-	// Success status
-	const [successMsg, changeSuccessMsg] = useState(null) ;
-
-	// Set and remove error-status for the specified category
-	function setErrorStatus(category, msg) {
-		utils.setErrorStatus(changeErrorStatusList, category, msg) ;
-	}
-	function removeErrorStatus(category) {
-		utils.removeErrorStatus(changeErrorStatusList, category) ;
-	}
-	// Retrieve active (non-blank) error
-	function getError() {
-		return utils.getError(errorStatusList) ;
-	}
-	// Get current HTML error message
-	function getErrorMessageHtml() {
-		return utils.getMessageHtml(getError()) ;
-	}
-	// Get current HTML success message
-	function getSuccessMessageHtml() {
-		return utils.getMessageHtml(successMsg, 'success') ;
-	}
-	// Returns boolean denoting whether there is currently an error
-	function isError() {
-		return utils.isError(errorStatusList) ;
-	}
 
 	// Handle form field user-input
   const handleChange = (event) => {
@@ -101,13 +69,13 @@ export default function UserSitePrefs({nextPage, viewCommon}) {
 						<Form.Label htmlFor="weightUnits">Weight Units</Form.Label>
 						<Select id='weightUnits' opts={weightUnitOpts}
 							value={formValues.weightUnits} onChange={(event)=>handleChange(event)}
-							disabled={successMsg} />
+						/>
 					</Col>
 					<Col sm>
 						<Form.Label htmlFor="heightUnits">Height Units</Form.Label>
 						<Select id='heightUnits'opts={heightUnitOpts}
 							value={formValues.heightUnits} onChange={(event)=>handleChange(event)}
-							disabled={successMsg} />
+						 />
 					</Col>
 				</Row>
 				<Row className="gap-3">
@@ -115,19 +83,19 @@ export default function UserSitePrefs({nextPage, viewCommon}) {
 						<Form.Label htmlFor="distanceUnits">Distance Units</Form.Label>
 						<Select id='distanceUnits'opts={distanceUnitOpts}
 							value={formValues.distanceUnits} onChange={(event)=>handleChange(event)}
-							disabled={successMsg} />
+						/>
 					</Col>
 					<Col sm>
 						<Form.Label htmlFor="temperatureUnits">Temperature Units</Form.Label>
 						<Select id='temperatureUnits' opts={temperatureUnitOpts}
 							value={formValues.temperatureUnits} onChange={(event)=>handleChange(event)}
-							disabled={successMsg} />
+						/>
 					</Col>
 				</Row>
 				
 			{nextPage &&
 				<div className="text-center my-4">
-					<Button onClick={handleNextPageClick} variant="primary" type="submit" disabled={isError() || successMsg}>Next</Button>
+					<Button onClick={handleNextPageClick} variant="primary" type="submit">Next</Button>
 				</div>}
 			</Form>
 		</div>
