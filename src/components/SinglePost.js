@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import ProfileModal from './ProfileModal';
 import CommunityService from '../services/communityService'
+import UserProfileService from '../services/userProfileService'
 import { getProfileImageUrl } from '../utils/image'
 
 function SinglePost(props) {
@@ -18,7 +19,8 @@ function SinglePost(props) {
     const [commentCounter, changeCommentCounter] = useState(0)
 
 
-    const communityService = new CommunityService(props.viewCommon.net)
+    const communityService = new CommunityService(props.viewCommon.net);
+		const userProfileService = new UserProfileService(props.viewCommon.net);
 
     const updateLikes = async () => {
         const response = await communityService.getLikesCount(props.post._id)
@@ -74,7 +76,7 @@ function SinglePost(props) {
     }
 
     const findUser = async (data) => {
-        const response = await communityService.findUser(data)
+        const response = await userProfileService.getProfile(data);
         console.log(response)
         return response.data
     }

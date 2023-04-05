@@ -20,4 +20,8 @@ export default class UserProfileService extends NetService {
 	changeUserName(currentPassword, newUserName) {
 		return this.post(EP_PROFILE_USERNAME, { currentPassword, newUserName }) ;
 	}
+
+	getProfile(userName) { 
+    return this.get(EP_PROFILE + '/' + userName);
+	}
 }
