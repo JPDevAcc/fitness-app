@@ -1,13 +1,9 @@
 import './css/customPage.scss'
-import { formatDate, formatMonth, formatTime } from '../utils/utils'
-import UnsplashAPIClient from '../services/API/unsplashApiService'
-import { Button, Card } from 'react-bootstrap'
+import { formatDate } from '../utils/utils'
+import { Card } from 'react-bootstrap'
 
 
 function SingleCustomPage(props) {
-
-    console.log(props.currentCustomWorkout)
-
 
     const showExercises = () => {
         return props.currentCustomWorkout?.exercises?.map((exercise, index) => {
@@ -25,26 +21,25 @@ function SingleCustomPage(props) {
         })
     }
 
-
     return (
 
         <>
             <div className='custom-page-container'>
-                <h1>{props.currentCustomWorkout.title}</h1>
+                <h1>{props.currentCustomWorkout?.title}</h1>
                 <h6>Created by: {" "}
                     <span className='username'>
-                        {props.currentCustomWorkout.username}
+                        {props.currentCustomWorkout?.username}
                     </span>
                 </h6>
                 <h6>
                     <span className='date'>
-                        {formatDate(props.currentCustomWorkout.date)}
+                        {formatDate(props.currentCustomWorkout?.date)}
                     </span>
                 </h6>
-                <img className='workout-image' src={props.currentCustomWorkout.image}></img>
+                <img className='workout-image' src={props.currentCustomWorkout?.image}></img>
                 <div className='workout-wrapper'>
                     <h3>1. Warm Up!</h3>
-                    A full body warm-up is an essential part of any workout routine. It prepares your muscles, joints, and cardiovascular system for the physical activity to come, reducing the risk of injury and enhancing performance. Here's a step-by-step guide for a comprehensive full body warm-up:
+                    A full body warm-up is an essential part of any workout routine. It prepares your muscles, joints, and cardiovascular system for the physical activity to come, reducing the risk of injury and enhancing performance. Here's a step-by-step guide for full body warm-up:
                     <br />
                     <br />
                     <ol>
@@ -68,11 +63,11 @@ function SingleCustomPage(props) {
                     <br />
                     <br />
                     <hr className='white' />
-                    <h3>2. Workout</h3>
+                    <h3>2. Workout.</h3>
                     <div className='exc-wrapper'>
                         <div className='workout-info'>
-                            <h4>Sets: {props.currentCustomWorkout.sets}</h4>
-                            <h4>Exercises: {props.currentCustomWorkout.exercises.length}</h4>
+                            <h4>Sets: {props.currentCustomWorkout?.sets}</h4>
+                            <h4>Exercises: {props.currentCustomWorkout?.exercises.length}</h4>
                         </div>
                         <br />
                         <div className='exercises'>
@@ -83,7 +78,7 @@ function SingleCustomPage(props) {
                     <hr className='white' />
                     <br />
                     <h3>3. Cool Down...</h3>
-                    A cool down is just as important as a warm-up for any workout routine. It allows your heart rate and breathing to gradually return to normal and helps prevent muscle soreness and injury. Here's a step-by-step guide for a comprehensive cool down:
+                    A cool down is just as important as a warm-up for any workout routine. It allows your heart rate and breathing to gradually return to normal and helps prevent muscle soreness and injury. Here's a step-by-step guide for a cool down:
                     <br />
                     <br />
                     <ol>
@@ -93,16 +88,12 @@ function SingleCustomPage(props) {
                             <li>Hamstring stretch: Sit on the ground with your legs extended in front of you. Reach forward toward your toes, keeping your back straight and your knees straight.</li>
                             <li>Quad stretch: Stand with your feet hip-width apart. Bend one knee and bring your heel toward your buttock, holding onto your ankle with one hand. Keep your knees together and your torso upright.</li>
                             <li>Shoulder stretch: Stand with your feet hip-width apart. Bring one arm across your chest and use your other arm to gently pull it towards your opposite shoulder. Hold the stretch for 15-30 seconds, then repeat on the other side.</li>
-
                         </ul>
                         <li>Incorporate some foam rolling or self-massage techniques to release muscle tension and reduce soreness. Use a foam roller or massage ball to target the major muscle groups of your body, focusing on any areas that feel particularly tight or sore.</li>
                         <li>Finally, end the cool down with some deep breathing exercises or relaxation techniques to reduce stress and promote mental relaxation. Sit or lie down in a comfortable position and focus on slow, deep breaths, inhaling through your nose and exhaling through your mouth.</li>
                     </ol>
-
                 </div>
-
             </div>
-
         </>
     )
 }

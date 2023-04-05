@@ -1,4 +1,3 @@
-import "./css/exercises.scss";
 import SingleWorkoutCard from "../components/SingleWorkoutCard";
 import WorkoutCard from "../components/WorkoutCard";
 import ExerciseAPIClient from "../services/API/exerciseApiService";

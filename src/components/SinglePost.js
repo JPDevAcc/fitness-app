@@ -80,8 +80,7 @@ function SinglePost(props) {
     }
 
     const showProfile = async () => {
-        const userData = await findUser(props.post.username)
-        const userProfile = await userData.userProfile
+        const userProfile = await findUser(props.post.username)
         props.changeUserProfile(userProfile)
         setLgShow(true)
     }

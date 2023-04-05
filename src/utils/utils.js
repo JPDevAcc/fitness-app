@@ -14,6 +14,7 @@ export function formatTime(dateString) {
 	return time;
 }
 
-export function formatDate(date) { // Is this function used anywhere?
-	return date.slice(0, 10) // Will produce wrong results sometimes if passed a UTC string and you want a local-time date out
+export function formatDate(dateString) {
+	const date = new Date(dateString);
+	return date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0');
 }

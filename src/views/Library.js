@@ -16,7 +16,6 @@ function Library(props) {
     const exerciseAPIClient = new ExerciseAPIClient(props.viewCommon.net);
 
     // const [savedWorkouts, changeSavedWorkouts] = useState([]);
-    console.log(props.savedWorkouts)
 
     useEffect(() => {
         const getUserRecipes = async () => {
@@ -51,9 +50,8 @@ function Library(props) {
     }
 
     const showWorkouts = () => {
-        console.log(props.savedWorkouts)
-        return props.savedWorkouts?.map((workout) =>
-            <Card onClick={() => showWorkoutPage(workout)} className='recipe-card' style={{ width: '18rem' }}>
+        return props.savedWorkouts?.map((workout, index) =>
+            <Card key={index} onClick={() => showWorkoutPage(workout)} className='recipe-card' style={{ width: '18rem' }}>
                 <Card.Img variant="top" src={workout.image} />
                 <Card.Body>
                     <Card.Title>{workout.title}</Card.Title>

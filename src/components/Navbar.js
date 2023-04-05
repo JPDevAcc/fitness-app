@@ -80,7 +80,7 @@ function NavigationBar(props) {
                         </Link>
                     </Nav>
 
-                    <NavDropdown className="d-none d-lg-block text-white" align="end" flip="true" title={props.userIdentifier}>
+                    <NavDropdown className="d-none d-lg-block text-white username" align="end" flip="true" title={props.userIdentifier}>
                         <NavDropdown.Item onClick={() => navigate("contacts")}>Contacts</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("messages")}>Messages</NavDropdown.Item>
                         <NavDropdown.Item onClick={() => navigate("myworkout")}>Custom Workouts</NavDropdown.Item>

@@ -1,7 +1,8 @@
 import "./css/recipeCard.scss"
-import React from 'react'
+
 import { Card, Button } from 'react-bootstrap'
 import { useState, useEffect } from 'react';
+
 import RecipeModal from './RecipeModal';
 import FoodAPIClient from "../services/API/foodApiService";
 import { ReactComponent as Heart } from "./Images/heart.svg"
@@ -9,15 +10,14 @@ import { ReactComponent as Redheart } from "./Images/redheart.svg"
 
 
 function SingleRecipeCard(props) {
-    const [heartIsRed, setHeartIsRed] = useState(false)
-
 
     const foodAPIClient = new FoodAPIClient(props.viewCommon.net);
+
+    const [heartIsRed, setHeartIsRed] = useState(false)
 
     useEffect(() => {
         const checkIfRecipeIsSaved = async () => {
             const response = await foodAPIClient.checkRecipe(props.id)
-            console.log(response.data)
             setHeartIsRed(response.data)
         }
         checkIfRecipeIsSaved()
@@ -25,14 +25,11 @@ function SingleRecipeCard(props) {
 
     const changeUserRecipes = async (recipe) => {
         const response = await foodAPIClient.getUserRecipes()
-        console.log(response.data)
         props.changeSavedRecipes(response.data)
-        console.log(await props.savedRecipes)
         return response.data
     }
 
     const [lgShow, setLgShow] = useState(false);
-
 
     function handleClickedRecipe() {
 
@@ -45,12 +42,10 @@ function SingleRecipeCard(props) {
         }
         saveRecipeToDatabase(recipeParams)
         changeUserRecipes()
-        // console.log(props.savedRecipes)
     }
 
     async function handleCardClick() {
         const response = await foodAPIClient.getFullRecipe(props.id)
-        console.log(response.data)
         const recipeInfo = response.data
         const ingredientsList = recipeInfo.extendedIngredients.map((ingredient) => {
             return ingredient.original
@@ -71,7 +66,6 @@ function SingleRecipeCard(props) {
             image: recipeInfo.image,
             ingredientsImages: ingredientsImages,
             ingredientsValues: ingredientsValues
-
         })
         setLgShow(true)
     }
@@ -113,7 +107,6 @@ function SingleRecipeCard(props) {
                 aria-labelledby="example-modal-sizes-title-lg"
             />
         </>
-
     )
 }
 

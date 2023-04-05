@@ -34,6 +34,7 @@
             color: black;
             width: 100% !important;
             position:relative;
+            border: none;
 
             .add-comment {
                 min-height: 100px;
@@ -85,8 +86,6 @@
                     padding: 5px;
                     margin: 5px;
 
-
-
                     .post-page-user-image {
                         width: 50px;
                         height: 50px;
@@ -110,13 +109,15 @@
                         right: 100px;
                         top: 30px;
                         font-weight: 550;
+                        font-size: 0.9rem;
                     }
-
+                    
                     .date {
                         position: absolute;
                         right: 20px;
                         top: 30px;
                         font-weight: 550;
+                        font-size: 0.9rem;
                     }
                 }
 

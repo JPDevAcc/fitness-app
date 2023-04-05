@@ -40,3 +40,15 @@
     }
 }
 }
+
+@media screen and (min-width: 268px) and (max-width: 668px) {
+
+    * {
+        text-align: center;
+    }
+
+    .recipe-wrapper {
+        width: 100%;
+        justify-content: center;
+    }
+}
