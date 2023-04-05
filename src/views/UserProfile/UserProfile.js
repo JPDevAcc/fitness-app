@@ -23,10 +23,10 @@ import PrivacyButtons from './components/PrivacyButtons';
 import GoalsSelection from './components/GoalsSelection';
 import ButtonsRadio from '../../components/ButtonsRadio';
 
-// Utils
-import * as utils from "../../utils/utils";
+// Utils and Libraries
 import { weightUnitOpts, heightUnitOpts, convertWeight, convertHeight, convertBetweenWeightAndBMI, roundValue } from '../../utils/units';
 import { getProfileImageUrl } from "../../utils/image";
+import StatusLib from '../../libs/statusLib';
 
 // Contexts (global data)
 import { UserContext } from "../../contexts/User"
@@ -84,37 +84,8 @@ export default function UserProfile({nextPage, viewCommon}) {
 	// === STATUS HANDLING ===
 	// Error-status for fields
 	const [errorStatusList, changeErrorStatusList] = useState({}) ;
-
-	// Success status
-	const [successMsg, changeSuccessMsg] = useState(null) ;
-
-	// Set and remove error-status for the specified category
-	function setErrorStatus(category, msg) {
-		utils.setErrorStatus(changeErrorStatusList, category, msg) ;
-	}
-	function removeErrorStatus(category) {
-		utils.removeErrorStatus(changeErrorStatusList, category) ;
-	}
-	// Retrieve active (non-blank) error
-	function getError() {
-		return utils.getError(errorStatusList) ;
-	}
-	// Get current HTML error message
-	function getErrorMessageHtml() {
-		return utils.getMessageHtml(getError()) ;
-	}
-	// Get current HTML success message
-	function getSuccessMessageHtml() {
-		return utils.getMessageHtml(successMsg, 'success') ;
-	}
-	// Returns boolean denoting whether there is currently an error
-	function isError() {
-		return utils.isError(errorStatusList) ;
-	}
-	// Returns boolean denoting whether there is currently an error
-	function isSpecificError(category) {
-		return utils.isSpecificError(errorStatusList, category) ;
-	}
+	// Status library
+	const statusLib = new StatusLib(errorStatusList, changeErrorStatusList) ;
 
 	// Handle form field user-input
   const handleChange = (changeData) => {
@@ -139,7 +110,6 @@ export default function UserProfile({nextPage, viewCommon}) {
 			userProfileService.updateFieldValue('weightGoalValue', newFormValues.weightGoalValue) ;
 		}
 
-		console.log(fieldName, newValue) ;
 		userProfileService.updateFieldValue(fieldName, newValue) ;
 		dispatch({type: 'setProfile', data: newFormValues});
   }
@@ -307,17 +277,17 @@ export default function UserProfile({nextPage, viewCommon}) {
 					<Col md>
 						<Form.Label htmlFor="Weight_i1">Weight</Form.Label>
 						<PrivacyButtons id="weightPrivacy" value={formValues.weightPrivacy} onChange={(val) => handleChange(['weightPrivacy', val])} />
-						<UnitsInput unitType="Weight" unitOpts={weightUnitOpts} metricValue={formValues.weight} setErrorStatus={setErrorStatus}
+						<UnitsInput unitType="Weight" unitOpts={weightUnitOpts} metricValue={formValues.weight} setErrorStatus={(u, v) => statusLib.setErrorStatus(u, v)}
 							currentUnit={prefs.weightUnits} onValueChange = {(metricVal) => handleChange(['weight', metricVal])}
-							className={isSpecificError('Weight') ? 'is-invalid' : ''} conversionFunc = {convertWeight} />
+							className={statusLib.isSpecificError('Weight') ? 'is-invalid' : ''} conversionFunc = {convertWeight} />
 					</Col>
 
 					<Col md>
 						<Form.Label htmlFor="Height_i1">Height</Form.Label>
 						<PrivacyButtons id="heightPrivacy" value={formValues.heightPrivacy} onChange={(val) => handleChange(['heightPrivacy', val])} />
-						<UnitsInput unitType="Height" unitOpts={heightUnitOpts} metricValue={formValues.height} setErrorStatus={setErrorStatus}
+						<UnitsInput unitType="Height" unitOpts={heightUnitOpts} metricValue={formValues.height} setErrorStatus={(u, v) => statusLib.setErrorStatus(u, v)}
 							currentUnit={prefs.heightUnits} onValueChange = {(metricVal) => handleChange(['height', metricVal])}
-							className={isSpecificError('Height') ? 'is-invalid' : ''} conversionFunc = {convertHeight} />
+							className={statusLib.isSpecificError('Height') ? 'is-invalid' : ''} conversionFunc = {convertHeight} />
 					</Col>
 				</Row>
 
@@ -366,9 +336,9 @@ export default function UserProfile({nextPage, viewCommon}) {
 					</div>
 					<div className="d-flex justify-content-center">
 					{formValues.weightGoalUnits === 'absolute' &&
-						<UnitsInput unitType="weightGoalValue" unitOpts={weightUnitOpts} metricValue={formValues.weightGoalValue} setErrorStatus={setErrorStatus}
+						<UnitsInput unitType="weightGoalValue" unitOpts={weightUnitOpts} metricValue={formValues.weightGoalValue} setErrorStatus={(u, v) => statusLib.setErrorStatus(u, v)}
 							currentUnit={prefs.weightUnits} onValueChange = {(metricVal) => handleChange(['weightGoalValue', metricVal])}
-							className={isSpecificError('WeightGoalValue') ? 'is-invalid' : ''} conversionFunc={convertWeight} />}
+							className={statusLib.isSpecificError('WeightGoalValue') ? 'is-invalid' : ''} conversionFunc={convertWeight} />}
 					{formValues.weightGoalUnits !== 'absolute' &&
 						<Form.Control
 							name="weightGoalValue"
@@ -381,7 +351,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 				
 			{actualNextPage &&
 				<div className="text-center my-4">
-					<Button onClick={handleNextPageClick} variant="primary" type="submit" disabled={isError() || successMsg}>Next</Button>
+					<Button onClick={handleNextPageClick} variant="primary" type="submit" disabled={statusLib.isError()}>Next</Button>
 				</div>}
 
 		</div>
