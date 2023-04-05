@@ -13,8 +13,8 @@ import UserService from "../services/userService";
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 
-// Utils
-import * as utils from "../utils/utils";
+// Utils and Libraries
+import StatusLib from "../libs/statusLib";
 
 // ==============================================================================
 
@@ -45,30 +45,8 @@ export default function UserRegister(viewCommon) {
 	});
 	// Success status
 	const [successMsg, changeSuccessMsg] = useState(null);
-
-	// Set and remove error-status for the specified category
-	function setErrorStatus(category, msg) {
-		utils.setErrorStatus(changeErrorStatusList, category, msg);
-	}
-	function removeErrorStatus(category) {
-		utils.removeErrorStatus(changeErrorStatusList, category);
-	}
-	// Retrieve active (non-blank) error
-	function getError() {
-		return utils.getError(errorStatusList);
-	}
-	// Get current HTML error message
-	function getErrorMessageHtml() {
-		return utils.getMessageHtml(getError());
-	}
-	// Get current HTML success message
-	function getSuccessMessageHtml() {
-		return utils.getMessageHtml(successMsg, 'success');
-	}
-	// Returns boolean denoting whether there is currently an error
-	function isError() {
-		return utils.isError(errorStatusList);
-	}
+	// Status library
+	const statusLib = new StatusLib(errorStatusList, changeErrorStatusList, successMsg, changeSuccessMsg) ;
 
 	// Handle form field user-input
 	const handleChange = (event) => {
@@ -78,16 +56,16 @@ export default function UserRegister(viewCommon) {
 		newFormValues[fieldName] = newValue;
 
 		if (fieldName === 'email') {
-			if (newValue === '') setErrorStatus('email', 'Email address required');
+			if (newValue === '') statusLib.setErrorStatus('email', 'Email address required');
 			else if (!/[^\s]*@[a-z0-9.-]+/i.test(newValue)) { // (very permissive so we hopefully don't reject valid ones)
-				setErrorStatus('email', 'Invalid email address');
+				 statusLib.setErrorStatus('email', 'Invalid email address');
 			}
-			else removeErrorStatus('email');
+			else  statusLib.removeErrorStatus('email');
 		}
 		else if (['password', 'password_confirm'].includes(fieldName)) {
-			if (newFormValues.password.length < 8) setErrorStatus('password', 'Password too short');
-			else if (newFormValues.password !== newFormValues.password_confirm) setErrorStatus('password', 'Password mismatch');
-			else removeErrorStatus('password');
+			if (newFormValues.password.length < 8) statusLib.setErrorStatus('password', 'Password too short');
+			else if (newFormValues.password !== newFormValues.password_confirm) statusLib.setErrorStatus('password', 'Password mismatch');
+			else statusLib.removeErrorStatus('password');
 		}
 		changeFormValues(newFormValues);
 	}
@@ -98,7 +76,7 @@ export default function UserRegister(viewCommon) {
 		const regData = { ...formValues };
 		delete regData.password_confirm;
 		userService.register(regData).then(() => {
-			changeSuccessMsg('Registration successful - please wait to be redirected to the login page');
+			statusLib.changeSuccessMsg('Registration successful - please wait to be redirected to the login page');
 			setTimeout(() => navigate("/login"), 3000);
 		}).catch((err) => console.log(err));
 	}
@@ -107,8 +85,7 @@ export default function UserRegister(viewCommon) {
 	return (
 		<div className="page-user-register">
 			<h1>Create Account</h1>
-			{getErrorMessageHtml()}
-			{getSuccessMessageHtml()}
+			{statusLib.getStatusMessageHtml()}
 
 			<Form id="form" className='register-form' onSubmit={(event) => submitHandler(event)}>
 				<Form.Group controlId="email">
@@ -139,7 +116,10 @@ export default function UserRegister(viewCommon) {
 				</Form.Group>
 
 				<div className="button text-center my-4">
-					<Button className='orange-button' variant="primary" type="submit" disabled={isError() || successMsg}>Register</Button>
+					<Button className='orange-button' variant="primary" type="submit"
+						disabled={statusLib.isError() || statusLib.getSuccessMsg()}>
+						Register
+					</Button>
 				</div>
 			</Form>
 			<img className='logo-login' src={logo} alt='logo' />
