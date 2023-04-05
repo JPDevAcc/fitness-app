@@ -28,9 +28,15 @@
     @include flex-center();
     flex-wrap: wrap;
 
+    .page-title {
+        text-align: center;
+        font-family: 'Raleway Dots', cursive;
+    }
+
     .left-section {
         height: 100vh;
         @include flex-center(column);
+        align-items: center;
         overflow-y: scroll;
         background-attachment: fixed;
         -ms-overflow-style: none; /*  hide  scrollbar // IE and Edge */

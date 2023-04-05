@@ -13,10 +13,9 @@ function CustomWorkout(props) {
 
     const [customWorkouts, changeCustomWorkouts] = useState([])
     const [addedExercises, changeAddedExercises] = useState([])
-
     const [tempExerciseList, changeTempExerciseList] = useState([])
-
     const [currentExercise, changeCurrentExercise] = useState('')
+    const [exercises, changeExercises] = useState([])
 
     const [formValues, changeFormValues] = useState({
         title: '',
@@ -24,8 +23,6 @@ function CustomWorkout(props) {
         exerciseName: '',
         reps: ''
     })
-
-    const [exercises, changeExercises] = useState([])
 
     useEffect(() => {
         const getWorkouts = async () => {
@@ -70,13 +67,11 @@ function CustomWorkout(props) {
 
     const displayExercises = () => {
         return exercises?.map((exercise, index) => {
-            while (index < 50) {
-                return (
-                    <Card onClick={() => transferID(exercise.id, exercise.name, exercise.gifUrl)} className='exc-card' key={index} style={{ width: '18rem' }}>
-                        <Card.Title>{exercise.name}</Card.Title>
-                    </Card>
-                )
-            }
+            return (
+                <Card onClick={() => transferID(exercise.id, exercise.name, exercise.gifUrl)} className='exc-card' key={index} style={{ width: '18rem' }}>
+                    <Card.Title>{exercise.name}</Card.Title>
+                </Card>
+            )
         })
     }
 
@@ -91,6 +86,15 @@ function CustomWorkout(props) {
 
     const addExercise = (event) => {
         event.preventDefault()
+
+        if (event.target[0].value === '' || event.target[1].value === '') {
+            alert('Please fill in all the fields')
+            return
+        } else if (isNaN(event.target[1].value)) {
+            alert('Please enter a number for reps')
+            return
+        }
+
         const newExercise = [event.target[0].value, event.target[1].value + ' reps', currentExercise.gif]
         changeAddedExercises([...addedExercises, newExercise])
     }
@@ -113,6 +117,20 @@ function CustomWorkout(props) {
             title: document.getElementById('formWorkoutname').value,
             sets: document.getElementById('formWorkoutSets').value,
             exercises: [...addedExercises]
+        }
+
+        if (customWorkout.title === '' || customWorkout.sets === '') {
+            alert('Please fill in all the fields')
+            return
+        } else if (isNaN(customWorkout.sets)) {
+            alert('Please enter a number for sets')
+            return
+        } else if (customWorkout.exercises.length > 10) {
+            alert('Please add less than 10 exercises')
+            return
+        } else if (customWorkout.exercises.length === 0) {
+            alert('Please add at least 1 exercise')
+            return
         }
 
         const addWorkOut = await addWorkoutToDatabase(customWorkout)
@@ -141,6 +159,7 @@ function CustomWorkout(props) {
     return (
         <>
             <Row className='custom-workout-container'>
+                <h1 className='page-title'>Build your workout</h1>
                 <Col lg={4} className='left-section'>
                     {generateCustomCards()}
                 </Col>

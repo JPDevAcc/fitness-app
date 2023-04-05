@@ -26,12 +26,14 @@
 	.card {
 		text-transform: capitalize;
 		color: #212529;
+		width: 200px !important;
 	}
 
 	.card:hover {
 		background-color: aquamarine;
 		transform: translateY(-10px);
 		transform: translateY(5px);
+		cursor: pointer;
 	}
 
 	.load-more {

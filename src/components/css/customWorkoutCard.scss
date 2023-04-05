@@ -5,10 +5,39 @@
     margin: 10px;
     border: none !important;
     cursor: pointer;
+    position: relative;
 
     &:hover {
         background-image: linear-gradient(45deg, #f57960 0%, #f3ac48  51%, #f77257  100%);
         scale: 1.02;
+    }
+
+    .t-center {
+        text-align: center;
+    }
+
+    .bottom-wrapper {
+        display: flex;
+        justify-content: center;
+        
+        .time {
+            position: absolute;
+            bottom: 18px;
+            right: 20px;
+        }
+
+        .date {
+            position: absolute;
+            bottom: 18px;
+            left: 20px;
+        }
+        
+        
+        
+        .logo {
+            width: 45px;
+            height: 45px;
+        }
     }
     
 }

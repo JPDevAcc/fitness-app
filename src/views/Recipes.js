@@ -25,6 +25,10 @@ function Recipes(props) {
     async function getRecipes(data) {
         const response = await foodAPIClient.getRecipe(data);
 
+        if (response.data.results.length === 0) {
+            return alert("No recipes found")
+        }
+
         return props.changeRecipes(response.data.results)
     }
 
@@ -91,6 +95,9 @@ function Recipes(props) {
 
     const getID = async (data) => {
         const response = await foodAPIClient.getIngredientID(data);
+        if (response.data.results.length === 0) {
+            return "Ingredient not found"
+        }
         return response.data.results[0].id
     }
 
@@ -99,8 +106,14 @@ function Recipes(props) {
 
         const data = event.target[0].value;
         const amount = event.target[1].value;
-        const unit = event.target[2].value;
+        const unit = event.target[2].value || "unit";
         const id = await getID(data);
+
+        if (id === "Ingredient not found") {
+            return alert("Ingredient not found")
+        } else if (amount === "" || isNaN(amount)) {
+            return alert("Please enter an amount")
+        }
 
         try {
             const nutrition = await getNutrition(id, amount, unit);

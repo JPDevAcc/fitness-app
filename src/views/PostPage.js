@@ -92,12 +92,10 @@ function PostPage(props) {
 
     const showComments = () => {
         return props.comments?.map((comment) =>
-            <>
-                <SingleComment
-                    key={comment._id}
-                    comment={comment}
-                />
-            </>
+            <SingleComment
+                key={comment._id}
+                comment={comment}
+            />
         )
     }
 

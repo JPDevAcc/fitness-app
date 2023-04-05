@@ -82,7 +82,7 @@ export default function App() {
 					if (!(userPrefs?.onboardingStageComplete)) navigate('/prefs'); // Start or resume setting up site prefs
 					else if (!(userProfile?.onboardingStageComplete)) navigate('/profile/main'); // Start or resume setting up user profile
 				}
-				
+
 				changeInitComplete(true);
 			});
 	}
@@ -140,7 +140,6 @@ export default function App() {
 		else setError(null);
 	}
 
-	const [recipes, changeRecipes] = useState([]);
 	const [currentRecipe, changeCurrentRecipe] = useState({
 		title: "Basic Chicken",
 		ingredients: [
@@ -159,13 +158,11 @@ export default function App() {
 		],
 	});
 
+	const [recipes, changeRecipes] = useState([]);
 	const [savedRecipes, changeSavedRecipes] = useState([]);
-
-	const netService = new NetService(commonData.net);
+	const [isRedHeart, changeIsRedHeart] = useState(false);
 
 	const [exercises, changeExercises] = useState([]);
-
-	const [isRedHeart, changeIsRedHeart] = useState(false);
 
 	const [currentPost, changeCurrentPost] = useState({
 		title: "Basic Post",
@@ -177,7 +174,6 @@ export default function App() {
 	});
 
 	const [comments, changeComments] = useState([]);
-
 	const [likeCounter, changeLikeCounter] = useState(0)
 	const [lolCounter, changeLolCounter] = useState(0)
 	const [commentCounter, changeCommentCounter] = useState(0)
@@ -191,22 +187,16 @@ export default function App() {
 	});
 
 	const [currentCustomWorkout, changeCurrentCustomWorkout] = useState();
-
 	const [savedWorkouts, changeSavedWorkouts] = useState([]);
 
+	const netService = new NetService(commonData.net);
 
-	const [quote, changeQuote] = useState('');
-
-	const getQuote = async () => {
-		const response = await netService.post('quote');
-		const data = await response.data;
-		console.log(data);
-	}
-
-	// useEffect(() => {
-	// 	getQuote();
-	// }, []);
-
+	// the quotes end-point is not responsive at the moment so this is commented out
+	// const getQuote = async () => {
+	// 	const response = await netService.post('quote');
+	// 	const data = await response.data;
+	// 	console.log(data);
+	// }
 
 	// Template
 	return (
@@ -278,75 +268,75 @@ export default function App() {
 
 						<Route path="/prefs" element={<>{
 							(initComplete) &&
-								<UserSitePrefs viewCommon={commonData}
-									nextPage={!userDataState.prefs.onboardingStageComplete && "/profile/main"} />
-							}</>}
+							<UserSitePrefs viewCommon={commonData}
+								nextPage={!userDataState.prefs.onboardingStageComplete && "/profile/main"} />
+						}</>}
 						/>
 
 						<Route path="/profile/:section" element={<>{
 							(initComplete) &&
-								<UserProfile viewCommon={commonData}
-									nextPage={!userDataState.profile.onboardingStageComplete && "/"} />
-							}</>}
+							<UserProfile viewCommon={commonData}
+								nextPage={!userDataState.profile.onboardingStageComplete && "/"} />
+						}</>}
 						/>
 
 						<Route path="/account" element={<>{
 							(initComplete) &&
-								<UserAccountSettings viewCommon={commonData}
-									logout={logout} />
-							}</>}
+							<UserAccountSettings viewCommon={commonData}
+								logout={logout} />
+						}</>}
 						/>
 
 						<Route path="/contacts" element={<>{
 							(initComplete) &&
-								<Contacts viewCommon={commonData} />
-							}</>}
+							<Contacts viewCommon={commonData} />
+						}</>}
 						/>
 
 						<Route path="/messages" element={<>{
 							(initComplete) &&
-								<Messages viewCommon={commonData} />
-							}</>}
+							<Messages viewCommon={commonData} />
+						}</>}
 						/>
 
 						<Route path="/messages/:id" element={<>{
 							(initComplete) &&
-								<Messages viewCommon={commonData} />
-							}</>}
+							<Messages viewCommon={commonData} />
+						}</>}
 						/>
 
 						<Route path="/recipe" element={<>{
 							(initComplete) &&
-								<Recipes viewCommon={commonData}
-									netService={netService}
-									recipes={recipes}
-									changeRecipes={(recipes) => changeRecipes(recipes)}
-									currentRecipe={currentRecipe}
-									changeCurrentRecipe={(recipe) => changeCurrentRecipe(recipe)}
-									isRedHeart={isRedHeart}
-									changeIsRedHeart={(isRedHeart) => changeIsRedHeart(isRedHeart)}
-									savedRecipes={savedRecipes}
-									changeSavedRecipes={(savedRecipes) => changeSavedRecipes(savedRecipes)}
-									searchBarValues={searchBarValues}
-									changeSearchBarValues={changeSearchBarValues}
-								/>
-							}</>}
+							<Recipes viewCommon={commonData}
+								netService={netService}
+								recipes={recipes}
+								changeRecipes={(recipes) => changeRecipes(recipes)}
+								currentRecipe={currentRecipe}
+								changeCurrentRecipe={(recipe) => changeCurrentRecipe(recipe)}
+								isRedHeart={isRedHeart}
+								changeIsRedHeart={(isRedHeart) => changeIsRedHeart(isRedHeart)}
+								savedRecipes={savedRecipes}
+								changeSavedRecipes={(savedRecipes) => changeSavedRecipes(savedRecipes)}
+								searchBarValues={searchBarValues}
+								changeSearchBarValues={changeSearchBarValues}
+							/>
+						}</>}
 						/>
 
 						<Route path="/exc" element={<>{
 							(initComplete) &&
-								<Exercises viewCommon={commonData}
-									exercises={exercises}
-									changeExercises={(exercises) => changeExercises(exercises)}
-								/>
-							}</>}
+							<Exercises viewCommon={commonData}
+								exercises={exercises}
+								changeExercises={(exercises) => changeExercises(exercises)}
+							/>
+						}</>}
 						/>
 
 						<Route path="/" element={<>{
 							(initComplete) ?
 								<Dashboard viewCommon={commonData} /> :
 								(!token) && <FrontPage />
-							}</>}
+						}</>}
 						/>
 
 						<Route path="*" element={<Navigate to="/" replace />} />

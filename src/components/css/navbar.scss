@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Raleway:wght@200;300;400&family=Rubik+Pixels&family=Sacramento&family=Special+Elite&display=swap');
+
 .component-navbar {
 	.logo {
 		width: 40px;
@@ -7,5 +9,10 @@
 
 	hr.hr-white {
 		border-color: white;
+	}
+
+	.username {
+		color: rgb(22, 133, 236) !important;
+		font-weight: 600 !important;
 	}
 }
