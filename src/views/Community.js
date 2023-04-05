@@ -4,6 +4,7 @@ import AddPostModal from '../components/AddPostModal'
 import { Row, Col, Form, Button, Card } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import CommunityService from '../services/communityService'
+import UserProfileService from '../services/userProfileService'
 import { getProfileImageUrl } from '../utils/image'
 import { ReactComponent as Message } from './images/message.svg'
 import { ReactComponent as Add } from './images/plus.svg'
@@ -19,9 +20,9 @@ function Community(props) {
 
     const [lgShow, setLgShow] = useState(false);
 
-    const communityService = new CommunityService(props.viewCommon.net)
-
-    const messageService = new MessageService(props.viewCommon.net)
+    const communityService = new CommunityService(props.viewCommon.net);
+		const userProfileService = new UserProfileService(props.viewCommon.net);
+    const messageService = new MessageService(props.viewCommon.net);
 
     useEffect(() => {
         communityService.getCommunityPosts()
@@ -43,7 +44,7 @@ function Community(props) {
     }
 
     const findUser = async (data) => {
-        const response = await communityService.findUser(data)
+        const response = await userProfileService.getProfile(data)
         return response.data
     }
 

@@ -18,6 +18,7 @@ import NotificationService from "./services/notificationService";
 import NavigationBar from "./components/Navbar";
 import Footer from "./components/Footer";
 import StatusMessage from "./components/StatusMessage";
+import Spinner from "./components/Spinner";
 
 // Our views (pages)
 import UserRegister from "./views/UserRegister";
@@ -37,12 +38,12 @@ import Contacts from "./views/Contacts";
 import Messages from "./views/Messages";
 import Challenge from "./views/Challenge";
 import SingleCustomPage from "./views/SingleCustomPage";
+import ShowProfile from "./views/ShowProfile";
 
 // Contexts (global data)
 import { UserContext } from "./contexts/User"; // Stores user-prefs and profile data
 
 import NetService from "./netService"; // (*** don't think this should be needed ***)
-import Spinner from "./components/Spinner";
 
 // ==============================================================================
 
@@ -280,6 +281,10 @@ export default function App() {
 								currentCustomWorkout={currentCustomWorkout}
 							/>
 						} />
+
+						<Route path="/showProfile/:userName" element={
+							<ShowProfile viewCommon={commonData} />
+						}	/>
 
 						<Route path="/prefs" element={<>{
 							(initComplete) &&

@@ -38,7 +38,7 @@ import locationOpts from "../../data/geoRegions.json" ;
 
 export const defaults = {
 	imageUrl: "",
-	imagePrivacy: "pri",
+	imageUrlPrivacy: "pri",
 	bio: "",
 	bioPrivacy: "pri",
 	location: "",
@@ -236,7 +236,7 @@ export default function UserProfile({nextPage, viewCommon}) {
 				<div className="image-upload-container-outer">
 					<ProfileImageUpload image={getProfileImageUrl(formValues.imageUrl)} handleImageUpload={handleFileUpload} handleImageRemove={handleImageRemove} />
 					<div className="d-flex justify-content-center">
-						<PrivacyButtons id="imagePrivacy" value={formValues.imagePrivacy} onChange={(val) => handleChange(['imagePrivacy', val])} />
+						<PrivacyButtons id="imageUrlPrivacy" value={formValues.imageUrlPrivacy} onChange={(val) => handleChange(['imageUrlPrivacy', val])} />
 					</div>
 				</div>
 

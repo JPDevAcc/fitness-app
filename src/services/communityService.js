@@ -25,10 +25,6 @@ export default class CommunityService extends NetService {
         return this.get(`post/${postId}`);
     }
 
-    findUser(data) {
-        return this.get(`finduser/${data}`);
-    }
-
     getLikesCount(postId) {
         return this.get(`likes/${postId}`);
     }
