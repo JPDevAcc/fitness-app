@@ -20,7 +20,7 @@ function NutritionModal(props) {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="example-modal-sizes-title-lg">
-                        Nutrients in {props.ingredient.amount} {props.ingredient.unit} of {props.ingredient.name}:
+                        Nutrients in {props.ingredient.amount} {(props.ingredient.unit === "unit") ? "" : props.ingredient.unit + "of "} {props.ingredient.name}:
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
