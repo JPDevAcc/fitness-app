@@ -69,23 +69,24 @@ function SingleWorkoutCard(props) {
           </Card>
         )}
       </div>
-
-      {worksoutsForBodyPart && (
-        <div className="card-container">
-          {worksoutsForBodyPart.slice(0, numToShow).map((exercise) => {
-            return (
-              <WorkoutCard
-                key={exercise.id}
-                title={exercise.name}
-                imgUrl={exercise.gifUrl}
-                equiment={exercise.equipment}
-                part={exercise.bodyPart}
-                target={exercise.target}
-              />
-            );
-          })}
-        </div>
-      )}
+      <>
+        {worksoutsForBodyPart && (
+          <div className="card-container-2">
+            {worksoutsForBodyPart.slice(0, numToShow).map((exercise) => {
+              return (
+                <WorkoutCard
+                  key={exercise.id}
+                  title={exercise.name}
+                  imgUrl={exercise.gifUrl}
+                  equiment={exercise.equipment}
+                  part={exercise.bodyPart}
+                  target={exercise.target}
+                />
+              );
+            })}
+          </div>
+        )}
+      </>
 
       {worksoutsForBodyPart && numToShow >= 20 && (
         <button

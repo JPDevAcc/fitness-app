@@ -21,17 +21,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-   
+    flex-direction: column; 
 
     .post-card {
         box-shadow: rgba(50, 50, 93, 0.15) 0px 30px 60px -12px inset, rgba(168, 164, 164, 0.15) 0px 18px 36px -18px inset;
         color: black;
-        min-width: 90% !important;
+        min-width: 80% !important;
         margin: 0.1rem 0;
         padding: 0 !important;
         position: relative;
-        
+     
         .post-card-body {
             display: flex;
             flex-direction: row;
@@ -107,19 +106,17 @@
       }
 }
 
-@media screen and (min-width: 280px) and (max-width: 900px) {
+@media screen and (min-width: 280px) and (max-width: 768px) {
 
     .posts-wrapper {
         margin-top: 30px;
 
         .post-card {
-            width: 100% !important;
-          
+            width: 100%; 
+
             .post-username{
                 width: 160px !important;
-        }
-
-            
+            }           
         }
     }
 }

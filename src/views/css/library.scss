@@ -6,44 +6,49 @@
     row-gap: 1rem;
     margin-bottom: 1.5rem;
 
-
-.recipe-card {
-    width: 150px !important;
-    min-height: 100px;
-    border: 1px solid black;
-    margin: 20px;
-    color: black;
-    justify-content: center;
-
-    &:hover {
-        cursor: pointer;
-        background-image: linear-gradient(45deg, #f57960 0%, #f3ac48  51%, #f77257  100%) !important;
-        transform: translateY(-10px);
-        transform: translateY(5px);
-    }
-
-    .card-body {
-        padding: 5px !important;
-
-    }
     
-    .card-text {
-        text-align: center;
-        display: flex;
-        justify-content: center;
-    }
 
-    .card-title {
-        text-align: center;
-        font-size: 1rem;
-        font-weight: bold;
+    .recipe-card {
+        width: 150px !important;
+        min-height: 100px;
+        border: 1px solid black;
+        margin: 20px;
+        color: black;
+        justify-content: center;
+
+        &:hover {
+            cursor: pointer;
+            background-image: linear-gradient(45deg, #f57960 0%, #f3ac48  51%, #f77257  100%) !important;
+            transform: translateY(-10px);
+            transform: translateY(5px);
+        }
+
+        .card-body {
+            padding: 5px !important;
+
+        }
+    
+        .card-text {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
     }
 }
+
+h1 {
+    font-size: 2.5rem;
 }
 
 @media screen and (min-width: 268px) and (max-width: 668px) {
 
-    * {
+    h1 {
         text-align: center;
     }
 

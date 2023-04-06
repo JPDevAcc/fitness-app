@@ -42,8 +42,10 @@ function RecipeModal(props) {
               <img className="img-modal-recipe" src={props.currentRecipe?.image} alt="" />
             </Col>
           </Row>
-          <Row>
-            {props.currentRecipe?.instructions}
+          <Row className="row-instructions">
+            <span className="instructions">
+              {props.currentRecipe?.instructions}
+            </span>
           </Row>
           <Row>
             {props.currentRecipe?.ingredientsImages.map((image, index) => {

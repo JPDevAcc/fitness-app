@@ -8,6 +8,7 @@
 .community-container {
     @include flex-center();
     width: 100%;
+    margin: 0 ;
 
     .community-left-panel {
         @include flex-center(column);
@@ -57,11 +58,15 @@
         }
     }   
 
+    .right-panel-wrapper {
+        padding: 0;
+        
         .community-right-panel {
             padding-top: 30px;
             height: 100vh;
             justify-content: flex-start;
         }
+    }
  
     button {
         margin: 20px;
@@ -93,4 +98,23 @@
         transform: scale(0.95);
       }
 
+}
+
+@media screen and (min-width: 268px) and (max-width: 768px) {
+    .community-container {
+        .community-left-panel {
+            .community-left-panel-wrapper {
+                min-height: auto;
+            }
+        }
+
+        .right-panel-wrapper {
+            width: 100% !important;
+
+            .post-card {
+                width: 100% !important;
+            }
+            
+        }
+    }
 }

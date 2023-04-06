@@ -34,6 +34,7 @@
     }
 
     .left-section {
+        padding-left: 0 !important;
         height: 100vh;
         @include flex-center(column);
         align-items: center;
@@ -51,6 +52,7 @@
         @include flex-center();
         min-height: 100vh;
         padding-top: 30px;
+        padding-left: 0 !important;
         flex-wrap: wrap;
         
 

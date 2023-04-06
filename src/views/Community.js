@@ -10,8 +10,6 @@ import { ReactComponent as Message } from './images/message.svg'
 import { ReactComponent as Add } from './images/plus.svg'
 import ProfileModal from '../components/ProfileModal'
 import MessageService from '../services/messageService'
-import ContactService from "../services/contactService";
-import CreateMessageModal from "../components/CreateMessageModal";
 
 function Community(props) {
 
@@ -106,7 +104,6 @@ function Community(props) {
                         aria-labelledby="example-modal-sizes-title-lg"
                         viewCommon={props.viewCommon}
                         userProfile={props.userProfile}
-
                     />
                     <AddPostModal
                         show={show}
@@ -114,12 +111,10 @@ function Community(props) {
                         posts={posts}
                         changePosts={changePosts}
                         viewCommon={props.viewCommon}
-
                     />
                 </Col>
-                <Col lg={6} >
+                <Col className='right-panel-wrapper' lg={6} >
                     <div className='community-right-panel'>
-
                         <CommunityPosts
                             viewCommon={props.viewCommon}
                             posts={posts}

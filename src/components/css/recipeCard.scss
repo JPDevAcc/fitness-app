@@ -24,6 +24,13 @@
     align-items: center;
     padding: 20px;
 
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
     .btn-orange {
         @include orange-button;
         margin: 10px;
@@ -132,7 +139,13 @@
 
 @media screen and (max-width: 998px) {
     .modal-content {
+        .modal-body {
+            padding: 0 !important;
+        }
+
         .row {
+            padding: 0 !important;
+
             .ingredients {
                 order: 2;
             }
@@ -152,6 +165,15 @@
                 height: auto;
                 padding: 1rem;
             }  
+        }
+
+        .row-instructions {
+            width: 100%;
+
+            .instructions {
+                margin-left: 20px;
+                text-align: center;
+            }
         }
     }
 }

@@ -201,6 +201,8 @@ export default function App() {
 	const [currentCustomWorkout, changeCurrentCustomWorkout] = useState();
 	const [savedWorkouts, changeSavedWorkouts] = useState([]);
 
+	const [errorMessage, changeErrorMessage] = useState("");
+
 	const netService = new NetService(commonData.net);
 
 	// the quotes end-point is not responsive at the moment so this is commented out
@@ -244,6 +246,8 @@ export default function App() {
 						<Route path="/myworkout" element={
 							<CustomWorkout viewCommon={commonData}
 								changeCurrentCustomWorkout={changeCurrentCustomWorkout}
+								errorMessage={errorMessage}
+								changeErrorMessage={changeErrorMessage}
 							/>
 						} />
 						<Route path="/library" element={
@@ -337,6 +341,8 @@ export default function App() {
 								changeSavedRecipes={(savedRecipes) => changeSavedRecipes(savedRecipes)}
 								searchBarValues={searchBarValues}
 								changeSearchBarValues={changeSearchBarValues}
+								errorMessage={errorMessage}
+								changeErrorMessage={changeErrorMessage}
 							/>
 						}</>}
 						/>
