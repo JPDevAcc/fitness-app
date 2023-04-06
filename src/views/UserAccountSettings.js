@@ -147,7 +147,7 @@ export default function UserAccountSettings({viewCommon, logout}) {
 						</Form.Group>
 
 						<Form.Group controlId="userName">
-							<Form.Label>Enter New Username</Form.Label>
+							<Form.Label>Enter New Username (8 chars min)</Form.Label>
 							<Form.Control
 								name="userName"
 								onChange={(event)=>handleChange(event)}
