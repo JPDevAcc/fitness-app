@@ -9,3 +9,5 @@ Social system with contacts/messaging system and community social posts page
 BMI calculator (with built-in unit conversion functionality)
 
 Exercise details, custom workouts, and challenges
+
+Recipes and nutritional information
