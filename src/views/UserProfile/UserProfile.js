@@ -58,7 +58,7 @@ export const defaults = {
 	selectedGoalIds: [],
 	selectedGoalIdsPrivacy: 'pri',
 	weightGoalValue: "", // absolute, bmi, or bmiPrime
-	weightGoalUnits: "", // absolute, bmi, or bmiPrime
+	weightGoalUnits: "absolute", // absolute, bmi, or bmiPrime
 	weightGoalPrivacy: ""
 } ;
 

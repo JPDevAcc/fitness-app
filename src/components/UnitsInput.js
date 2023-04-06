@@ -30,13 +30,20 @@ export default function UnitsInput({
 
 	useEffect(() => {
 		// Convert from metric and round for display
-		let [input1Value, input2Value] = conversionFunc([metricValue], unitOpts[0].value, currentUnit) ;
-		if (currentUnit.split(' ').length === 1) input1Value = roundValue(input1Value, 1) ;
-		else input2Value = roundValue(input2Value, 1) ;
+		let input1Value, input2Value ;
+		if (!metricValue) {
+			input1Value = '' ;
+			input2Value = '' ;
+		}
+		else {
+			[input1Value, input2Value] = conversionFunc([metricValue], unitOpts[0].value, currentUnit) ;
+			if (currentUnit.split(' ').length === 1) input1Value = roundValue(input1Value, 1) ;
+			else input2Value = roundValue(input2Value, 1) ;
+		}
 
 		changeFormValues({
 			[input1Id]: input1Value,
-			[input2Id]: input2Value ?? '',
+			[input2Id]: input2Value,
 			[selectId]: currentUnit,
 			metricValue
 		}) ;
@@ -51,19 +58,25 @@ export default function UnitsInput({
 		let isValid = true ;
 		if (e.target.id === selectId) {
 			// Convert from metric and round for display
-			let [input1Value, input2Value] = conversionFunc([formValues.metricValue], unitOpts[0].value, e.target.value) ;
-			if (newValue.split(' ').length === 1) input1Value = roundValue(input1Value, 1) ;
-			else input2Value = roundValue(input2Value, 1) ;
-
+			let input1Value, input2Value ;
+			if (!formValues.metricValue) {
+				input1Value = '' ;
+				input2Value = '' ;
+			}
+			else {
+				[input1Value, input2Value] = conversionFunc([formValues.metricValue], unitOpts[0].value, e.target.value) ;
+				if (newValue.split(' ').length === 1) input1Value = roundValue(input1Value, 1) ;
+				else input2Value = roundValue(input2Value, 1) ;
+			}
 			newFormValues[input1Id] = input1Value ;
-			newFormValues[input2Id] = input2Value ?? "";
+			newFormValues[input2Id] = input2Value ;
 			setErrorStatus(unitType, null) ;
 			newFormValues[fieldName] = newValue;
 		} else {
 			newFormValues[fieldName] = newValue;
 
-			const isValid1 = (!formValues[input1Id] || (/^[0-9]+(\.[0-9]+)?$/.test(newFormValues[input1Id]))) ;
-			const isValid2 = (!formValues[input2Id] || (/^[0-9]+(\.[0-9]+)?$/.test(newFormValues[input2Id]))) ;
+			const isValid1 = (!newFormValues[input1Id] || (/^[0-9]+(\.[0-9]+)?$/.test(newFormValues[input1Id]))) ;
+			const isValid2 = (!newFormValues[input2Id] || (/^[0-9]+(\.[0-9]+)?$/.test(newFormValues[input2Id]))) ;
 			isValid = isValid1 && isValid2 ;
 			if (setErrorStatus) {
 				if (isValid) setErrorStatus(unitType, null) ;
