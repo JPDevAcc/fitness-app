@@ -19,6 +19,7 @@ import UserProfileService from "../../services/userProfileService";
 import ProfileImageUpload from './components/ProfileImageUpload';
 import Select from '../../components/Select';
 import UnitsInput from '../../components/UnitsInput';
+import NumberInput from '../../components/NumberInput';
 import PrivacyButtons from './components/PrivacyButtons';
 import GoalsSelection from './components/GoalsSelection';
 import ButtonsRadio from '../../components/ButtonsRadio';
@@ -338,12 +339,15 @@ export default function UserProfile({nextPage, viewCommon}) {
 					{formValues.weightGoalUnits === 'absolute' &&
 						<UnitsInput unitType="weightGoalValue" unitOpts={weightUnitOpts} metricValue={formValues.weightGoalValue} setErrorStatus={(u, v) => statusLib.setErrorStatus(u, v)}
 							currentUnit={prefs.weightUnits} onValueChange = {(metricVal) => handleChange(['weightGoalValue', metricVal])}
-							className={statusLib.isSpecificError('WeightGoalValue') ? 'is-invalid' : ''} conversionFunc={convertWeight} />}
+							className={statusLib.isSpecificError('weightGoalValue') ? 'is-invalid' : ''} conversionFunc={convertWeight} />}
+
 					{formValues.weightGoalUnits !== 'absolute' &&
-						<Form.Control
-							name="weightGoalValue"
-							value={formValues.weightGoalValue}
-							onChange={handleChange}
+						<NumberInput
+							inputId="weightGoalValue"
+							inputValue={formValues.weightGoalValue}
+							setErrorStatus={(u, v) => statusLib.setErrorStatus(u, v)}
+							inputOnChange={(val) => handleChange(['weightGoalValue', val])}
+							className={statusLib.isSpecificError('weightGoalValue') ? 'is-invalid' : ''}
 						/>}
 					</div>
 				</fieldset>}
