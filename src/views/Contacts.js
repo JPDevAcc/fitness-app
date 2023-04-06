@@ -5,7 +5,7 @@ import "./css/contacts.scss"
 import React, { useEffect, useRef } from "react";
 
 // React-bootstrap components
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 
 // Network services
 import ContactService from "../services/contactService";
@@ -29,6 +29,7 @@ export default function Contacts({viewCommon}) {
 	const [ addContactUserName, changeAddContactUserName ] = React.useState("") ;
 	const [ writingMessageTo, changeWritingMessageTo ] = React.useState(null) ;
 	const [ isSendingMessage, changeIsSendingMessage ] = React.useState(false) ;
+	const [ contactReqSentTo, changeContactReqSentTo ] = React.useState(null) ;
 
 	const timerRef = useRef(null);
 
@@ -69,7 +70,7 @@ export default function Contacts({viewCommon}) {
 	function handleSendContactRequest(e) {
 		e.preventDefault() ;
 		contactService.createRequest(addContactUserName).then(() => {
-			alert("Contact request sent") ; // TODO: Replace this with HTML-based message
+			changeContactReqSentTo(addContactUserName) ;
 		}).finally(() => changeAddContactUserName("")) ;
 	}
 
@@ -80,9 +81,25 @@ export default function Contacts({viewCommon}) {
 		}) ;
 	}
 
+	function handleCloseModal() {
+		changeContactReqSentTo(null) ;
+	}
+
 	return (
 		<>
 			<div className="page-contacts">
+				<Modal show={contactReqSentTo} onHide={handleCloseModal}>
+					<Modal.Header closeButton>
+						<Modal.Title>Contact Request</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>Contact Request was successfully sent to {contactReqSentTo}</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={handleCloseModal}>
+							Close
+						</Button>
+					</Modal.Footer>
+				</Modal>
+
 				<h1>Contacts</h1>
 
 				<Form id="form" className="d-flex p-3 justify-content-center" onSubmit={handleSendContactRequest}>
