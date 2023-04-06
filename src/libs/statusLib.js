@@ -8,7 +8,6 @@ export default class StatusLib {
 
 	// Set error-status for the specified category
 	setErrorStatus(category, msg) {
-		console.log("setErrorStatus: ", category, msg) ;
 		if (msg === null) this.removeErrorStatus(category) ;
 		else this.changeErrorStatusList((errorStatusList) => ({ ...errorStatusList, [category]: msg }));
 	}

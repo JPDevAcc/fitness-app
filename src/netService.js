@@ -48,7 +48,6 @@ export default class NetService {
 		if (this.handleSlowRequestDetect && !opts.noSlowRequestHandling) {
 			timerId = setTimeout(() => {
 				isSlowRequest = true ;
-				console.log("SLOW REQUEST") ;
 				this.handleSlowRequestDetect() ;
 			}, SLOW_REQUEST_THRESHOLD_MS) ;
 		}
@@ -68,7 +67,6 @@ export default class NetService {
 			clearTimeout(timerId) ;
 			if (isSlowRequest && this.handleSlowRequestComplete) {
 				this.handleSlowRequestComplete() ;
-				console.log("SLOW REQUEST COMPLETED") ;
 			}
 		}) ;
 	}

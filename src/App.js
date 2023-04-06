@@ -106,7 +106,6 @@ export default function App() {
 
 	// === Retrieve notifications ===
 	function getNotifications(isAuto = false) {
-		console.log("RETRIEVING NOTIFICATIONS");
 		const notificationService = new NotificationService(commonData.net);
 
 		notificationService.retrieve(isAuto).then(({ data }) => {
