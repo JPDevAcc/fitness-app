@@ -27,7 +27,6 @@ function Login(props) {
             .then((response) => {
                 changeDisabled(false);
                 props.login(response.data.token);
-                console.log("Success!")
                 navigate('/')
             })
             .catch((err) => {

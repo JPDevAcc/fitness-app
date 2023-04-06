@@ -29,7 +29,6 @@ function SingleWorkoutCard(props) {
   const handleCardClick = async (bp) => {
     const response = await exerciseAPIClient.getExercise(bp);
 
-    console.log(response);
     setWorksoutsForBodyPart(response.data);
   };
 
