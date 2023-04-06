@@ -3,6 +3,8 @@
 
 	h1 {
 		font-family: 'Raleway Dots', cursive;
+		margin: 1rem 0;
+		font-size: 2.5rem;
 	}
 
 	.user-prefs {
@@ -12,5 +14,22 @@
 
 	.form-label {
 		font-weight: bold ;
+	}
+}
+
+@media screen and (min-width: 268px) and (max-width: 768px){
+	.page-user-prefs {
+		h1 {
+			margin-right: 15px;
+			font-size: 2.3rem;
+		}
+
+		.user-prefs {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 16px;
+			width: 90%;
+		}
 	}
 }

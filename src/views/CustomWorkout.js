@@ -4,6 +4,7 @@ import ExerciseAPIClient from '../services/API/exerciseApiService'
 import UnsplashAPIClient from '../services/API/unsplashApiService'
 import { useState, useEffect } from 'react'
 import { Button, Col, Form, Row, Card } from 'react-bootstrap'
+import ErrorModal from '../components/ErrorModal'
 
 function CustomWorkout(props) {
 
@@ -23,6 +24,11 @@ function CustomWorkout(props) {
         exerciseName: '',
         reps: ''
     })
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         const getWorkouts = async () => {
@@ -57,7 +63,6 @@ function CustomWorkout(props) {
             ...formValues,
             exerciseName: name,
         })
-
         changeCurrentExercise({
             exerciseID: id,
             gif: gif,
@@ -88,13 +93,18 @@ function CustomWorkout(props) {
         event.preventDefault()
 
         if (event.target[0].value === '' || event.target[1].value === '') {
-            alert('Please fill in all the fields')
+            props.changeErrorMessage('Please fill in all the fields')
+            handleShow()
             return
         } else if (isNaN(event.target[1].value)) {
-            alert('Please enter a number for reps')
+            props.changeErrorMessage('Please enter a number for reps')
+            handleShow()
+            return
+        } else if (event.target[1].value.length > 3) {
+            props.changeErrorMessage('Please enter a number less than 1000')
+            handleShow()
             return
         }
-
         const newExercise = [event.target[0].value, event.target[1].value + ' reps', currentExercise.gif]
         changeAddedExercises([...addedExercises, newExercise])
     }
@@ -108,9 +118,21 @@ function CustomWorkout(props) {
         }
     }
 
+    const deleteList = () => {
+        changeAddedExercises([])
+        changeFormValues({
+            title: '',
+            sets: '',
+            exerciseName: '',
+            reps: ''
+        })
+    }
+
     const addWorkout = async () => {
+
         const imageData = await unsplashAPIClient.getSpecPic('workout')
         const image = imageData.data[0].urls.regular
+
         const customWorkout = {
             id: Math.floor(Math.random() * 1000000000),
             image: image,
@@ -120,40 +142,37 @@ function CustomWorkout(props) {
         }
 
         if (customWorkout.title === '' || customWorkout.sets === '') {
-            alert('Please fill in all the fields')
+            props.changeErrorMessage('Please fill in all the fields')
+            handleShow()
             return
         } else if (isNaN(customWorkout.sets)) {
-            alert('Please enter a number for sets')
+            props.changeErrorMessage('Please enter a number for sets')
+            handleShow()
             return
         } else if (customWorkout.exercises.length > 10) {
-            alert('Please add less than 10 exercises')
+            props.changeErrorMessage('Please add less than 10 exercises')
+            handleShow()
             return
         } else if (customWorkout.exercises.length === 0) {
-            alert('Please add at least 1 exercise')
+            props.changeErrorMessage('Please add at least 1 exercise')
+            handleShow()
+            return
+        } else if (customWorkout.sets.length > 3) {
+            props.changeErrorMessage('Please enter a number less than 1000')
+            handleShow()
             return
         }
 
         const addWorkOut = await addWorkoutToDatabase(customWorkout)
-
         const response = await exerciseAPIClient.getCustomWorkouts()
         const data = await response.data
         changeCustomWorkouts([...data])
+        deleteList()
     }
 
     const filterExercises = (event) => {
         const filteredExercises = tempExerciseList.filter(exercise => exercise.name.toLowerCase().includes(event.target.value.toLowerCase()))
         changeExercises(filteredExercises)
-    }
-
-    const deleteList = () => {
-        console.log(formValues)
-        changeAddedExercises([])
-        changeFormValues({
-            title: '',
-            sets: '',
-            exerciseName: '',
-            reps: ''
-        })
     }
 
     return (
@@ -217,6 +236,12 @@ function CustomWorkout(props) {
                     </Col>
                 </Col>
             </Row>
+            <ErrorModal
+                show={show}
+                handleClose={handleClose}
+                handleShow={handleShow}
+                errorMessage={props.errorMessage}
+            />
         </>
     )
 }

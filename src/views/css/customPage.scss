@@ -83,3 +83,13 @@
         }
     }
 }
+
+@media screen and (min-width: 268px) and (max-width: 768px) {
+    .custom-page-container {
+        .workout-wrapper {
+           ol {
+               padding: 0 0.5rem !important;
+           }
+        }
+    }
+}

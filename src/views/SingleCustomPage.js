@@ -1,9 +1,15 @@
 import './css/customPage.scss'
 import { formatDate } from '../utils/utils'
 import { Card } from 'react-bootstrap'
+import { useEffect } from 'react'
 
 
 function SingleCustomPage(props) {
+
+    useEffect(() => {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }, [])
 
     const showExercises = () => {
         return props.currentCustomWorkout?.exercises?.map((exercise, index) => {
