@@ -42,10 +42,10 @@ export default function Dashboard({viewCommon}) {
 		changeFormattedNotifications(newFormattedNotifications) ;
 	}, [notifications]) ;
 
-	useEffect(() => {
-		if (!userDataState.profile.weightGoalValue || !userDataState.profile.selectedGoalIds.includes('lose_weight')) return ;
-
-		getWeightProgressValues() ;
+	useEffect(() => {	
+		if (userDataState.profile.weight && userDataState.profile.weightGoalValue &&
+			(userDataState.profile.weightGoalUnits === 'absolute' || userDataState.profile.height) &&
+			userDataState.profile.selectedGoalIds.includes('lose_weight')) getWeightProgressValues() ;
 	}, []) ;
 
 	function getWeightProgressValues() {
@@ -65,7 +65,8 @@ export default function Dashboard({viewCommon}) {
 				const currentValue = convertBetweenWeightAndBMI(currentWeight, 'absolute', weightGoalUnits, currentHeight) ;
 				
 				// Calculate progress
-				const progressPercent = Math.max(((currentValue - initialValue) / (targetValue - initialValue)), 0) * 100 ;
+				let progressPercent = 100 ;
+				if (targetValue !== initialValue) progressPercent = Math.max(((currentValue - initialValue) / (targetValue - initialValue)), 0) * 100 ;
 
 				// Determine initial and target value strings
 				let initialValueString, targetValueString ;

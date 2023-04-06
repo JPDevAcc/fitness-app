@@ -32,10 +32,10 @@
 		const lbs_per_st = 14 ;
 		const kg_per_st = (kg_per_lbs * lbs_per_st) ;
 
-		if (valInUnits === valOutUnits) return [valsIn[0], valsIn[1] ?? null] ;
+		if (valInUnits === valOutUnits) return [parseFloat(valsIn[0]), valsIn[1] ? parseFloat(valsIn[1]) : null] ;
 
 		// Convert to metric
-		let valMetric = valsIn[0] ;
+		let valMetric = parseFloat(valsIn[0]) ;
 		if (valInUnits === 'lbs') valMetric = valsIn[0] * kg_per_lbs ;
 		if (valInUnits === 'st. lbs') valMetric = valsIn[0] * kg_per_st + valsIn[1] * kg_per_lbs ;
 
@@ -59,10 +59,10 @@
 		const in_per_ft = 12 ;
 		const m_per_ft = (m_per_inc * in_per_ft) ;
 
-		if (valInUnits === valOutUnits) return [valsIn[0], valsIn[1] ?? null] ;
+		if (valInUnits === valOutUnits) return [parseFloat(valsIn[0]), valsIn[1] ? parseFloat(valsIn[1]) : null] ;
 
 		// Convert to metric
-		let valMetric = valsIn[0] ;
+		let valMetric = parseFloat(valsIn[0]) ;
 		if (valInUnits === 'ft. in.') valMetric = valsIn[0] * m_per_ft + valsIn[1] * m_per_inc ;
 
 		// Convert to output units
@@ -82,12 +82,12 @@
 	const bmiPrimeNormalisationFactor = 25 ; // Note: For SE Asian and S Chinese populations, this should actually be 23 - in future we could make this configurable
 
 	export function convertBetweenWeightAndBMI(valIn, valInUnits, valOutUnits, heightM) {
-		if (valInUnits === valOutUnits) return valIn ;
+		if (valInUnits === valOutUnits) return parseFloat(valIn) ;
 
 		if (heightM === "") return "" ; // Unknown height so can't convert
 		
 		// Convert to absolute weight (kg)
-		let valWeight = valIn ;
+		let valWeight = parseFloat(valIn) ;
 		if (valInUnits === 'bmi') valWeight = valIn * (heightM * heightM) ;
 		else if (valInUnits === 'bmiPrime') valWeight = valIn * bmiPrimeNormalisationFactor * (heightM * heightM) ;
 
